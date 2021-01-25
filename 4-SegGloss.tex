@@ -1,0 +1,402 @@
+\chapter{Integrating Automated Segmentation and Glossing into Documentary and Descriptive Linguistics}
+
+\section{abstract}
+Any attempt to integrate NLP systems to the study of endangered languages must take into consideration traditional approaches by both NLP and linguistics. This paper tests different strategies and workflows for morpheme segmentation and glossing that may affect the potential to integrate machine learning. Two experiments train Transformer models on documentary corpora from five under-documented languages. In one experiment, a model learns segmentation and glossing as a joint step and another model learns the tasks into two sequential steps. We find the sequential approach yields somewhat better results.
+%, indicating that linguist should perhaps adjust their traditional approach. 
+In a second experiment, one model is trained on surface segmented data, where strings of texts have been simply divided at morpheme boundaries. Another model is trained on canonically segmented data, the approach preferred by linguists, where abstract, underlying forms are represented. We find no clear advantage to either segmentation strategy and note that the difference between them disappears as training data increases. On average the models achieve more than a 0.5 F$_1$-score, with the best models scoring 0.6 or above. An analysis of errors leads us to conclude consistency during manual segmentation and glossing may facilitate higher scores from automatic evaluation but in reality the scores may be lowered when evaluated against original data because instances of annotator error in the original data are ``corrected'' by the model.
+
+\section{Introduction}
+
+This chapter examines the direct effects of variations in research design when integrating machine learning into the morphological analysis and annotation of endangered languages. Morpheme segmentation and glossing are traditionally the first tasks undertaken by linguists after documenting a language's sound system. Both tasks provide essential linguistic information. Segmenting words into morphemes clarifies relationships between various word forms and can reduce confusion caused by data sparsity in NLP models. Glosses make implicit linguistic structures explicit and accessible for analysis and they can be leveraged to improve NLP models in low-resource settings, such as for machine translation \citep{shearing_improving_2018,zhou_using_2020}. Therefore, automating these tasks with NLP systems and integrating those systems into the documentary and descriptive workflow is important to both linguistics and NLP.
+
+When we bring together two disciplinary fields for mutual benefit, different expectations or accepted conventions are also brought together. The issues that this paper addresses stem from conventional methods in natural language processing (NLP) and linguistic analysis. The methods are based or have led to differing expectations which raise potentially conflicting issues. For example, it is generally expected in NLP that textual data will be orthographic representations and that the goal is to process that form, whereas linguists may prefer to work with phonetic representations and see their goal to process underlying linguistic forms. These differences can make the interdisciplinary collaboration unnecessarily slow or confusing. When the differences affect overall research design, it is easy to simply choose one or the other convention without testing which choice might actually benefit the task at hand or be more efficient for long-term goals. This paper studies and compares the short-term affect of two pairs of differing expectations which have arisen during the authors' research.
+
+The first study asks \textit{whether morpheme segmentation and glossing should be done jointly or sequentially}. In other words, are NLP systems more accurate when trained to do these two tasks separately or when trained to do them jointly? Instead of arbitrarily choosing one or the other method, we could test whether one approach gives more accurate results than the other. If the sequential approach is more accurate, then linguists might consider adjusting their workflow in order to gain optimal benefit from the NLP system, but if the joint task approach performs better, then perhaps NLP would benefit by adjusting experiments to match the linguists' expectations about data annotation methods. 
+
+This second issue we investigate is \textit{how morpheme segmentation strategies affect NLP performance}. Linguistic theory assumes the existence of underlying morpheme forms and generally the goal to discover these forms determines research design. The morphemes are often represented in their theoretical, underlying forms, which also allows orthographic changes triggered by surrounding phones to be ignored. This contrast with surface segmentation which simply inserts morpheme breaks in the orthographic representation. The two segmentation strategies are compared in (\ref{ex:canseg}) where the first two surface letters of each word in (\ref{ex:canseg1}) are represented by identical canonical segments in (\ref{ex:canseg2}). Since NLP almost always deals with orthographic representations, its systems are trained to perform surface segmentation almost exclusively. 
+%Linguists may also choose a surface segmentation strategy, which is also the strategy selected by segmentation algorithms that simply identify morpheme boundaries between characters in orthographic representations. 
+In practice, both strategies are encountered during language documentation and description, the initial strategy depending in part on software tools. For example, the older, but still popular, Toolbox\footnote{https://software.sil.org/toolbox/} allows surface segmentation whereas ELAN \citep{auer_elan_2010} supports both but as separate tasks, while FLEx \citep{baines_overview_2018} requires surface segmentation but facilitates simultaneous canonical segmentation. It might seem reasonable that linguists who want to integrate automated assistance would adjust their strategy to match NLP expectations. But without testing, are we sure that NLP systems perform better at surface or at canonical segmentation?
+
+\pex   
+\label{ex:canseg}
+\a il-legal \hspace{6mm} in-capable \hspace{5mm} im-mature
+\label{ex:canseg1}
+\a in-legal \hspace{5mm} in-capable \hspace{5mm} in-mature
+\label{ex:canseg2}
+\a \textsc{neg}-legal \hspace{1mm} \textsc{neg}-capable \hspace{1mm} \textsc{neg}-mature
+\label{ex:canseg3}
+\xe
+
+%This seems more natural since linguists are segmenting based on their understanding of the morphemes function/meaning, so in most cases a morpheme is segmented only because its gloss has been identified. So an automated system that assumes the steps occur consequently instead of simultaneously/jointly may not work well for linguists. It may be ever be accepted or may be difficult to integrate. It may make it difficult for linguists to benefit from automated assistance. On the other hand, this assumption of separate segmentation and glossing may point linguists to a better way. Linguists may benefit by integrating this NLP assumption into their work. 
+
+This paper describes experiments that test results of Transformer models \citep{vaswani_attention_2017} trained on segmented and glossed data and then compare those results between a joint and sequential approach to segmentation and glossing and between a surface and canonical strategy to segmentation. \autoref{sec:data} introduces the data used by the models that are described in \autoref{sec:models}. The experiments are described in \autoref{sec:methodology} and results are presented in \autoref{sec:results} and analyzed in \autoref{sec:errors}. 
+
+
+
+\section{Data}
+\label{sec:data}
+
+Each project's unique priorities and workflow resulted in different amounts of data and percentages of segmented and glossed tokens, as shown in Table \ref{tab:data}. We selected the four corpora that had been interlinearized with FLEx because that software allowed the annotators to provide both surface and canonical segments. 
+
+\begin{table}
+    \centering
+    \begin{tabular}{l|r|rc}
+         \textbf{Language} & \textbf{Tokens} & \multicolumn{2}{c}{\textbf{Seg/Gloss}} \\
+         \hline
+         Alas & 4.5k & 3,775 & 85\%  \\
+         \hline
+         Lamkang & 101k & 49,465 & 49\% \\
+         \hline
+         Lezgi & 14k & 13,262  & 94\% \\
+         \hline
+         Manipuri & 12k & 11,904 & 98\% \\
+         \hline
+         Natügu & 16.5k & 13,925 & 84\%  \\
+    \end{tabular}
+    \caption[Data for Segmentation and Glossing]{The approximate total token considers multiple word expressions (when parsed as such) as single tokens. The percentage and total number of tokens that are both segmented (canonical and surface) and glossed are shown.}
+    \label{tab:data}
+\end{table}
+
+%Even projects that employed the same software tool had variable formatting. For example, both Natugu and Bahasa Alas have circumfixing, but in one corpus the prefixed part was labeled as a circumfix and the suffixed part as a suffix, while the other corpus took the opposite approach.
+
+
+\section{Segmentation and Glossing Experiments}
+\label{sec:methodology}
+
+The experiments assume access to field data that has only been segmented and glossed. Therefore, no other information was leveraged from the interlinearized glossed texts or elsewhere. Gold standard data was assembled by filtering out tokens that were not completely segmented and glossed as far as could be determined automatically by assuring that the surface, canonical, and gloss lines aligned with each other. 
+%Glosses were standardized by capitalizing affix glosses. Glosses for one morpheme that had alternate English words separate by spaces were joined by periods.
+Morpheme boundary markers such as hyphens and equal signs were preserved to distinguish clitics from bound morphemes and to indicate relative ordering of morphemes (i.e. pre-/suf/infixing); angle brackets (\textlangle{} \textrangle{}) were used to denote circumfixes. 
+
+The data was arranged so as to accommodate both joint and sequential learning. That is, after withholding ten percent of the corpus as a test set, the remaining data was split into two equal training sets. It is assumed that segments and glosses exist for the first part which can be used for training in the sequential system, but not for the second part. Ten percent of each part was used as a development set. For easier comparison, the joint model was trained on only one part, the same part used for training the segmentation step in the sequential system. One additional experiment was run with the joint model that trained on both parts together, minus the held-out data. For each experiment, a ten-fold cross validation was run. 
+
+All tasks are treated as a problem of converting an input sequence of characters $\vect{x} = (x_1, \ldots, x_n)$ to an output sequence of labels $\vect{y} = (y_1, \ldots, y_n)$. The output sequence of labels indicate the (canonical or surface) morpheme and/or the morpheme's gloss. 
+%Pilot work showed that any context provided by training on a whole sentence confused the system more than helped it, so each data instance is a word. 
+
+
+\subsection{Joint versus Sequential System}
+\label{sec:joint}
+
+The first experiment tested whether joint or sequential segmentation and glossing is a better approach to interlinearization when integrating automated assistance. Joint segmentation assumes that segmented data without glosses is unlikely because identifying a morpheme usually means there has already been an identification of the morpheme's meaning.
+%\footnote{One linguist claimed that native speakers could segment morphemes without knowing the function of morphemes (p.c) but in the first author's experience this results in many segmentation errors.} 
+Joint segmentation requires the model to learn the morpheme boundary and gloss simultaneously for each segment. The sequential system--glossing after segmenting the whole text---assumes that segmentation is easier to do by hand or that unsupervised segmentation tools such as Morfessor \citep{smit-etal-2014-morfessor} are available for low-resource languages. 
+
+For joint learning, the input is a character-level representation of a word, shown in (\ref{ex:Jointin}). Each character is treated as as separate symbol by the model. The output is a sequence of labels, one label per morpheme, shown in (\ref{ex:JointOut}). The label combines the morpheme's shape and gloss. The combination allows the system to perform segmentation and glossing simultaneously. 
+
+\pex   
+\label{ex:JointInOut}
+\a<a> \textbf{IN:} \hspace{6 mm} t \hspace{2 mm} a \hspace{2 mm} x \hspace{2 mm} e \hspace{2 mm} s 
+\label{ex:Jointin}
+\a<b> \textbf{OUT:} \hspace{2 mm} tax\#levy \hspace{3 mm} -es\#\textsc{pl} 
+\label{ex:JointOut}
+\xe
+
+The sequential system trains two models: one model learns morpheme segments and the other learns to gloss the predicted morphemes. In the sequential system the first equal part of the data was used for the segmentation step and its output was the training input for the glossing step. The output to the first model is a sequence of segments only, shown in (\ref{ex:Pipe1Out}). 
+
+\pex  
+\label{ex:Pipe1InOut}
+\a<a> \textbf{IN:} \hspace{6 mm} t \hspace{2 mm} a \hspace{2 mm} x \hspace{2 mm} e \hspace{2 mm} s 
+\label{ex:Pipe1in}
+\a<b> \textbf{OUT:} \hspace{2 mm} tax \hspace{3 mm} -es
+\label{ex:Pipe1Out}
+\xe
+
+The output of the segmentation model is used as input to the second model, as shown in (\ref{ex:Pipe2In}.) The glossing model then outputs the predicted glosses, shown in (\ref{ex:Pipe2Out}). 
+
+\pex  
+\label{ex:Pipe2InOut}
+\a<a> \textbf{IN:} \hspace{6 mm} tax \hspace{3 mm} -es
+\label{ex:Pipe2In}
+\a<b> \textbf{OUT:} \hspace{2 mm} levy \hspace{2 mm} \textsc{pl}
+\label{ex:Pipe2Out}
+\xe
+
+%This paper test that question with a neural transformer model and a feature-based CRF model. Feature-based models have outperformed neural models in low-resource settings until very recently, so both should still be tested. Both models are trained on data that has been both surface and canonically segmented in FLEx. The training/dev/test splits are the same, only the segmentation strategy has changed. 
+%Lastly, 
+%to determine whether Transformer model is indeed the best choice for documentary and descriptive projects of these sizes, 
+%joint learning was repeated on a CRF and a Transformer model that were trained on all the data, and tested on the same test set. As indicated in (\ref{ex:CRFin}) the CRF input is a feature function of each character. Features were chosen to be generalizable to any language. They include position of a character in the word (counted from beginning and end of word to account for suffixing and prefixing patterns) and surrounding characters up to 4-gram sequences. The output are BIO-labels \citep{ramshaw1999} that indicate the position of each character in the morpheme (B = beginning, I = inside), the predicted morpheme shape, and its gloss, as shown in (\ref{ex:CRFOut}). %This BIO labels declares each letter as either the beginning of a morpheme with ``B'' or as an inside position with``I''. 
+
+%\pex  
+%\label{ex:CRFInOut}
+%\a<a> \textbf{IN:}  \hspace{2 mm} [FEATURES:t] [FEATURES:a] [FEATURES:x] [FEATURES:e] [FEATURES:s] 
+%\label{ex:CRFin}
+%\a<b> \textbf{OUT:} \hspace{2 mm} B\#tax\#levy \hspace{2 mm} I\#tax\#levy \\
+%\hspace{2 mm} I\#tax\#levy \hspace{2 mm} B\#-es\#\textsc{pl} \hspace{2 mm} I\#-es\#\textsc{pl}
+%\label{ex:CRFOut}
+%\xe
+
+
+\subsection{Segmentation Strategy}
+\label{sec:strategies}
+
+The second experiment compares the Transformer's performance when trained on different segmentation strategies. Both systems described above are trained on both strategies. Canonical segmentation gives more information about a language's underlying morphological structure. At the same time, it reduces the number of unique labels in languages that reflect allomorphy and morphophonological processes in the orthography. On the other hand, surface segmentation does not require computational models to learn allomorphy or morphophonology \citep{goldsmith_computational_2017} and does not provide a thorough analysis of the language's morphology by annotators. It simply divide strings of text into segments known as ``morphs'' \citep{virpioja_empirical_2011} without regard to potential relationships between the segments. 
+
+The intention of this study is not to provide a direct comparison, since technically the corpora of surface and canonical segments are different datasets. The study assumes that if one strategy was conducted first, then the other type of segmentation might be more easily learned from it. For example, if a corpus could be surface segmented very quickly with very high accuracy based on initial hypotheses of morpheme shapes, then having the predicted surface segments for the whole corpus might make the discovery of canonical, underlying morphemes easier and faster for linguists, as well as matching a common expectation in NLP. 
+
+The difference in the methodology of the two strategies is their outputs. Their input does not change and it is the same as the models described in section \ref{sec:joint}. The output for surface segmentation is shown (\ref{ex:surfout}), and the corresponding output for canonical segmentation is in (\ref{ex:CanOut}).
+
+\pex   
+\label{ex:CanInOut}
+\a<a> \textbf{SURFACE:} \hspace{2 mm} tax\#levy \hspace{3 mm} -es\#\textsc{pl}
+\label{ex:surfout}
+\a<b> \textbf{CANON.:} \hspace{4 mm} tax\#levy \hspace{3 mm} -s\#\textsc{pl} 
+\label{ex:CanOut}
+\xe
+
+In addition to the alternation between surface morphs and underlying morpheme representations, the data was handled slightly differently for the two strategies. The most obvious difference is the handling of circumfixes. Surface representation only preserves the ordering of morphs and does not require knowledge of morpheme types, so the two parts of each circumfix were treated as two different prefix and suffix morphs.  Canonical segmentation represents the circumfix as a single morpheme that repeats before and after the stem. These changes are shown in (\ref{ex:Circumfixes}).
+
+\pex   
+\label{ex:Circumfixes}
+\a<a> \textbf{SURFACE:} \hspace{2 mm} ke- \hspace{4 mm}  STEM  \hspace{1 mm} -en
+\label{ex:circumsurf}
+\a<b> \textbf{CANON.:} \hspace{1 mm} ke\textlangle{}\textrangle{}en- \hspace{1 mm} STEM \hspace{1 mm} -ke\textlangle{}\textrangle{}en
+\label{ex:circumcan}
+\xe
+
+%Null morphemes should have been handled differently, but they weren't! They should have been eliminated it was discovered they remained because the selection of labels was based on the gloss line.
+
+
+\subsection{Feature-based vs. Deep Learning}
+
+The authors' previous work on Lezgi \citep{moeller_automatic_2018} used the same corpus as the current work and compared sequential vs. joint models as well as feature-based vs. deep learning models. The reported F$_1$-scores were nearly .9. However, a direct comparison between the two studies cannot be made because the previous work only segmented and glossed affixes while the current work includes root and affixes.
+
+
+The Conditional Random Fields (CRF) \citep{lafferty_conditional_2001}, the state-of-art non-neural sequence labeling model, has not performed as well as neural models on low-resource sequence-to-sequence tasks since about 2016 \citep{liu2016morphological}, we selected the Transformer \citep{vaswani_attention_2017} as our model. The Transformer is a supervised machine learning system that has achieved 
+%Until recently, non-neural models regularly outperformed neural models in low-resource settings, so we the feature-based Conditional Random Fields model (CRF) and the neural Transformer model. 
+promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. It is a stateless encoder-decoder model that uses additional attention layers to boost speed and performance. 
+%The decoder has an additional attention layer that allows it to focus not only on the input sentence but also on the ouput sequence up to the element it is decoding. The order of elements in the sequence is represented as an embedding which is input to the encoder/decoder. 
+We used the Fairseq \citep{ott2019fairseq} implementation with the modifications and code described by \citet{wu2020applying} which have been successful in low-resource character-level morphological tasks.\footnote{Code available here: \url{github.com/shijie-wu/neural-transducer}}
+%\footnote{4 encoder-decoder layers, 4 self-attention heads, 256 embedding size, 1024 hidden size of feed-forward layer, layer normalization before self-attention, decoding left-to-right in a greedy fashion} 
+%The CRF \citep{lafferty_conditional_2001} is the best performing non-neural model for sequence prediction such as morpheme segmentation and glossing \citep{muller_efficient_2013,ruokolainen_comparative_2016}. The CRF scores predictions over the whole sequence and then transformed into a probability distribution. A linear-chain CRF was implemented with \textit{CRFsuite} \citep{okazaki2007} and its Python API.\footnote{\url{https://python-crfsuite.readthedocs.io/en/latest/}} 
+%The CRF is a sequence classifier that considers the whole sequence of symbols (words, letters, glosses, etc.) when making an individual prediction. It optimizes the probability of a complete sequence of labels, where each individual label is given a conditional probability based on the previous label and an arbitrary number of surrounding inputs. 
+%The CRF has performed well on boundary detection (segmentation) and labeling (glossing). 
+
+%The conditional distribution of the output sequence {\bf y}, given the input {\bf x} can be modeled as
+
+%\begin{equation}
+%p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_i,\vect{x},i)\Big)
+%\end{equation}
+
+%\noindent where $\phi$ is the feature extraction function which can be expressed through a sum of $k$ individual component functions
+
+%\begin{equation}
+%\phi(y_{i-1}, y_i,\vect{x},i) = \sum_k w_k f_k(y_{i-1}, y_i,\vect{x},i)
+%\end{equation}
+
+%\noindent Here, $Z$ is the ``partition function'' which normalizes the expression to a proper distribution over all possible taggings given an input.
+
+\section{Results}
+\label{sec:results}
+
+Performance was evaluated by a cross-validation on ten training and development sets that were randomly split from the part of the data used for each experiment.
+The system predictions were automatically evaluated against the gold standard. Scores were calculated as a micro-average on all labels, independent of word accuracy. Since the system may predict more or fewer labels for a word, both precision and recall are calculated. Table \ref{tab:allresults} compares the average F$_1$-scores across a 10-fold validation. 
+For joint learning, the scores indicate morphemes that were correctly segmented and glossed. For the sequential system, the score is a weighted average of the scores from both the segmentation and glossing models. 
+%Variation of scores for all systems and strategies were very similar.
+%Since less variation is expected from the CRF, it is evaluated on a single training. 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|cc|cc}
+          & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} \\
+          &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} \\
+         \hline
+         Alas & .4280 & \textbf{.4565} & .5166 & \textbf{.5291} \\
+          % difference & \multicolumn{2}{c}{.0285} & \multicolumn{2}{c}{.0125} \\
+         \hline
+         Lamkang & .7091 & \textbf{.7391} & .5414 & \textbf{.5785} \\
+         % difference & \multicolumn{2}{c}{.0300} & \multicolumn{2}{c}{.0371} \\
+         \hline
+         Lezgi & .5489 & \textbf{.6062} & .4993 & \textbf{.5371} \\
+         % difference & \multicolumn{2}{c}{.0573} & \multicolumn{2}{c}{.0378} \\
+         \hline
+         Manipuri & .4719 & \textbf{.5067} & .6401 & \textbf{.6675}\\
+         % difference & \multicolumn{2}{c}{.0348} & \multicolumn{2}{c}{.0274} \\
+         \hline
+         Natügu & \textbf{.5423} & .5263 & .6083 & \textbf{.6335 }\\
+         % difference & \multicolumn{2}{c}{.0160} & \multicolumn{2}{c}{.0252} \\
+         \hline
+         \hline
+         Average & .5400 & .5670 & .5011 & .5895 \\
+    \end{tabular}
+    \caption[Results of Transformer on Joint and Sequential models]{F$_1$-scores of Transformer joint and sequential models on both segmentation strategies. Scores are an average across a 10-fold cross-validation. The bottom row shows the average score across all languages.}
+    \label{tab:allresults}
+\end{table}
+
+\subsection{Joint vs Sequential Results}
+
+Overall, sequential learning does better than joint learning, but the differences are not great. The maximum improvement is less than 0.06 points on Lezgi [lez]. The best models achieved over 0.60 F$_1$ on all but the smallest corpus. Lamkang [lmk], which has the largest number of tokens by far, achieved over 0.70 average F$_1$ score. 
+
+The performance on the Nat\"ugu data is the only case where the sequential system is not consistently an improvement over the joint system. 
+%With surface segmentation, joint learning on Nat\"ugu outperforms sequential learning. 
+When considering word-level accuracy, Nat\"ugu joint learning outperformed sequential learning on canonical segmentation. Interestingly, it also has the smallest change in the number of unique labels between surface and canonical segmentation (an increase of 14 labels, compared to next lowest of 46). With so few languages, it is difficult to say whether the relative number of unique labels affect the relative performance when trained on surface vs. canonical segmentation. More corpora should be included for this question to be explored further. %Overall, the differences are still so slight that it seems any system or strategy may perform equally well on Nat\"ugu. 
+ 
+\subsection{Surface vs. Canonical Results}
+
+When half of the total data is used, the comparison of surface and canonical segmentation paints a less clear picture. The differences when going from surface to canonical segmentation are shown in Table \ref{tab:segdiffresults}. The general trend when comparing segmentation strategies is that languages with a higher ratio of unique labels to total tokens do better with canonical segmentation. The differences are quite small for Alas [btz], Lezgi, and Nat\"ugu [ntu]. The biggest differences are found in Lamkang and Manipuri [mni], but their improvement goes in opposite directions. Surface segmentation gives higher scores for Lamkang data while Manipuri has higher scores with canonical. Interestingly, these two languages have the largest difference of the number of unique labels between surface and canonically segmented data. In Lamkang and Manipuri training data, the average number of unique joint labels increased by over 500 and 400, respectively, and in the segmentation step of the sequential system the number of segments increased by over 350. In the other languages the largest average increase of labels is 88 but usually the differences are less than 15. Since Lamkang and Manipuri belong to the same family, it is possible that significant differences in segmentation strategies are due to characteristics of their familial morphological structure, but it could be due to other factors such as idiosyncratic choices in the orthographic representation. 
+%It is equally possible that the differences are due to shared annotation methods as the two corpora were sourced from one origin.
+% Much less difference in number of labels in the glossing step: -12.1 - 7.2, unsurprisingly  
+
+The differences in the results in both joint and sequential systems are shown in Table \ref{tab:segdiffresults}. The effect of the segmentation strategy is roughly the same in both systems. 
+
+\begin{table}
+    \centering
+    \begin{tabular}{l|r|r}
+          & \textbf{Joint} & \textbf{Seq} \\
+         \hline
+         Alas  & -.0886 &  -.0726  \\
+         %Alas all & -.0130 & n/a \\
+         \hline
+         Lamkang  & .1677 & .1606  \\
+         %Lamkang all & .1300 & n/a \\
+         \hline
+         Lezgi  & .0496 & .0691  \\
+         %Lezgi all & .0099 & n/a \\
+         \hline
+         Manipuri  & -.1682 & -.1608   \\
+         %Manipuri all & -.0210 & n/a \\
+         \hline
+         Natügu  & -.0660 & -.1072  \\
+         %Natügu all & -.0030 & n/a \\
+    \end{tabular}
+    \caption[F$_1$-score Differences between Surface and Canonical Segmentation]{Average F$_1$ differences between surface and canonical segmentation strategies. Positive scores mean surface segmentation outperformed canonical segmentation.}
+    \label{tab:segdiffresults}
+\end{table}
+
+
+The segmentation strategies were also compared using all available data in the joint system. Table \ref{tab:segsizeresults} shows the how doubling the training data affects the performance. Doubling the training data always improves F$_1$-scores by about .2 to .4 points. While the difference between the two strategies becomes less noticeable when the data is increased, canonical segmentation tends to outperform surface segmentation, but in all languages the difference between the strategies becomes almost negligible (less than .15 points). 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|rr}
+          & \textbf{Surface} & \textbf{Canon} \\
+         \hline
+         Alas & .4280 & .5166  \\
+         Alas all & .6771 & \textbf{.6902} \\
+         \hline
+         Lamkang  & .7091 & .5414  \\
+         Lamkang all & .8547 & \textbf{.8573} \\
+         \hline
+         Lezgi  & .5489 & .4993  \\
+         Lezgi all & \textbf{.7834} & .7735 \\
+         \hline
+         Manipuri & .4719 & .6401   \\
+         Manipuri all & .8693 & \textbf{.8903} \\
+         \hline
+         Natügu  & .5423 & .6083  \\
+         Natügu all & .8965 & \textbf{.8995} \\
+    \end{tabular}
+    \caption[Results of Joint Segmentation and Glossing with Increased Data]{Results the joint model with surface and canonical segmentation strategies when using half the training data compared to all training data.}
+    \label{tab:segsizeresults}
+\end{table}
+
+
+\section{Error Analysis}
+\label{sec:errors}
+
+A closer look at the results reveals interesting patterns. One significant factor in system performance is sparsity of data. Unsurprisingly, most errors occur on rarer forms. 
+%The larger class of stems means these are more often incorrect than their affixes. %\foreignlanguage{russian}{гьакъикъет -е -ай кьисметда -е -ай, тан -зва -й -ди атун -зва -й -ди}
+Another factor is the amount of inconsistencies or errors in the manually annotated data. Annotation quality can amplify data sparsity. 
+
+Allomorphy and isomorphy (same character sequence, different meaning) caused repeated errors during the glossing step and joint learning, where it becomes quite obvious that the model must deal with multiple options. For example, the Lezgi suffix \textit{-di}\footnote{In running text, Lezgi text is transliterated from the Cyrillic orthography for the reader's convenience.} has five possible glosses as shown by the joint labels in (\ref{ex:isomorphy}). These morphological phenomena are a moot issue during the segmentation step. 
+%In Lezgi, this includes identical character sequences for aorist verbs and aorist participles.
+
+\pex   
+\label{ex:isomorphy}
+\foreignlanguage{russian}{-ди}\#\textsc{ent} \\
+\foreignlanguage{russian}{-ди}\#\textsc{dir} \\
+\foreignlanguage{russian}{-ди}\#\textsc{erg} \\
+\foreignlanguage{russian}{-ди}\#\textsc{obl} \\
+\foreignlanguage{russian}{-ди}\#\textsc{sbst} 
+\xe
+
+Sometimes multiple glosses are not due to morphological structure, but because the same morph(eme) was given different glosses. For example, interchanging `be' and `is' and `\textsc{cop}' for copular verbs or alternating between lexical glosses (e.g. `you') and grammatical glosses (e.g. `\textsc{2sg.erg}'). Sometimes different glosses appear because the item can be translated by different English words depending on the context. For example, one Lezgi word can be, and is, translated as `be' in some context or 'happen' in others. If alternative labels such as \textit{bahaye\#danger} and \textit{bahaye\#dangerous} are equally frequent, the model must choose randomly. Such inconsistency is to be expected from manual work and could be reduced with more automated assistance from machine learning.
+
+Another pattern of errors is caused by tokens that were only partially segmented (and therefore, not correctly glossed). We knew that many such tokens were included in the gold standard data but there was no reliable way to eliminate them automatically. It is unclear how many exist in each corpus, although Alas and Nat\"ugu seem to have the least. Manipuri [mni] and Lezgi seem to have most incomplete segmentation. This became clear for Manipuri during another project when a language expert was asked to the correct the glosses for several inflected words. It appears that, in the data set, the annotators had been focused only on segmented and glossing certain morphemes on each word, leaving other affixes on the word unsegmented. 
+The Lezgi data was annotated by a non-linguist who was trained to use FLEx and did not fully grasp Lezgi's unique morphology or simply did not finish segmenting all words. 
+
+Many quality issues unpredictably increase the number of possible labels and amplify data sparsity. An example is
+%did.again.ENT INESS did.again.ENT ENT - INESS is not on verbs
+repeated mispelling of glosses (e.g. apperance---appereance---appearance, fourty---forty). Other misspellings originate in transcription. In the Lezgi test data, over 50 misspelled or incorrectly segmented strings were found in the first 200 hundred unique segments, although a few spelling changes are representation of dialectical variations.  
+
+%Lezgi: Some of them should probably not be mulitple:  \foreignlanguage{russian}{-бур} --\textrangle{} ABS.PL/SBST.PL ==\textrangle{} PL,  \foreignlanguage{russian}{-в} --\textrangle{} AD/ADESS should be one or the other. 
+%Lezgi: The multiple glosses per segment is clearly seen. As our misspellings pr variant spellings in original text:  \foreignlanguage{russian}{вуч вуш} 'what'. 
+
+The results from the Alas corpus were quite good when compared to the much larger corpora. However, the errors are less predictable and more random. It seems likely that the small data set increased the noise to signal ratio and obscured general patterns. 
+%The Alas model is less likely to get rare morphemes correct. 
+One noticeable confusion was caused by the canonical representation of circumfixes. This is shown in (\ref{ex:alaserrors}) where the model predicted a prefix \textit{n-}. This prefix is a correct surface allomorph of the circumfix at that position. 
+%The promiscuous attachment of Alas clitics also seem to difficult to learn.
+
+\pex   
+\label{ex:alaserrors}
+\a \textbf{GOLD:} \hspace{2mm} n\textlangle{}\textrangle{}ken- \hspace{1mm} nindekh \hspace{1mm} -n\textlangle{}\textrangle{}ken \\
+\textbf{OUTPUT:} \hspace{2mm} n- \hspace{5mm} nindekh \hspace{2mm} -n\textlangle{}\textrangle{}ken
+\xe
+
+%!Or confusion of stems, which of course are rarer: ke\textlangle{}\textrangle{}en\textrangle{}- kuase -\textlangle{}ke\textlangle{}\textrangle{}en ke\textlangle{}\textrangle{}en\textrangle{}- suasane -\textlangle{}ke\textlangle{}\textrangle{}en
+%!Clitics are confusing presumably because they attach to any word in any position: khut -=ne khut
+
+%variation of glosses that should probably be one gloss, perhaps due to context: -\textlangle{}n\textlangle{}\textrangle{}ken#CAUSATIVE -\textlangle{}n\textlangle{}\textrangle{}ken#TO.CAUSE.TO.BECOME..., bahaye#danger bahaye#dangerous
+
+Nevertheless, error analysis shows that the models deal with data sparsity quite well. Even incorrect segments often have very similar character sequences to the correct choice, particularly when the difference is due to a change in the root vowel (e.g. dakhi $\sim$ dikhi). One of the most interesting errors, indicating the model's strong ability to learn patterns even in the face of data sparsity, occurred in Lezgi. The transcribed oral speech has a few dozen codeswitched Russian words. The test data include one or two examples, and in one case the model substituted one codeswitched word with another codeswitched word. 
+%Codeswitched: \foreignlanguage{russian}{порядок окружения -е}
+%\foreignlanguage{russian}{эвецӏун -на эвецӏна -на, хан хун}
+%root vowel changes, especially this root 'say' which is quite common in narratives with reported speech:  \foreignlanguage{russian}{лугьун -на лагьа -на}. Also another very common root, 'go' which changes root vowel in difference conjugations:  \foreignlanguage{russian}{хъфена -на хъфин -на}
+%Incorrect segmentation that the model corrected:  \foreignlanguage{russian}{и.арада -е и.арада, эхъвена -на экъвен -на, я ни я -ни}
+%Or just confused by incorrect segmentation in training data:  \foreignlanguage{russian}{пӏузарар -ар -ар пӏузарар -ар -е, гада -ди -з гададиз, гададин гада -ди -н}
+%Confused by semantically motivated allomorphy of ERG/INESS stem:  \foreignlanguage{russian}{къачун -да къачу -е}
+%Reduplication?:  \foreignlanguage{russian}{гьагьам гьам, гьа-гьа-гьа гьа-гьа}
+%The models Chooses misspelling/variant spelling:  \foreignlanguage{russian}{и кьван икьван}
+
+Many errors noted during error analysis were not actually errors. Since the annotation was originally done by hand, sometimes by multiple annotators, the glosses varied due to misspellings or synonomous glossing choices (e.g. 'BE.PST' vs. 'was'). There was a clear pattern in all datasets for one of the variants to be predicted rather than a random, unrelated label. These cases would not be considered errors by human annotators but were evaluated automatically as errors in the test data. For instance, one Lezgi demonstrative pronoun was sometimes glossed as `these' and sometimes as `this \textsc{-abs.pl}'. In at least once case, the second (and more linguistically precise) analysis was predicted. Unfortunately, because we did not have access to language experts for every corpora, we were not able to normalize our scores based on this knowledge; however, in the future it may be useful to consider that the performance of models trained on field data may, for all practical purposes, be better than the initial scores indicate.
+
+In other cases, the labels in the test data were evaluated as errors, but closer examination revealed that the original human annotation were incorrect in that particular instance and the predicted label was actually the best fit to the data. So, an human error had been ``corrected''. 
+%\foreignlanguage{russian}{авайбур, авариядиз, аватна}. 2sg.erg - 2sg.abs - ERG.  Some clearly never or inconsistently segmented in training data, or model learns consistent patterns of inconsistent segmenting. Things like  \foreignlanguage{russian}{абур} -\textrangle{} just inconsistent segmentation/glossing mostly likely. Sometimes right because not always segmented in data (cf. case-stacking). 
+Word instances that had been incorrectly segmented by the human annotators were sometimes correctly segmented by the model, although again these examples were evaluated as incorrect because they did not match the gold standard data. For Lezgi, these examples of ``correction'' by the model were more frequent in the sequential system, and may explain why biggest improvement by the sequential system over the joint system is found in the Lezgi data, which we know had many incorrect or incomplete segmentations.  Again, due to the lack of language experts, we are unable to say whether this holds true for all corpora but this should be explored deeper in future research.
+
+
+\section{Discussion and Conclusions}
+\label{sec:conclusion}
+
+This paper is aimed at smoothing the road to more interdisciplinary work with NLP and linguistics by articulating and examining the results of different research designs. Different research designs arise from different expectations or conventions in the two fields. Although they do not present barriers to mutually beneficial research, different expectations, such as in segmentation strategies, and different workflows, such as joint or separate segmentation/glossing, should not be dismissed when they arise. This paper tests the possible effects of these two differences.
+
+The small difference between surface and canonical segmentation for three of the five languages suggests either strategy is a useful approach with minimal data, although this changes when data is increased in the joint model. Even though surface segmentation increases the number of labels in a dataset, this appears to be balanced by the by the abstract character of canonical morphemes, most noticeably by circumfixes. The fact that the difference almost disappears when the data size is doubled indicates that the question of segmentation strategy can be eliminated by simply annotating more data with whatever strategy suits the project at hand. 
+%This could be done by popularizing segmentation and glossing NLP models in linguistics. 
+However, larger differences on Lamkang and Manipuri corpora indicate that the reasons why segmentation strategies does sometimes differ in performance on the same corpsu should be explored more across other Tibeto-Burman languages. Testing the differences in related languages might indicate whether certain linguistics features influence the results of different segmentation strategy when integrating NLP systems. 
+%Performance on the same segmentation strategy by different machine learning systems might identify the factors that linguists should consider when choosing machine learning systems. 
+
+The consistent improvement of the sequential system over joint learning may be a reason to consider separating segmentation and glossing tasks in order to leverage the higher accuracy of segmentations , and a more completely segmented corpus, when glossing the corpus. 
+%, despite the received wisdom in NLP that joint models tend to outperform separate tasks. 
+%However, This may not be practical during the earliest stages of analysis. 
+%However, the focus of interlinearization changes once an initial analysis is settled upon; the primary goals become uncovering rare structures and increasing available resources. Machine learning is the best way to do both quickly. Also, 
+The strenght of the sequential system might be applied when a corpus cannot be completely segmented and glossed due to budget or time constraints. Instead, a strategy would be to prioritize segmenting and benefit from computational assistance when glossing. 
+%It also implies that other changes in traditional linguistics workflow may come once NLP models are integrated. 
+
+Finally, these studies could serve as a foundation towards more efficient use of computational methods in linguistic analysis and annotation. This paper shows, for example, that the glossing-only model performs well even on inaccurate segmentation predictions and can even ``correct'' manual segmentation errors. The study presented here assumes that the model's segmentation is not corrected by the language experts before training the glossing model. If a human-in-the-loop workflow was introduced to first correct segmentations, then the glossing-only model could improve even more. Such methodological considerations should be tested to see to what extent linguistic analysis and annotation of endangered language might benefit.
+
+%However, the differences between the joint and sequential systems are not great.
+%and other factors hint that linguists should adjust their approach to other things than workflows. 
+Finally, as \citet{mcmillan-major_automating_2020} noted in glossing research, consistency of the annotations has a strong effect on system performance. This is most clearly seen in Lezgi which is known to be particularly noisy. Random strange characters were found at morpheme boundaries (e.g. {\tt *} instead of  {\tt -}). The human annotators frequently segmented one pair of characters whenever it occurred because it matched a frequent suffix. Allomorphs were frequently glossed as if they were different morphemes, undoing the benefit of canonical segmentation. Finally, its unique case-stacking caused confusion both to the human annotator and to the system results, in particular because one morpheme with several semantically-motivated allomorphs is (incorrectly) glossed one way when it stands as a single case marker and glossed another way when it precedes additional case markers.
+%LEzgi: Missing intermedial affixes in case stacking:  \foreignlanguage{russian}{ими -ди -ни имни}
+%Confusing OBL and ERG. They are identical but OBL is tagged in case stacking (fairly consistently). 
+
+So what would happen if linguists emphasized quality over quantity? We can answer this question by comparing Lezgi to Alas. According to the accounts of the linguists involved, and evidenced by our experimental results, the Alas data was annotated much more consistently and meticulously. With a corpus one third the size of the Lezgi corpus, the Alas model performs almost equally well. It is possible but seems unlikely that this is due to differing morphological structure. Unlike Lezgi---which is overwhelmingly suffixing and has fairly limited morphophonological changes---Alas features prefixing, suffixing, circumfixing, and infixing with various morphophonological processes. The main difficulty for the Alas systems was the sparsity of stems, compared to oft-repeated affixes. 
+
+Interestingly, Alas showed the least marked preference between sequential and joint learning. This may indicate that higher consistency may eliminate the need to consider any change to segmentation/glossing workflow, but it should be investigated with further experiments focused on differences in annotation quality. Preferably these experiments would conducted on closely related languages to reduce effects due to different typology. 
+
+When considering low-resource settings, consistency for machine learning seems more important than data size, strategy, or workflow. Ruthless consistency is not something linguists have had reason to put high value on and it is not something to be expected by manual annotation, %although copying features and rule-based parsers in current software tools are helping.\mans{Copying? I don't follow this sentence.} 
+Consistency can be provided by machine learning integration, but ironically, supervised machine learning needs high consistency in annotated data before it can perform accurately enough to assist human annotators by increasing their speed or accuracy. Our best estimate of the accuracy threshold for practical integration of machine learning into annotation is 60\% \citep{felt_improving_2012}. This threshold on F$_1$-scores was soundly passed by Lamkang because it over 18k manually annotated tokens for training but it was barely reached by the corpora with 4.5k-5.5k tokens. However, the meticulously annotated Alas corpus came close to this threshold with only 1.5k training tokens. If linguists wish to successfully integrate machine learning into the documentation and description of underdocumented and endangered languages, then they must adopt from NLP an emphasis on highly consistent annotation.
+
+%\section{Conclusion}
+
+% The results indicate whether linguists should consider adjusting their work to NLP assumptions in order to optimize their efforts. Or whether NLP should consider the reality of working with linguistic resources. If they can expect that IGT data is both segmented and glossed, and not segmented without glosses, then they might want to adjust their experiments to this reality. Now, if a sequential method of first segmenting and then glossing gets better results, then the NLP experiments may take jointly segmented and glossed data and still choose sequential training to produce both. But if joint segmentation and glossing is a better way to leverage low-resource IGT data, then NLP researchers should consider re-framing their experiments in low-resource languages. NLP research should take into consideration real-world situation. Low-resource data is rarely going to be curated and carefully preprocess. There is not a lot of options if the data is not what was expected. NLP needs to be flexible and adapt to the noisy realities.
+
+%NLP has made it possible to achieve more with less. Methods for low-resource languages are improving. These methods are slowing being introduced to linguistics. Some have been applied to language documentation tasks. However, these experiments make assumptions that are not based on a understanding of linguistics methods.
+%Building systems that integrate well with linguistic conventions while also feeding NLP development effectively will undoubtedly require adjustments on both sides, but we should try to minimize those adjustments and optimize our work so that more languages can be documented/described and more communities can have equitable access to language technology. 
+
+%Linguists segment and gloss a word before segmenting another next word.
+%Supervised NLP systems have assumed the two tasks are completed independently. If NLP systems perform better by completing these task separately, then linguists may get optimal benefit by following this workflow. However, it would be better if NLP systems could adjust to the linguist's traditional workflow, if possible. If joint segmentation and glossing performs as well or better than a sequential model, then joint models should be preferred. 
+
+%Linguists prefer canonical segmentation, but may surface segmentation is also used, and may be more common in data processed by Toolbox. 
+%NLP systems will either prefer one, in which case linguists may need to adjust their workflow (e.g. do surface segmentation and glossing first, finish the texts with automated assistance, then return to do canonical segmentation, hopefully automated and presumably with the assistance from completed surface segmentation and glosses), or NLP do prefer one over the other, in which case linguists can integrate segmentation models into their work without adjustment. 
+
+%A key to NLP success in low-resource settings is making the most of whatever resources do exist. It is important that automated segmentation/glossing systems integrate easily into linguists' workflow because, to achieve high accuracy (over 90\%) on limited data, NLP must eventually bring humans back into the loop.
+%Integrating NLP into language documentation will mostly involve active learning. As Palmer et al. (??) showed, active learning must take the annotator into account to be effective. NLP methods should take the annotator/linguist into account in order for those methods to be optimally effective in the long-term. Automated work does not have this constraint if it assumes no active learning scenario. But that limits its usefulness to language documentation. With limited data, machine learning models cannot be expected to achieve very high accuracy. Its mistakes will have to be corrected by an annotator and and efficient combination of manual work and computer algorithm is to leverage those corrections to quickly improve the model with some sort of human-in-the-loop method, such as active learning.

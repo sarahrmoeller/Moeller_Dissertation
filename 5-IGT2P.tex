@@ -1,0 +1,276 @@
+\chapter{IGT2P: From Interlinear Glossed Texts to Paradigms}
+\label{chap:IGT2P}
+
+\section{Introduction}
+%The paradigms allow linguists to learn, generalized, and describe inflection patterns and inflection classes. 
+The typical next step in the language documentation and description workflow following morpheme segmentation and glossing is finding and organizing inflected forms that are attested in the transcribed natural speech. Then, because full paradigms rarely occur in natural speech, complete morphological paradigms are elicited. This can be done by using the inflected forms found in IGT to hypothesize and generate new inflected forms that might complete a lexeme's inflectional paradigm. This chapter describes a task that can speed this process and automatically generate the ``missing'' morphological forms
+
+This task, which we call \textbf{IGT-to-paradigms}\footnote{IGT2P was introduced as a new task by \citet{moeller_igt2p_2020}} (IGT2P), differs from the existing \textit{morphological inflection} \citep{yarowsky-wicentowski-2000-minimally,faruqui-etal-2016-morphological} task in three aspects: (1) inflected forms extracted from IGT are noisier than curated training data for morphological generation, (2) since lemmas are not explicitly identified in IGT, systems cannot be trained on typical lemma-to-form mappings and, instead, must be trained on form-to-form mappings, and (3) part-of-speech (POS) tags are often unavailable in IGT. IGT2P can thus be seen as a noisy version of morphological \textit{re}inflection \citep{cotterell-etal-2016-sigmorphon}, but without explicit POS information. Our experiments show that morphological reinflection systems following preprocessing are strong baselines for this task. 
+
+IGT2P generates entire morphological paradigms from IGT input and can be used to generate new morphological resources for natural language processing systems in low-resource settings. NLP systems that account for morphology can reduce data sparsity caused by an abundance of individual word forms in morphologically rich languages \citep{cotterell-etal-2016-sigmorphon,cotterell-etal-2017-conll,cotterell-etal-2018-conll,mccarthy-etal-2019-sigmorphon,vylomova2020sigmorphon} and help mitigate bias in training data for natural language processing (NLP) systems \citep{zmigrod-etal-2019-counterfactual}. Over the last few years, multiple shared tasks have encouraged the development of systems for learning morphology, including those that generate inflected forms of the canonical form, or lemma, of a lexeme.  However, such systems have often been limited to languages with publicly available structured data, i.e. languages for which complete tables containing inflectional paradigmatic information can be found, for example, in Wiktionary.\footnote{\url{https://www.wiktionary.org}} This limits the development of NLP systems for morphology to those languages for which morphological information can be easily extracted. 
+
+IGT2P instead makes use of a resource which is much more common, especially for low-resource languages:
+we explore how to leverage interlinear glossed text (IGT) to generate unseen forms of inflectional paradigms, as illustrated in Figure \ref{fig:Workflow}. Field IGT has not been used in NLP for various reasons. One reason is the nature of the data itself which is discussed in \ref{sec:issues}. Another reason is the difficulty of bringing the data to the state found in resources such as Wiktionary or Unimorph.\footnote{\url{https://www.unimorph.org}} This chapter explores whether having a language expert spend only a few hours cleaning the noisy IGT data improves the task's performance. 
+
+
+% flowchart IGT to paradigm completion
+\begin{figure}
+    \centering
+    \includegraphics[width=10cm]{figs/IGT-Paradigm-Workflow.png}
+    \caption[IGT2P Overview]{Inflected word forms attested in interlinear glossed texts (IGT) train transformer encoder-decoder to generalize morphological paradigmatic patterns and generate word forms when given known morphosyntatic features of missing paradigm cells. Noisy paradigms are automatically constructed from IGT and a language expert creates ``cleaned'' paradigms. Both sets are tested on the same missing word forms and the results are compared.}
+    \label{fig:Workflow}
+\end{figure}
+
+
+Thus, this chapter asks two related questions: 
+\begin{itemize}
+    \item To what extent can manually interlinearized texts be utilized for computational induction of morphological inflection paradigms? 
+    \item How much does manual cleaning of IGT data by a domain expert improve performance?
+\end{itemize}
+
+The first question is answered using existing morphological reinflection models and documentary and descriptive data and the IGT2P task. IGT2P can solve successfully induce morphological paradigms with $21\%$ to $64\%$ accuracy. The second question is answered by examining which inflection model performs better on noisy and cleaned IGT data. Cleaning the data improves performance across the board with a transformer model by $1.27\%$ to $16.32\%$. 
+
+ 
+\section{Background: Morphological Generation}
+\label{sec:tasks}
+
+An inflectional paradigm is illustrated in tables, such as Table \ref{tab:EngParadigm}. Paradigms can be large; for example, a typical Polish verb table can have 30 more cells while many languages may have hundreds and even up to thousands of forms \citep{corbett_unique_2013}. 
+Here we define the notation related to morphological inflection systems for the remainder of this chapter.
+
+We denote the paradigm of a lemma~$\ell$ as:
+\begin{equation}
+    \pi(\ell) = \left\langle f(\ell, \vec{t}_\gamma)\right\rangle_{\gamma \in \Gamma(\ell)}
+\end{equation}
+
+\noindent where $f : \Sigma^* \times \mathcal{T} \to \Sigma^*$ defines a mapping from a tuple consisting of the lemma and a vector $\vec{t}_\gamma \in \mathcal{T}$ of morphological features to the corresponding inflected form. $\Sigma$ is an alphabet of discrete symbols, i.e., the characters used in the natural language. $\Gamma(\ell)$ is the set of slots in lemma $\ell$'s paradigm. 
+We will abbreviate $f(\ell, \vec{t}_\gamma)$ as $f_{\gamma}(\ell)$ for simplicity. Using this notation, we now describe the most important generation tasks from the computational morphology literature.
+
+
+\paragraph{Morphological inflection.}
+The task of morphological inflection consists of generating unknown inflected forms, given a lemma 
+$\ell$ and a feature vector $\vec{t}_\gamma$. Thus, it corresponds to learning the mapping $f : \Sigma^* \times \mathcal{T} \to \Sigma^*$.
+
+
+\paragraph{Morphological reinflection. }
+Morphological \textit{re}inflection is a generalized version of the previous task. Here, instead of having a lemma as input, system are given some \textit{inflected form}  
+$f(\ell, \vec{t}_{\gamma_1})$ -- optionally together with $\vec{t}_{\gamma_1}$ -- and a target feature vector $\vec{t}_{\gamma_2}$. The goal is then to produce the inflected form $f(\ell, \vec{t}_{\gamma_2})$.
+
+
+\paragraph{Paradigm completion. }
+The task of paradigm completion consists of, given a \textit{partial} paradigm $\pi_P(\ell) = \left\langle f(\ell, \vec{t}_\gamma)\right\rangle_{\gamma \in \Gamma_P(\ell)}$ of a lemma $\ell$, generating all inflected forms for all slots $\gamma \in \Gamma(\ell) - \Gamma_P(\ell)$.
+Training data for this task consists of entire paradigms.
+
+\paragraph{Unsupervised morphological paradigm completion. } For the \textit{unsupervised} version of the paradigm completion task, systems are given a corpus $\mathcal{D}=w_1,\dots,w_{|\mathcal{D}|}$ with a vocabulary $V$ of word types $\{w_i\}$ and a lexicon $\mathcal{L} = \{\ell_j\}$ with $|\mathcal{L}|$~lemmas belonging to the same part of speech. However, no explicit paradigms are observed during training.
+The task of unsupervised morphological paradigm completion then consists of
+generating the paradigms~$\{\pi(\ell)\}_{\ell\in\mathcal{L}}$ of all lemmas $\ell \in \mathcal{L}$.
+
+
+\section{IGT-to-Paradigms (IGT2P)}
+
+The task presented here, IGT-to-paradigms (IGT2P), can be described as the paradigm completion problem above, with an additional step of inference regarding which of the attested forms is associated with which lemma. 
+
+Formally, systems are given IGTs consisting of words with -- potentially empty -- morphological feature vectors: $\mathcal{D}=(w_1,\vec{t}_1) \dots, (w_{|\mathcal{D}|}, \vec{t}_{|\mathcal{D}|})$ and a list $\mathcal{U} = \{u_j\}$ with $|\mathcal{U}|$~inflected words, $u_j = f(\ell_j, \vec{t}_{\gamma_j})$. The goal of IGT2P is to generate the paradigms 
+$\{\pi(\ell_j)\}_{f(\ell_j, \vec{t}_{\gamma_j})\in\mathcal{U}}$.
+
+Similar to  unsupervised paradigm completion, IGT2P does not assume information about the lemma to be explicit. Similar to morphological reinflection, the input includes word forms with features, and a system has to learn to generate inflections from other word forms and morphological feature vectors. 
+%Although While it is not clear or enforced that more than one form is given for any paradigm, 
+IGT2P is further similar to paradigm completion in that we aim at generating \textit{all} inflected forms for each lemma.\footnote{Currently this is approximated during evaluation, since gold standard paradigms do not exist for all the languages/dialects. Also, the list $\mathcal{U}$ consists of words in $\mathcal{D}$, which we exclude from the input.} 
+
+
+\section{Why IGT2P?}
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{rlllll}
+       \textbf{Text}  & Vecherom & ya & pobejala & v & magazin. \\
+      \textbf{Segmented}   & vecher-om & ya & pobeja-la & v & magazin \\
+      \textbf{Glossed} & evening-INS & 1.SG.NOM & run-PFV.PST.SG.FEM & in & store.ACC \\
+      \textbf{Translation} & \multicolumn{5}{l}{`In the evening I ran to the store.'}
+    \end{tabular}
+    \caption[IGT example]{An example of typical interlinear glossed text (IGT) with a transliterated Russian sentence, including translation. IGT2P leverages the original text and gloss lines.}
+    \label{tab:IGT}
+\end{table}
+
+
+Descriptive linguistics aims to objectively analyze primary language data in new languages and publish descriptions of their structure. This work informs our understanding of human language and provides resources for NLP development through academic literature, which informs projects such as UniMorph \citep{kirov_unimorph}, or through crowdsourced effort such as Wiktionary. Yet with most descriptive work performed manually with very little NLP assistance, language resources for thousands of under-described languages remain limited. This includes languages with millions of speakers, such as Manipuri in India.
+
+However, there exists a type of labeled data that is available in nearly all languages where a linguist has undertaken any scientific endeavor: \textit{interlinear glossed texts} (IGT), illustrated in Table \ref{tab:IGT}. They are the output of early steps in a field linguist's pipeline which consist of recording natural speech, transcribing it, and then identifying minimal meaningful units---the morphemes---and using internally consistent tags to label the morphemes' morphosyntactic features. IGTs serve as vital sources of morphological, syntactic, and higher levels of linguistic information. They are often archived in long-term repositories, and openly accessible for non-commercial purposes, yet they are rarely utilized in NLP.
+
+IGT2P has potential benefits for NLP (by increasing available resources in low-resource languages) but also for linguistic inquiry. First, since machine-assistance has been shown to increase speed and accuracy of manual linguistic annotation with just 60\% model accuracy \citep{felt_improving_2012}, such a model could assist the initial analysis of morphological patterns in IGT. Second, by quickly learning morphological patterns from word forms attested in IGT, IGT2P generates forms that fill empty cells in a lemma's paradigm. Since IGTs are unlikely to contain complete paradigms of lemmas, an accompanying step in fieldwork is that of elicitation of inflectional paradigms for selected lemmas. Presenting candidate words to a native speaker for acceptance or rejection is often easier than asking the speaker to grasp the abstract concept of a paradigm and to generate the missing cells in a table. With the help of IGT2P, linguists could use the machine-generated word forms to support this elicitation process. IGT2P then becomes a tool for the discovery of morphological patterns in under-described and endangered languages.
+
+\section{Related Work}
+
+\paragraph{IGT for NLP.} The AGGREGATION project \citep{bender_language_2014} has used IGT to automatically construct \textit{grammars} for multiple languages. This includes inferring and visualizing systems of morphosyntax \citep{lepp_visualizing_2019,wax_automated_2014}. Much of their data comes from the Online Database of INterlinear Text \citep[ODIN]{lewis_developing_2010} which is a collection of IGTs extracted from published linguistic documents on the web. Published IGT excerpts, such as those in ODIN, differ from IGTs produced by field linguists such as those used in our experiments. First, noise is generally removed from the published examples. 
+%selected for publication. 
+Second, the amount of glossed information in published IGT snippets can vary widely depending on the phenomenon that is the main focus of the publication.
+
+\paragraph{Computational morphology.} 
+This work is further related to and takes inspiration from research on the tasks described in Section \ref{sec:tasks}. Most recent work in the area of computational morphology which was concerned with generation (as opposed to analysis) has focused on morphological inflection or reinflection. Approaches include \citet{durrett-denero-2013-supervised,nicolai-etal-2015-inflection,faruqui-etal-2016-morphological,kann-schutze-2016-single,aharoni-goldberg-2017-morphological}. Partially building on these, other research has developed models which are more suitable for low-resource languages and perform well with limited data \citep{kann-etal-2017-one,sharma-etal-2018-iit,makarov-clematide-2018-imitation,wu-cotterell-2019-exact,kann2020learning,wu2020applying}. These are the most relevant approaches for this work, since IGT2P is designed to aid documentation of low-resource languages. 
+%Accordingly, we use the systems by \citet{wu-cotterell-2019-exact} and \citet{wu2020applying} in our experiments.
+
+Work on paradigm completion -- or the \textit{paradigm cell filling problem} (PCFP) \citep{ackerman2009} -- includes
+\citet{malouf_generating_2016}, who trained recurrent neural networks for it, and applied them successfully to Irish, Maltese, and Khaling, among other languages. \citet{silfverberg_encoder-decoder_2018} also trained neural networks for the task.  \citet{kann-etal-2017-neural} differed from other approaches in that they encoded multiple inflected forms of a lemma to provide complementary information for the generation of unknown forms of the same lemma.
+Finally, \citet{cotterell-etal-2017-neural} introduced neural graphical models which completed paradigms based on principal parts.
+The unsupervised version of the paradigm completion task \citep{jin2020unsupervised} has been the subject of a recent shared task \citep{kann2020sigmorphon}, with the conclusion that it is extremely challenging for current state-of-the-art systems. IGT2P, instead of generating paradigms from raw text, generates them from IGT, a resource available for many under-studied languages.
+
+
+\section{Issues specific to IGT}
+\label{sec:issues}
+
+The most notable issue with IGT is the ``noise''. An inevitable cause is the dynamic nature of ongoing linguistic analysis. As the linguist gains a better understanding of the language's structure by doing interlinearization, early decisions about morpheme shapes and glosses differ from later ones. Another cause is that limited budget and time means IGT are often only partially completed. Another source of noise comes when the project is focused on annotating one particular phenomenon. For example, frequently only one morphosyntactic feature in Manipuri was glossed in each word, meaning different inflected forms looked like they had the same morphosyntactic features. Another source of noise is imprecision introduced by human errors or choices made for convenience to speed tedious annotation. One example of imprecision is glossing different stem morphemes with the same English word. For example, Lezgi has several copula verbs which can be narrowly translated as `be in', `be at', etc., but most were merely glossed as `be'. So all copula verbs were initially grouped into one paradigm. A similar situation happened with Arapaho: nuances of meaning were not often distinguished in the glosses; thus, different verb stems are glossed simply as ‘give’, when, in reality they should be divided into ‘hand to someone’ in one case, ‘give as a present’ in another case, and ‘give ceremonially, as an honor’ in third case.
+%Moreover, they don't make a difference between stems linking inanimate subjects and animate subjects. 
+
+Another issue is that IGT annotators do not usually differentiate between different types of morphemes. Thus, we do not always distinguish between them. Derivational and inflectional morphemes were only differentiated where we were able to easily identify and eliminate derivational glosses. For example, in Arapaho we were able to group derived stems into separate paradigms because they were glossed distinctly. Also, clitics are often not distinguished from affixes. This means that the morphological patterns that the models learn are not always, strictly speaking, inflectional paradigms, but it does mean that the models learn all attested forms related one lemma.
+%, to the extent these forms are attested in the annotations and their stems glossed identically.
+
+
+\section{Experimental Approach}
+
+From the IGT corpora described in Chapter \ref{chap:datamodels} this study used Arapaho, Alas, Lezgi, Manipuri, Nat\"ugu, and Tsez.
+As a first step, partial inflectional paradigms were automatically extracted from the IGT. Words were organized into paradigms based on the gloss of the stem morpheme. Then, these stem glosses were removed, leaving only the affix glosses which serve as morphosyntactic feature tags. 
+
+\begin{table}[]
+    \centering
+    %\setlength{\tabcolsep}{5.pt}
+    \begin{tabular}{l|ccccccc}
+       \textbf{Language} & \textbf{paradigms} & \textbf{single-entry} & \textbf{tokens} & \textbf{train} & \textbf{dev} & \textbf{test} & \textbf{unannot}  \\
+       \hline
+       arp clean & 16,857 & 10,857 & 56,644 & 283,714 & \multirow{2}{*}{14,151} & \multirow{2}{*}{14,150} & \multirow{2}{*}{6,877} \\
+       arp noisy & 14,389 & 8,855 & 56,922 & 435,430 & & &  \\
+       % single to multi entry proportion: .644
+       % unannotated to total words proportion: .121
+       %& 14,151  \\
+       \hline
+       btz clean & 247 & 172 & 386 & 354 & \multirow{2}{*}{52}  & \multirow{2}{*}{52} & \multirow{2}{*}{1,106} \\
+       btz noisy & 235 & 150 & 412 & 575 & & & \\
+       \hline
+       ddo clean & 982 & 330 & 7,221 & 35,773 & \multirow{2}{*}{2,173} & \multirow{2}{*}{2,172} & \multirow{2}{*}{9,408} \\
+       ddo noisy & 945 & 295 & 7,315 & 36,875 & & &  \\
+       % single to multi entry proportion: .305
+       % unannotated to total words proportion: 1.302
+       \hline
+       lez clean & 301 & 202 & 543 & 539 & \multirow{2}{*}{88} & \multirow{2}{*}{88} & \multirow{2}{*}{3,054} \\
+       lez noisy & 298 & 188 & 588 & 1,254 &  &  &  \\
+       % single to multi entry proportion: .671
+       % unannotated to total words proportion: 5.624
+       \hline
+       mni clean & 479 & 126 & 2,860 & 9,917 & \multirow{2}{*}{853} & \multirow{2}{*}{852} & \multirow{2}{*}{2,593}\\
+       mni noisy & 428 & 165 & 2,192 & 15,958 &  &  &  \\
+       % single to multi entry proportion: .263
+       % unannotated to total words proportion: .906
+       \hline
+       ntu clean & 316 & 123 & 1,654 & 5,774 & \multirow{2}{*}{473} & \multirow{2}{*}{472} & \multirow{2}{*}{1,661} \\
+       ntu noisy & 365 & 167 & 1,646 & 7,886 &  &  &  \\
+       % single to multi entry proportion: .389
+       % unannotated to total words proportion: 1.004
+     
+    \end{tabular}
+    \caption[IGT2P data]{Data sizes for noisy extracted paradigms and paradigms cleaned by experts. The columns show the total number of inflectional paradigms extracted from the IGT, the number of paradigms with only a single word entry, the number of three-tuples (source, target, features) in the train/validation/test sets before adding unannotated forms and finally the number of additional unannotated and uninflected (unannot) word forms.}
+    \label{tab:IGT2Pdata}
+\end{table}
+
+
+\paragraph{Step 1: Preprocessing paradigms.}
+The automatically extracted paradigms were preprocessed in two ways. The resulting data is publicly available.\footnote{\url{https://github.com/LINGuistLIU/IGT}}
+%\footnote{https://github.com/LINGuistLIU/IGT} 
+In the first preprocessing method, a language domain expert was asked to ``clean'' the automatically extracted paradigms. Example results are in shown Figure \ref{fig:cleaning}. Experts reorganized words into correct inflectional paradigms, for example, by regrouping Lezgi copula verbs. They also completed missing morphosyntatic information; for example, adding PL (plural) or SG (singular) where the nouns were otherwise glossed identically. Finally, they removed any words that are not inflected in the language. This usually included words that are morphologically derived from another part of speech but not inflected. For example, an affix might derive an adverb from a noun root, and if the adverbializing affix was glossed, then the word form would have been extracted automatically, resulting in more noise since it displays derivational morphology and no inflectional morphology. Experts were asked to spend no more than six hours on the cleaning task. 
+
+For the second preprocessing method, the automatically extracted paradigms were surveyed by a non-expert. Since non-experts could not be expected to identify and correct most issues, they simply removed obvious mistakes such as glosses of stem morphemes that were misidentified as affix glosses and word forms with obviously incomplete glosses or ambiguous glosses (due to identical glosses on one or more word forms). For some languages, this cleaning-by-removal made these paradigms smaller than the ``cleaned'' dataset.  
+
+\begin{figure}
+    \centering
+    \includegraphics[width=13cm]{figs/IGT2P-paradigms.pdf}
+    \caption[Noisy to Clean Paradigms]{Lezgi paradigms were automatically constructed from IGT (left columns) and have typos or incorrect paradigms clusters. Experts filtered or corrected these issues, resulting in ``clean'' paradigms (middle). These can be compared with the published description (right column) which includes historic forms that are rarely used today.}
+    \label{fig:cleaning}
+\end{figure}
+
+\paragraph{Step 2: Preparing reinflection data.}
+The typical morphological reinflection data is in tuple format of \texttt{(source form, target form, target features)}. The paradigm data is converted into this format in preparation for reinflection. Table \ref{tab:datainfo} presents the data sizes. 
+
+For each language, the validation and test sets are prepared by using the the expert-cleaned data language in the following way: If the paradigm has more than one form, pick a random form as the source form and select the remaining forms in the paradigm with a probability of 0.3 to be ``unknown'', i.e. to be predicted from the first form. Half of the ``unknown'' data transformed in this way is used for validation and the other half for testing. The validation and test sets for each language is shared across all the experiments conducted for that language.
+
+To prepare the training data from the noisy and clean paradigms, each form is first mapped in the data to itself and add them to the training data. Paradigms with a single entry have only self-to-self mapping. If a paradigm has more than one form, all possible pairs of forms in a paradigm are generated and added to the training data, excluding those that are part of testing or validation set, i.e. ``unknown''.
+ 
+
+\paragraph{Step 3: Reinflection models and experimental setup.}
+This experiment compares two state-of-the-art models for morphological reinflection, the transformer model for character-level transduction \citep{wu2020applying} and the LSTM sequence-to-sequence model with exact hard monotonic attention for character-level transduction \citep{wu-cotterell-2019-exact}. For all the models, the implementation of the SIGMORPHON 2020 shared task 0 baseline was used \citep{vylomova2020sigmorphon},\footnote{\url{https://github.com/shijie-wu/neural-transducer/tree/f1c89f490293f6a89380090bf4d6573f4bfca76f}} and the hyperparameters for this study are the same as the shared task baseline.
+
+After paradigms are extracted and preprocessed, two experiments were conducted to generate ``unknown'' inflected forms. Those experiments were then expanded by two data augmentation techniques. First, all unannotated/uninflected words from the IGT data are added to the training data. When tokens that were either unannotated or uninflected are added, they are self-mapped as source and target forms (exactly as with single-entry paradigms), and their morphosyntactic features are annotated with a special tag: \texttt{XXXX}.  Second, the training data was augmented by generating 10,000 artificial instances with the implementation in the SIGMORPHON 2020 shared task 0 baseline of the data hallucination method proposed by \citep{anastasopoulos-neubig-2019-pushing}. Finally, both additions are combined. These augmentations are intended to overcome data scarcity. 
+
+
+\section{Results}
+\label{sec:IGT2Presults}
+
+All models and techniques were tested on the same held-out set chosen randomly from multi-entry paradigms in each language. Results were compared when trained on the noisy paradigms and on the expertly cleaned paradigms. It was found that the limited involvement of experts always improved results. It was also found the transformer outperformed the LSTM with hard monotonic attention on cleaned data in all instances and on noisy data overall. Comparing results from augmenting the data by artificial and uninflected/unannotated tokens gave varied results. 
+The results are displayed in Table \ref{tab:IGT2Presults}. 
+
+\begin{table}
+    \centering
+    \setlength{\tabcolsep}{8.pt}
+    \begin{tabular}{l|cccc|cccc}
+      \textbf{} & \textbf{T} & \textbf{+aug} & \textbf{+uninfl} & \textbf{+both} & \textbf{mono} &  \textbf{+aug} &
+      \textbf{+uninfl} &
+      \textbf{+both} \\ 
+       \hline
+      arp clean & \textbf{62.08} & 61.39 & 61.58          & 60.78 & 15.93 & 15.75 & 15.58 & 15.94 \\
+      arp noisy & 57.77          & 57.64 & \textit{58.04} & 57.51 & 14.51 & 14.64 & 14.52 & 14.69 \\
+      % diff:   & 4.31           & 3.75  & 3.54           & 3.27 
+      % Relatively small differences. This and ddo were probably most complete and polished data. In fact, can hardly be called field data. Also, the largest ones. The bigger differences in the other datasets show how important this technique is when working with actual field data. It may indicate a point of reduced returns on cleaning time.  
+      \hline
+      btz clean & 7.69 & 3.85 & 1.92 & 1.92 & 1.92 & 5.77 & 1.92 & 1.92  \\
+      btz noisy & 9.62 & 9.62 & \textit{13.46} & 3.85 & 5.77 & 13.46 & 1.92 & \textbf{17.31}  \\
+      % Measured by paradigms roughly same amount of data as Lezgi, but significantly less total tokens. Train data has almost half in clean data and roughly 1/4 of the Lezgi data. Higher proportion of single-entry forms (to tokens - btz clean: 45%, btz noisy: 36%; lez clean: 37%, lez noisy: 32%. to train - 49%, 26; 37%, 15%). More unannotated tokens in comparison to noisy train data. Combined with less data period. So could this mean less repeated roots in paradigms, fewer repeated inflected forms. But probably mostly due to difference in language structure. It is not clear what. Presumably, there are more inflected POS in BTZ and therefore more variability in training data.
+      \hline
+      ddo clean & 65.38 & \textbf{66.53} & 65.19 & 65.42          & 59.9 & 60.87 & 59.53 & 60.64  \\
+      ddo noisy & 63.54 & 63.95          & 62.89 & \textit{64.04} & 59.12 & 58.66 & 57.87 & 57.97 \\
+      %diff:    & 1.84  & 2.58           & 2.30  & 1.48       
+      % Smallest differences. Is the little difference due to the polished state of the data? Or the lack of knowledge of expert?
+      \hline
+      lez clean & 46.59          & 32.95 & 46.59 & \textbf{48.86} & 32.95 & 35.23 & 31.82 & 31.82 \\
+      lez noisy & \textit{35.23} & 29.55 & 32.95 & 27.27          & 30.68 & 28.41 & 20.45 & 31.82 \\
+      % diff:   & 11.36          & 3.40  & 13.64 & 21.59
+      % Biggest range of differences. So weird that both augmentation techniques got worst results in noisy data but best in clean data.
+      \hline
+      mni clean & 30.63 & 30.87         & 31.81 & \textbf{32.04} & 23.24 & 25.7 & 21.95 & 24.77 \\
+      mni noisy & 21.48 & \textit{22.3} & 21.60 & 21.83          & 18.78 & 18.31 & 19.37 & 20.31 \\
+      % def:    & 9.15  & 8.57          & 10.21 & 10.21
+      % Biggest consistent differences. Most changes in cleaned data. 
+      \hline
+      ntu clean & \textbf{53.18} & 46.82 & 49.15 & 48.52          & 29.66 & 33.9 & 28.18 & 33.05 \\
+      ntu noisy & 36.86          & 45.55 & 45.34 & \textit{45.76} & 31.99 & 33.69 & 31.78 & 30.93 \\
+      % def:    & 16.32          & 1.27  & 3.81  & 2.76
+      % Why did the data cleaning in ntu make such a big difference but not with augmentation? Note that augmented data is not cleaned of course. Most cleaning time spent here. This and Arapaho were cleaned by highly expert linguists who spent years on the language. Others were cleaned by linguists who had spent only a few years, in a some cases several months, working on the language. 
+    \end{tabular}
+    \caption[IGT2P Results]{Accuracy percentages of reinflection task for transformer model (T) and the LSTM seq2seq model with exact hard monotonic attention (mono) with/out artificial data augmention (+aug), unannotated/uninflected word forms (+uninfl) and both together. Boldface indicates best result; italics indicate best result on noisy paradigms.}
+    \label{tab:IGT2Presults}
+\end{table}
+
+There is no clear correlation between accuracy and the total number of annotated tokens or training paradigms (see Tables \ref{tab:dissdata} and \ref{tab:IGT2Pdata}). Tsez and Arapaho [arp] achieved over 60\% accuracy and these languages do have more training data (35K and 283K triples, respectively) than the others (less than 10K). However, even though Arapaho has considerably more training data, its accuracy is lower than Tsez. A slight correlation between accuracy and amount of multi-entry paradigms does exist. Languages with a higher proportion of multi-entry paradigms tend to have better results. Fewer single-entry paradigms may indicate more complete paradigm information.
+%because single-entry paradigms are missing forms and this may cause inconsistency during inflection inference. 
+
+Any correlation between results and linguistic factors such as language family or morphological type is uncertain because of the limited number of testing languages. Tsez [ddo] gave best results overall. This could be due to its limited allomorphy and very regular inflection which may explain why its relative Lezgi [lez] perform better than languages with more data. Arapaho's poorer performance could be due to its polysynthetic morphology \citep{cowell_arapaho_2008} which is more complex than the fairly straightforward agglutination in Tsez \citep{job_tsez_1994} and Lezgi \citep{haspelmath_grammar_1993}. The models do seem less sensitive in recognizing the word structure in Arapaho. When the front part of a stem is incidentally the same as a common inflection affix, the stem is often generated incorrectly.
+
+%of some certain words: For example, without enough training data, the model will divide the stem when its front part is incidentally the same as one of the common inflection affix. This will result in the mis-spelling of stem. 
+%On the other hand, Arapaho [arp] has relatively clean annotations but its morphological patterns are much more complex. %However,  This is undoubtedly due to the varying quality of IGT annotations and to the differing morphological structures of the languages. 
+
+The factor that seems most clearly correlated with accuracy is the consistency and thoroughness of IGT annotations. The Arapaho, Tsez, and  Nat\"ugu [ntu] corpora were noticeably more complete (i.e. most morphemes were glossed) and polished. This probably explains why Tsez not only had the best results but also showed the smallest improvements after cleaning. Interestingly, augmentation techniques also helped these languages the least (only artificial data augmentation helped Tsez slightly). It seems, therefore, that results are highest and data augmentation is most helpful when original manual annotations are least consistent or complete. 
+
+% error analysis
+As might be expected with limited data, errors were most common with irregular or rare forms. For example, the best performing model incorrectly inflected many Lezgi pronouns which have an inflection pattern identical to nouns except for a unpredictable change in the stem vowel. Perhaps related to this, the model also misidentified some epenthetic vowels in several Lezgi nouns. Another interesting pattern involved unique Nakh-Daghestanian (Tsez and Lezgi) case-stacking, where nominal affixes concatenate, rather than substitute each other, to form several peripheral cases such as \textsc{superelative} or \textsc{postdirective}. The more common affixes in the concatenation string were often generated correctly but the less common concatenated affixes were not. Allomorphy also causes difficulty. Models struggle generating the right form when multiple forms are possible. For example, in Arapaho the third person singular inflection has variations (e.g. -oo, -o, or -'). On the other hand, models learned regular inflectional patterns well enough to correctly inflect forms even where the expert had left misspellings of that form in the clean data.
+
+%expert cleaning
+Finally, we clearly see expert cleaning improved performance across the board (with two negligible exceptions for Tsez and Lezgi on the hard monotonic attention model). Experts were asked to spend no more than six hours and actually spent up to seven but as little as two hours on each language. This indicates that expert labor is well worth its ``cost''. 
+
+
+\section{Conclusion}
+
+We proposed a new morphological generation task called IGT2P, which aims to learn inflectional paradigmatic patterns from interlinear gloss texts (IGT) produced in linguistics fieldwork. We experimented with neural models that have been used for morphological reinflection and new preprocessing steps as baselines for the task. Our experiments show that IGT2P is a promising method for creating new morphological resources in a wide range of low-resource languages. 
+
+With sufficient IGT annotations, IGT2P obtains reasonable performance from noisy data. 
+We investigated the effect of manual cleaning on model performance and showed that even very limited cleaning effort (2-7 hours) drastically improves results. The inherent noisiness in IGT and other linguistic field data can be overcome with limited input from domain experts. This is a significant contribution considering the extensive effort---on the order of months and years---to produce the curated structured data normally used to train NLP models. 
+In languages with the noisiest data performance is improved even further by data augmentation techniques.
+Finally, since field data does not often include POS annotation, we investigated the usefulness of POS tags for morphological reinflection and find that, surprisingly and in contrast to common assumptions, they are not beneficial to recent state-of-the-art systems. This is a useful discovery for researchers who wish to optimize their inflection systems. 
+
+There is room for future improvement. Better techniques for further cleaning might be useful since accuracy seems to have close related to data quality. However, at some point more cleaning will return less improvement. Upper bounds could be established by comparing results on languages with gold standard inflection tables, although polysynthetic languages like Arapaho would make this difficult since their tables do not always include noun incorporation. Better use of experts' time might involve identification of lemmata that could be used to train a lemma-to-form model, rather than the form-to-form mapping used here. Another approach would be to compare improvements between manual-only cleaning and cleaning done by a linguist working with someone who can write scripts to automatically correct repeated patterns of noise. 
+
+IGT2P also has implications for the documentation of endangered languages and addressing digital inequity of speakers of marginalized languages. It could be integrated into linguists’ workflow in order to improve the study of inflection and increase IGT data. For example, the generated inflected forms could be used for automated glossing of raw text. IGT2P could speed the discovery and description of a language's entire morphological structure. An elicitation step with native speakers could be added to strategically augment data. This would integrate well with linguists’ workflow. IGT2P results could serve as to prompt speakers for forms that are rare in natural speech. It might also be integrated into linguistic software such as FLEx. 

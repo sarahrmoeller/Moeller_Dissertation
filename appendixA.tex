@@ -1,0 +1,62 @@
+\chapter{Details of IGT2P} 
+\label{sec:appendix}
+
+\OnePageChapter
+
+%\begin{table}[!htbp]
+%    \centering
+%    \begin{tabular}{l|cc|cc|cc|cc|cc|cc}
+%    \hline
+%        & \multicolumn{6}{c|}{\textbf{transformer model (\%)}} & \multicolumn{6}{|c}{\textbf{Exact hard mono model (\%)}} \\
+%        \cline{2-13}
+%        & \multicolumn{2}{|c|}{\textbf{High}} & \multicolumn{2}{|c|}{\textbf{Medium}} & \multicolumn{2}{|c|}{\textbf{Low}} & \multicolumn{2}{|c|}{\textbf{High}} & \multicolumn{2}{|c|}{\textbf{Medium}} & \multicolumn{2}{|c}{\textbf{Low}} \\
+%        \cline{2-13}
+%       \textbf{Language} & \textbf{+} & \textbf{-} & \textbf{+} & \textbf{-} & \textbf{+} & \textbf{-} & \textbf{+} & \textbf{-} & \textbf{+} & \textbf{-} & \textbf{+} & \textbf{-} \\
+%       \hline
+%      Adyghe & 99.9 & 99.9 & 93.1 & 93.4 & 43.2 & 41.5 & 99.9 & 99.7 & 91.4 & 91.7 & 32.5 & 33 \\
+%      Arabic & 95 & 95.1 & 79.5 & 79.5 & 2 & 2.5 & 92.5 & 93 & 66.8 & 65.6 & 0 & 0 \\
+%      Basque & 99 & 99.2 & 93.7 & 93.7 & 24.1 & 26.9 & 98.5 & 98.8 & 73.7 & 71.6 & 0.1 & 0.5 \\
+%      Finnish & 95.7 & 95.1 & 78.9 & 79.4 & 0.3 & 0.1 & 93.1 & 93.8 & 58.6 & 54.2 & 0 & 0 \\
+%      German & 91.1 & 90.5 & 73.3 & 73.9 & 3.8 & 5.4 & 90 & 90.1 & 71.2 & 71.2 & 2.9 & 3.6 \\
+%      Persian & 100 & 100 & 93.2 & 94.7 & 12.1 & 12.3 & 99.7 & 100 & 87.4 & 88.3 & 2.8 & 1.6 \\
+%      Russian & 93.3 & 93.2 & 80.9 & 79.6 & 2.2 & 2.6 & 92 & 92 & 68.7 & 69.3 & 0 & 0.9 \\
+%      Spanish & 97.8 & 97.9 & 90.3 & 89.4 & 8 & 7.3 & 97.5 & 96.5 & 77.8 & 73.6 & 6.2 & 6.5 \\
+%      Swahili & 100 & 100 & 94 & 94 & 35 & 35 & 100 & 100 & 88 & 85 & 3 & 2 \\
+%      Turkish & 98.4 & 98.6 & 88.7 & 88.7 & 6.7 & 5.2 & 97.3 & 97.1 & 74.7 & 71.5 & 0 & 0.1 \\
+%      \hline
+%    \end{tabular}
+%   \caption[Detailed Results for SIGMORPHON POS experiments]{\textbf{Detailed Results for SIGMORPHON POS experiments.} Morphological inflection accuracy (\%) for languages using (+) and not using (-) POS for the transformer model and the LSTM seq2seq model with exact hard monotonic attention in different training data size settings. \textit{+pos} is including POS in the feature descriptions and \textit{-pos} is excluding POS in the feature descriptions.}
+%    \label{tab:pos-acc-detail}
+%\end{table}
+
+
+\begin{table}[h]
+\centering
+%\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{l | rrrr | rrrr }
+\hline
+\textbf{} & \textbf{Transf} & \textbf{+aug} & \textbf{+uninfl} & \textbf{+both} & \textbf{mono} &  \textbf{+aug} &
+      \textbf{+uninfl} &
+      \textbf{+both} \\ 
+\hline
+arp clean & 10:55:55 & 11:46:45 & 14:55:17 & 9:51:25 & 2:02:02 & 2:15:51 & 3:00:02 & 2:14:14 \\
+
+arp noisy & 6:36:37 & 6:18:37 & 10:16:38 & 6:42:19 & 2:42:41 & 2:46:29 & 4:03:22 & 3:14:27 \\
+\hline
+ddo clean & 1:54:09 & 1:57:28 & 3:57:43 & 3:58:00 & 0:09:56 & 0:10:42 & 0:18:54 & 0:15:04 \\
+ddo noisy & 1:51:07 & 1:56:24 & 3:23:37 & 3:47:12 & 0:08:34 & 0:10:59 & 0:20:54 & 0:19:41 \\
+\hline
+lez clean & 0:29:05 & 0:37:26 & 1:03:58 & 1:02:38 & 0:00:20 & 0:01:53 & 0:02:02 & 0:04:21 \\
+lez noisy & 0:32:02 & 0:37:22 & 0:56:55 & 0:59:00 & 0:00:29 & 0:01:40 & 0:01:52 & 0:02:27 \\
+\hline
+mni clean & 1:15:06 & 1:16:19 & 2:12:52 & 2:05:02 & 0:03:56 & 0:04:42 & 0:08:17 & 0:10:11 \\
+mni noisy & 1:16:59 & 1:18:55 & 2:13:06 & 2:14:21 & 0:04:32 & 0:08:41 & 0:07:20 & 0:08:09 \\
+\hline
+ntu clean & 1:09:01 & 0:58:37 & 1:28:45 & 1:29:39 & 0:02:19 & 0:03:34 & 0:02:40 & 0:05:53 \\
+ntu noisy & 1:00:25 & 1:01:40 & 1:36:53 & 1:38:05 & 0:02:22 & 0:03:59 & 0:03:08 & 0:05:09 \\
+\hline
+\end{tabular}
+\caption[Details on IGT2P Computing.]{\textbf{Details on Computing.} Training time of our models. All models have been trained on an NVIDIA GP102 [TITAN Xp] GPU.}
+\label{tab:topic_eval}
+\end{table}

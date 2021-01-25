@@ -1,0 +1,138 @@
+\documentclass[defaultstyle,11pt]{thesis}
+
+\usepackage{amssymb}		% to get all AMS symbols
+\usepackage{graphicx}		% to insert figures
+\usepackage{hyperref}		% PDF hyperreferences??
+
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{expex}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{color, colortbl}
+\definecolor{Gray}{gray}{0.1}
+\usepackage{natbib} % to use Coling style citations
+
+%\usepackage{epstopdf}
+%\usepackage[koi8-ru,latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A,T1]{fontenc}
+\usepackage[russian,english]{babel}
+
+
+%%%%%%%%%%%%%%% TO DO NOTES %%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{todonotes}
+
+\newcommand{\note}[4][]{\todo[author=#2,color=#3,size=\scriptsize,fancyline,caption={},#1]{#4}} % default note settings, used by macros below.
+\newcommand{\mans}[2][]{\note[#1]{mans}{lightblue!40}{#2}}
+\newcommand{\Mans}[2][]{\mans[inline,#1]{#2}\noindentaftertodo}
+
+
+%%%%%%%%%%%%   All the preamble material:   %%%%%%%%%%%%
+
+\title{Integrating Machine Learning into Language Documentation and Description}
+
+\author{Sarah}{Moeller}
+
+\otherdegrees{B.A., Thomas Edison State College, 2002 \\
+	      M.A., Dallas International University, 2010 \\
+	      M.A., University of Colorado, 2020}
+
+\degree{Doctor of Philosophy}		%  #1 {long descr.}
+	{Ph.D., Linguistics and Cognitive Science}		%  #2 {short descr.}
+
+\dept{Department of}			%  #1 {designation}
+	{Linguistics and Institute of Cognitive Science}		%  #2 {name}
+
+\advisor{Dr.}				%  #1 {title}
+	{Mans Hulden}			%  #2 {name}
+
+\reader{Dr. Martha Palmer}		%  2nd person to sign thesis
+\readerThree{Dr. Andrew Cowell}		%  3rd person to sign thesis
+
+%\readerFour{Dr. Alexis Palmer}	
+
+%\readerFive{Dr. Katharina Kann}	
+
+\abstract{  \OnePageChapter	% because it is very short
+
+Any attempt to integrate NLP systems to the study of endangered languages must take into consideration traditional approaches by both NLP and linguistics. This paper tests different strategies and workflows for morpheme segmentation and glossing that may affect the potential to integrate machine learning. Two experiments train Transformer models on documentary corpora from five under-documented languages. In one experiment, a model learns segmentation and glossing as a joint step and another model learns the tasks into two sequential steps. We find the sequential approach yields somewhat better results.
+%, indicating that linguist should perhaps adjust their traditional approach. 
+In a second experiment, one model is trained on surface segmented data, where strings of texts have been simply divided at morpheme boundaries. Another model is trained on canonically segmented data, the approach preferred by linguists, where abstract, underlying forms are represented. We find no clear advantage to either segmentation strategy and note that the difference between them disappears as training data increases. On average the models achieve more than a 0.5 F$_1$-score, with the best models scoring 0.6 or above. An analysis of errors leads us to conclude consistency during manual segmentation and glossing may facilitate higher scores from automatic evaluation but in reality the scores may be lowered when evaluated against original data because instances of annotator error in the original data are ``corrected'' by the model.
+
+
+An intermediate step in the linguistic analysis of an under-documented language 
+is to find and organize inflected forms that are attested in natural speech. 
+From this data, linguists generate unseen inflected word forms in order to test hypotheses about the language's inflectional patterns and to complete inflectional paradigm tables. To get the data linguists spend many hours manually creating interlinear glossed texts (IGTs). We introduce a new task that speeds this process and automatically generates new morphological resources for natural language processing systems: IGT-to-paradigms (IGT2P). 
+IGT2P generates entire morphological paradigms from IGT input.
+We show that existing morphological reinflection models can 
+solve the task with $21\%$ to $64\%$ accuracy, depending on the language. 
+We further find that (i) having a language expert spend only a few hours cleaning the noisy IGT data improves performance by as much as 21 percentage points, and (ii) POS tags, which are generally considered a necessary part of NLP morphological reinflection input, have no effect on the accuracy of the models considered here.
+	}
+
+\dedication[Dedication]{	% NEVER use \OnePageChapter here.
+		To my parents who nodded and said, ``Go for it!"
+	}
+
+\acknowledgements{	\OnePageChapter	% *MUST* BE ONLY ONE PAGE!
+    
+    I could not have completed this research on the scale that I did or in the timeframe that I did without generous financial support. The research reported in this dissertation was supported by the Institute of Cognitive Science (ICS) and the Center for the Advancement of Teaching in Social Sciences (CARTSS) at CU Boulder and by International Language and Development (ILAD). I owe a big thank you to Daniel Wilson who connected me with the ILAD--a wonderful and innovative organization. 
+    
+    I was able to complete this work thanks to the support and encouragement of a good many people. First is my PhD advisor Mans Hulden who contributed much more to my success than just comments and suggestions on the papers, and lots and lots of exciting ideas for research. As an advisor he provided a excellent balance of expectations and independence. Despite his workload he never hurries through our meetings and I know that his publishing mentorship has made me an object of envy by some other PhD students.
+    
+    Each member of my committee contributed something to this completed manuscript. Martha's contribution goes far beyond this work including the financial support, broad experience, and encouragement that I received working in her lab. She also reviewed grant applications and gave simple, practical advice in my first year that made this journey easier. Andy's keen interest in computational methods for minority languages has been a great example of cross-disciplinary research and lifelong learning. Alexis has shown the spirit of a true teacher and mentor since we crossed paths in Portugal and has been generous with her time, also with letting me ask the odd (in both senses) question about career progress in academia. Without Katharina's insightful questions and pursuit of excellence, I'm not sure the IGT2P and POS chapters would have come to existence.
+		
+    In addition to Mans and Katharina, the quality of this work owes much the other co-authors of the published chapters. Ling Liu was always ready to try another project even in the middle of her own dissertation progress and always made the papers better. I am so glad Changbing Yang kept asking for opportunities to be involved and I wish her the best as she starts her PhD career. 
+    
+    Without the linguists, fieldworkers, and annotators who prepared the field data, this work would not have been possible. Drs. Brenda Boerger, Shobhana Chelliah, Bernard Comrie, and Andy Cowell, as well as Chuck Donet, and Andrew Brumleve generously shared their field data. Yaghut added Lezgi annotations. Mary Burke, Drs. Boerger and Cowell, and Andrew Brumleve did the expert cleaning of data for the IGT2P experiments. My undergraduate research assistants Zachary J. Ryan and Huilin Lin preprocessed and reformatted the data.
+    
+    In addition to those mentioned above, I am so grateful for colleagues at CU Boulder who made themselves available to discuss research and brainstorm ideas for challenges that arose in the process: Kristin, Katie, Annebeth, Irina, and of course my ever encouraging and upbeat cohort-mate Norielle. 
+    
+    A big reason I considered a PhD and a career in academia in the first place was the example set by Paul Kroeger, my MA advisor, and Michael Boutin, the head of the Linguistics Department at Dallas International University. It wasn't just their academic guidance that inspired me. I want to give others what they gave to me: the feeling, every time I entered their offices, that they had nothing more important in their overworked life than to answer my ill-formed questions and listen to my rambling thoughts. Several other people at DIU encouraged me to head down this road. Brenda Boerger and Will Reiman are wonderful mentors and faithful friends whose Skype pings meant so much during the first and hardest years of the PhD.
+    
+	I owe them the most to my family who never let me doubt myself. They actually seem convinced everything I do is interesting and important, when what they do is so interesting and meaningful. I am obliged to my 16 nephews and nieces who kept me grounded by telling me %``You are weird!" and 
+	"But you MUST know the answer to my question, because you are almost-a-doctor!"
+	}
+
+% \IRBprotocol{E927F29.001X}	% optional!
+
+\ToCisShort	% use this only for 1-page Table of Contents
+
+\LoFisShort	% use this only for 1-page Table of Figures
+% \emptyLoF	% use this if there is no List of Figures
+
+\LoTisShort	% use this only for 1-page Table of Tables
+% \emptyLoT	% use this if there is no List of Tables
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%       BEGIN DOCUMENT...         %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\input macros.tex
+\input 1-Intro.tex
+\input 2-Litreview.tex
+\input 3-DataModels.tex
+\input 4-SegGloss.tex
+\input 5-IGT2P.tex
+\input 6-POS.tex
+\input 7-Conclusion.tex
+
+%%%%%%%%%   then the Bibliography, if any   %%%%%%%%%
+%\bibliographystyle{plain}	% or "siam", or "alpha", etc.
+%\nocite{*}		% list all refs in database, cited or not
+%\bibliography{refs}		% Bib database in "refs.bib"
+
+%%%%%%%%%%%%%%%% COLING STYLE %%%%%%%%%%%%%%%%%%%
+\bibliographystyle{acl_natbib_nourl}
+\bibliography{refs,SegGloss,IGT2P,POS}
+
+%%%%%%%%%   then the Appendices, if any   %%%%%%%%%
+\appendix
+\input appendixA.tex
+%\input appendixB.tex
+
+
+\end{document}
+
