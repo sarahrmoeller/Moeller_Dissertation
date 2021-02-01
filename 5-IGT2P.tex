@@ -100,7 +100,8 @@ IGT2P has potential benefits for NLP (by increasing available resources in low-r
 
 \section{Related Work}
 
-\paragraph{IGT for NLP.} The AGGREGATION project \citep{bender_language_2014} has used IGT to automatically construct \textit{grammars} for multiple languages. This includes inferring and visualizing systems of morphosyntax \citep{lepp_visualizing_2019,wax_automated_2014}. Much of their data comes from the Online Database of INterlinear Text \citep[ODIN]{lewis_developing_2010} which is a collection of IGTs extracted from published linguistic documents on the web. Published IGT excerpts, such as those in ODIN, differ from IGTs produced by field linguists such as those used in our experiments. First, noise is generally removed from the published examples. 
+\paragraph{IGT for NLP.} 
+The AGGREGATION project \citep{bender_language_2014} has used IGT to automatically construct \textit{grammars} for multiple languages. This includes inferring and visualizing systems of morphosyntax \citep{lepp_visualizing_2019,wax_automated_2014}. Much of their data comes from the Online Database of INterlinear Text \citep[ODIN]{lewis_developing_2010} which is a collection of IGTs extracted from published linguistic documents on the web. Published IGT excerpts, such as those in ODIN, differ from IGTs produced by field linguists such as those used in our experiments. First, noise is generally removed from the published examples. 
 %selected for publication. 
 Second, the amount of glossed information in published IGT snippets can vary widely depending on the phenomenon that is the main focus of the publication.
 
@@ -185,7 +186,7 @@ For the second preprocessing method, the automatically extracted paradigms were 
 \end{figure}
 
 \paragraph{Step 2: Preparing reinflection data.}
-The typical morphological reinflection data is in tuple format of \texttt{(source form, target form, target features)}. The paradigm data is converted into this format in preparation for reinflection. Table \ref{tab:datainfo} presents the data sizes. 
+The typical morphological reinflection data is in tuple format of \texttt{(source form, target form, target features)}. The paradigm data is converted into this format in preparation for reinflection. Table \ref{tab:datainfo} presents the data sizes.\footnote{Inflection data available at: \url{https://github.com/LINGuistLIU/IGT}} 
 
 For each language, the validation and test sets are prepared by using the the expert-cleaned data language in the following way: If the paradigm has more than one form, pick a random form as the source form and select the remaining forms in the paradigm with a probability of 0.3 to be ``unknown'', i.e. to be predicted from the first form. Half of the ``unknown'' data transformed in this way is used for validation and the other half for testing. The validation and test sets for each language is shared across all the experiments conducted for that language.
 

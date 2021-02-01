@@ -148,7 +148,6 @@ Data augmentation can be done with artificial word forms \citep{liu_morphologica
 \end{center}
 \end{figure}
 
-
 \section{Morphological Analysis}
 
 Morphological analysis is a key activity in language documentation and description. This is the study of word-building properties and their accompanying (morpho-)syntactic phenomena. Historically, computational linguists and ``paper-and-pencil linguists'' have taken sometimes seemingly incompatible approaches to morphology \citep{sproat_1992,karttunen_2005}. Yet, despite their out-of-sync approaches, both computational linguistics and ``traditional'' linguistics benefit from the analysis of a language's morphology \citep{cotterell_labeled_2015}. Morphological analysis is particularly important when working with morphologically complex languages.  Languages that build words from multiple morphemes or via significant morphophonological changes produce a high number of inflected and compound words which appear to the machine as brand new, unrelated words \citep{dreyer_discovering_2011,goldsmith_computational_2017,hammarstrom_unsupervised_2011,kann_neural_2016,ruokolainen_supervised_2013}. These include agglutinating morphologies (common in central and north Asia, South America, central and southern Africa, Australia), polysynthetic (North America, the Far East of Russia), or non-concatenative (north Africa and the Middle East, southeast Asia). NLP systems that account for morphology can reduce data sparsity caused by an abundance of individual word forms \citep{mccarthy-etal-2019-sigmorphon,vylomova2020sigmorphon} and help mitigate bias in training data for natural language processing (NLP) systems \citep{zmigrod-etal-2019-counterfactual}. Such systems have often been limited to languages with publicly available structured data, i.e. languages for which tables containing inflectional patterns can be found, for example, in online dictionaries like Wiktionary.\footnote{\url{https://www.wiktionary.org}} Unfortunately, this is not available for many of the world's languages. The proposed research will leverage unstructured data produced by documentary and descriptive field projects.
@@ -256,3 +255,16 @@ The second principle is that ``in any given corpus, a particular lexeme will lik
     \label{tab:EngParadigm}
     \end{center}
 \end{table}
+
+
+\section{POS Tagging in Computational Morphology}
+\label{sec:POSlitreview}
+
+Parts of speech (POS), also known as word classes or lexical categories, communicate information about a word, its morphological structure and inflectional paradigm, and its potential grammatical role in a clause. POS tagging is a well-studied problem in NLP. Work on POS tagging has led to the development of several related resources in NLP and linguistics including numerous methods for automatic tagging (e.g. \citet{kupiec_robust_1992,toutanova_bayesian_2008}) as well as tag sets. The most popular tag set for English was developed by the Penn Treebank Project \cite{taylor_penn_2003}. A universal POS tag set was proposed by \cite{petrov_universal_2012} and has been widely adopted. It closely follows traditional linguistic conventions for common lexical categories as can be seen by comparing to the the Leipzig Glossing Rules \citep{leipzig_2008} which also has recommended tags for less common categories.
+
+%\paragraph{Morpheme Segmentation and Glossing.}
+%Many NLP models have been applied to automated segmentation and glossing of low-resource languages, but they often tackle just one of the two tasks. Automatic morpheme segmentation was introduced by \citet{harris_phoneme_1970} and much early segmentation research implemented unsupervised learning \cite{goldsmith_unsupervised_2001,creutz_unsupervised_2002,poon_unsupervised_2009}. Supervised models depend on annotated data that is provided by linguists. Published linguistic descriptive data is used usually after some preprocessing. 
+%\citet{moeller_automatic_2018} trained a joint segmentation and glossing system on Lezgi using field data.
+Work in computational morphology for low-resource languages often make the assumption that other interlinear information is available and POS tags are a frequent example of this assumption. For example, 
+%\citet{mcmillan-major_automating_2020} trained a conditional random field (CRF) model to produce a gloss line for several high-resource languages and three low-resource languages. The low-resource language data came from interlinearized data that was polished for publication. 
+\citet{mcmillan-major_automating_2020} and other experiments such as \citet{samardzic_automatic_2015} assumed information from lines of interlinearized texts such as translation and POS tags. This assumption is also visible in work on morphological inflection paradigm learning or reinflection, such as in the universal presence of POS tags in work developed as part of the SIGMORPHON Shared Tasks. 

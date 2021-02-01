@@ -225,9 +225,11 @@ p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_
     \label{fig:SVM}
 \end{figure}
 
-\paragraph{Transformer.} The proposed research will use the neural transformer model \citep{vaswani_attention_2017} in all three studies. Transformers have achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 
+\paragraph{Transformer.} 
+The proposed research will use the neural transformer model \citep{vaswani_attention_2017} in all three studies. Transformers have achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 
 %Like most neural models, the transformer’s main drawback in low-resource settings is its sensitivity to hyper-parameters.
-The proposed research will use the parameters of the fairseq \citep{ott2019fairseq} implementation that have been successful for NLP in low-resource settings \citep{wu2020applying}.
+The proposed research will use the parameters of the Fairseq toolkit \citep{ott2019fairseq} implementation\footnote{\url{https://fairseq.readthedocs.io/en/latest/}}.
+For reinflection tasks, \citep{wu_applying_2020} that have been successful with character-level transduction  for morphology learning in low-resource settings
 
 %The standard Transformer encoder consists of identical layers, each of which has a multi-headed self-attention layer, and  one feed-forward layer. A residual connection is around two sub-layers, followed by layer normalization.
 
