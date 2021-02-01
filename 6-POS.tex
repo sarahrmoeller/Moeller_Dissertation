@@ -76,11 +76,7 @@ As a baseline for the impact of POS tags on morphological reinflection task the 
 \paragraph{IGT Data.}
 Table \ref{tab:IGTPOSdata} describes the IGT corpora that were selected for this experiment. Only the tokens that were segmented, glossed, and POS-tagged could be used. For the reinflection task, the data was further limited to inflected forms and the corpora that were used in Chapter \ref{chap:IGT2P}. Both noisy and clean versions of the inflection data were used.
 
-%The POS tags available in the corpora are listed in \ref{tab:IGTPOStags}.
-It is worth emphasizing that the Lamkang (used only for the segmentation and glossing study), Manipuri, and Nat\"ugu corpora are the result of many years of work and these extended projects eventually led to a greater proportion of the corpora being POS-tagged. The Arapaho and Tsez corpora, which are large and almost completely segmented/glossed, could not be used for this study because no word-level lexical categories had been tagged. The Lezgi project had POS tags at such an early stage only because the original research was focused on verb tenses \citep{donet_importance_2014}, so POS tagging was done in order to identify the verbs. The smaller Alas corpus has POS tags because they were added specifically for this research, as were many POS tags in the Lezgi corpus.
-
-
-\begin{table}[h!]
+\begin{table}[h!tb]
     \centering
     \begin{tabular}{l|c|c|p{0.55\linewidth}}
          \textbf{Language} & \textbf{Tokens}  & \textbf{Inflected} & \textbf{POS tag}\\
@@ -101,11 +97,19 @@ It is worth emphasizing that the Lamkang (used only for the segmentation and glo
 \end{table}
 
 
+%The POS tags available in the corpora are listed in \ref{tab:IGTPOStags}.
+It is worth emphasizing that the Lamkang (used only for the segmentation and glossing study), Manipuri, and Nat\"ugu corpora are the result of many years of work and these extended projects eventually led to a greater proportion of the corpora being POS-tagged. The Arapaho and Tsez corpora, which are large and almost completely segmented/glossed, could not be used for this study because no word-level lexical categories had been tagged. The Lezgi project had POS tags at such an early stage only because the original research was focused on verb tenses \citep{donet_importance_2014}, so POS tagging was done in order to identify the verbs. The smaller Alas corpus has POS tags because they were added specifically for this research, as were many POS tags in the Lezgi corpus.
+
+
 %\paragraph{Preprocessing Data.}
 %First POS tag used for a word is added. Noisy IGT data may have several POS tags for a word.
 %SIGMORPHON data only has inflected words. IGT data includes all words. 
 %`~~~' and unk is used for untagged words. Not included
 
+
+\section{Models}
+
+For simple comparisons, a single neural model architecture was chosen for both tasks. The tasks were trained with the Transformer \citep{vaswani_attention_2017}, a state-of-the-art neural model architecture for morphological tasks \citep{vylomova-etal-2020-sigmorphon}, using the implementation of the Transformer model in the Fairseq toolkit \cite{ott_fairseq_2019}\footnote{\url{https://fairseq.readthedocs.io/en/latest/}} with character-level transduction \citep{wu_applying_2020} for morphology learning in low-resource settings. Following \citep{wu_applying_2020}, the parameters employed were $N=4$ layers for the encoder and the decoder, each with 4 self-attention heads. The embedding size for the encoder and decoder is 256, and the hidden layer size is 1024. A dropout rate of 0.3 for encoding and beam search with a width of 5 at decoding time was used. The adam algorithm \citep{kingma2014adam} ($\beta_1 = 0.9$, $\beta_2 = 0.98$) was used to optimize the cross entropy loss with label smoothing \citep{szegedy2016rethinking} of 0.1. All models were trained on an NVIDIA GP102 [TITAN Xp] GPU for 10k maximum updates with a batch size of 400.
 
 \section{POS for Segmentation and Glossing}
 \label{sec:seggls}
