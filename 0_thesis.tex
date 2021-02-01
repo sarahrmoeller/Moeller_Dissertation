@@ -12,6 +12,7 @@
 \usepackage{color, colortbl}
 \definecolor{Gray}{gray}{0.1}
 \usepackage{natbib} % to use Coling style citations
+\usepackage{comment}
 
 %\usepackage{epstopdf}
 %\usepackage[koi8-ru,latin1]{inputenc}
@@ -68,6 +69,10 @@ IGT2P generates entire morphological paradigms from IGT input.
 We show that existing morphological reinflection models can 
 solve the task with $21\%$ to $64\%$ accuracy, depending on the language. 
 We further find that (i) having a language expert spend only a few hours cleaning the noisy IGT data improves performance by as much as 21 percentage points, and (ii) POS tags, which are generally considered a necessary part of NLP morphological reinflection input, have no effect on the accuracy of the models considered here.
+
+
+Part-of-Speech (POS) tags routinely appear as features in morphological tasks. POS taggers are often one of the first NLP tools developed for low-resource languages. However, as NLP expands to new languages it cannot assume that POS tags will be available to train a POS tagger. This paper empirically examines the impact of POS tags on two morphological tasks with the Transformer architecture. Each task is run twice, once with and once without POS tags, on otherwise identical data from ten well-described languages and five under-documented languages. We find that the presence or absence of POS tags does not have a significant bearing on the performance of either task. In joint segmentation and glossing, the largest average difference is an .09 improvement in F$_1$-scores by removing POS tags. In reinflection, the greatest average difference is 1.2\% in accuracy for published data and 5\% for unpublished data. These results are indicators that NLP may benefit from documentary linguistic data even when a POS tag set does exist for a language yet, and \textit{vice versa}.
+  
 	}
 
 \dedication[Dedication]{	% NEVER use \OnePageChapter here.
