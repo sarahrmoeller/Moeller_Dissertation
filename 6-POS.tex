@@ -254,19 +254,19 @@ For the Unimorph data, the original SIGMORPHON training/validation/test splits w
 \subsection{Reinflection Results}
 \label{sec:inflectionresults}
 
-\begin{figure*}[t]
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=34em]{acl-ijcnlp2021-templates/figs/pos_2018data.pdf}
+    \includegraphics[width=34em]{figs/pos_2018data.pdf}
     \caption{The difference in accuracy with/out POS on the reinflection task with SIGMORPHON languages. Negative scores indicates that adding POS tags improves results. The bar shows the mean of the differences and lines indicate the range of the mean plus or minus the standard deviation.}
     \label{fig:sigreinfl}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[t]
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=41em]{acl-ijcnlp2021-templates/figs/pos_igtdata.pdf}
+    \includegraphics[width=41em]{figs/pos_igtdata.pdf}
     \caption{The difference in accuracy with/out POS on the reinflection task with cleaned and noisy field data. Negative scores indicates that adding POS tags improve results. The bar shows the mean of the differences and line indicates the range of the mean plus or minus the standard deviation.}
     \label{fig:igtreinfl}
-\end{figure*}
+\end{figure}
 
 
 Five reinflection models with random seeds were trained on each data set. All models were trained twice, once with and once without POS tags on the input. Crosswise pairs were compared by subtracting the results with POS tags from the results without POS, giving 25 accuracy scores per language. Figures \ref{fig:sigreinfl} and \ref{fig:igtreinfl} show the average and range of differences between the two.  
