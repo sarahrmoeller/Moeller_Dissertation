@@ -148,6 +148,11 @@ Data augmentation can be done with artificial word forms \citep{liu_morphologica
 \end{center}
 \end{figure}
 
+
+Despite growing NLP research in low-resource languages, most of this work has been applied to work in NLP. Very little has been done to address linguistic research. One notable exception is the AGGREGATION project \citep{bender_language_2014} which has used IGT to automatically infer grammatical structure for multiple languages, including the construction and visualization of morphosyntax \citep{lepp_visualizing_2019,wax_automated_2014}. Much of their IGT data comes from the Online Database of INterlinear Text \citep[ODIN]{lewis_developing_2010} which is a collection of IGTs extracted from linguistic documents. Published IGT excerpts such as those in ODIN differ from IGTs produced by field linguists such as those used in this dissertation in at least one important way: noise (i.e. typos, inconsistencies, etc.) is generally removed from the IGT before publication. 
+%selected for publication. 
+%Second, the glossed information in published IGT snippets can vary widely depending on the phenomenon that is the main focus of the publication or the linguist who published.
+
 \section{Morphological Analysis}
 
 Morphological analysis is a key activity in language documentation and description. This is the study of word-building properties and their accompanying (morpho-)syntactic phenomena. Historically, computational linguists and ``paper-and-pencil linguists'' have taken sometimes seemingly incompatible approaches to morphology \citep{sproat_1992,karttunen_2005}. Yet, despite their out-of-sync approaches, both computational linguistics and ``traditional'' linguistics benefit from the analysis of a language's morphology \citep{cotterell_labeled_2015}. Morphological analysis is particularly important when working with morphologically complex languages.  Languages that build words from multiple morphemes or via significant morphophonological changes produce a high number of inflected and compound words which appear to the machine as brand new, unrelated words \citep{dreyer_discovering_2011,goldsmith_computational_2017,hammarstrom_unsupervised_2011,kann_neural_2016,ruokolainen_supervised_2013}. These include agglutinating morphologies (common in central and north Asia, South America, central and southern Africa, Australia), polysynthetic (North America, the Far East of Russia), or non-concatenative (north Africa and the Middle East, southeast Asia). NLP systems that account for morphology can reduce data sparsity caused by an abundance of individual word forms \citep{mccarthy-etal-2019-sigmorphon,vylomova2020sigmorphon} and help mitigate bias in training data for natural language processing (NLP) systems \citep{zmigrod-etal-2019-counterfactual}. Such systems have often been limited to languages with publicly available structured data, i.e. languages for which tables containing inflectional patterns can be found, for example, in online dictionaries like Wiktionary.\footnote{\url{https://www.wiktionary.org}} Unfortunately, this is not available for many of the world's languages. The proposed research will leverage unstructured data produced by documentary and descriptive field projects.
@@ -214,31 +219,12 @@ Morphology includes the inference of rules that govern a language’s word build
 
 \cite{durrett_supervised_2013} claim that the inference of inflectional patterns must be based on three assumptions. First, each lexical category is dictated by a subsystem of rules. Russian nouns, for example, can be generalized into three simplified patterns of inflection, shown in Table \ref{tab:RuParadigm}. Lexemes that adhere to the same pattern are grouped into inflectional classes (sometimes called ``declensions'' for nouns and adjectives and ``conjugations'' for verbs). The patterns themselves are known as inflectional paradigms. Second, inflectional changes are triggered by context and, therefore, the patterns can be inferred from context. Descriptive studies look to phonology or else to both phonological structure and the semantic content of the lexeme for the triggering context. Computational models, due to the nature of their input, look to orthographic context. The third assumption is that each stem morpheme is inflected consistently according to the inflectional class it belongs to, plus any idiosyncrasies of the stem.
 
-\begin{figure}[b]
-\begin{center}
-\includegraphics[width=10cm]{figs/PCFP.PNG}
-\caption[Paradigm Cell Filling Problem]{Illustration of the Paradigm Cell Filling Problem \citep{silfverberg_encoder-decoder_2018} with Spanish verb paradigms.}
-\label{fig:PCFP}
-\end{center}
-\end{figure}
+\cite{monson_paramorfinding_2007b} give two guiding principles for computational paradigm induction. One is that inflected forms of a lemma will look similar to each other. This principle does not always hold because languages abound with exceptions. Also, inflection can be suppletive (e.g. \textit{am} vs. \textit{are}, etc.). However, the principle holds often enough to serve as a solid working assumption.  
 
-Computational models have successfully learned frequent and regular paradigmatic patterns with high accuracy even in low-resource settings \citep{hammarstrom_unsupervised_2011,durrett_supervised_2013,ahlberg_semi-supervised_2014}. Most early work on paradigm induction applied unsupervised learning to concatenative morphology \citep{goldsmith_unsupervised_2001,chan_learning_2006,monson_paramorfinding_2007b}. Semi-supervised models have been more recently applied on concatenative and non-concatenative languages \citep{dreyer_discovering_2011,durrett_supervised_2013}. 
+The second principle is that ``in any given corpus, a particular lexeme will likely not occur in all possible inflected forms''.  
+Paradigms can be quite large; a typical Polish verb, for example table can have 30 or more cells, and many languages may have hundreds or even thousands of forms \citep{corbett_unique_2013}. Even with a large corpus, attempts to induce paradigms like Table \ref{tab:EngParadigm} will often result in empty gaps. In fact, it is possible that certain forms may never occur in natural language even though they are grammatically possible \citep{silfverberg_encoder-decoder_2018}. Even if it is possible to find all the inflected forms of very frequent lexemes, frequent words often follow irregular patterns, as, for example, does the English ``be''. This is why, despite documentary linguistics' emphasis on language in natural use, the language documentation and description workflow (cf. section \ref{sec:LDD}) includes elicitation of morphological paradigms \citep{lupke_data_2010,boerger_language_2016}. 
 
-Supervised learning has also been applied to inflectional morphology. Some work focuses on generating inflected forms, including work motivated by the Paradigm Cell Filling Problem (PCFP), illustrated in Figure \ref{fig:PCFP}. These studies attempt to model how new speakers infer the inflected forms they have not encountered \citep{dreyer_discovering_2011,ahlberg_paradigm_2015,malouf_generating_2016,silfverberg_encoder-decoder_2018}. Other work with supervised learning has attempted to induce inflectional paradigms from text. Paradigms have to be completed by finding overlapping patterns from several incomplete paradigms that are found in text. One method abstracts the longest common subsequence of characters in words and then clusters words with same or similar patterns  \citep{ahlberg_semi-supervised_2014,ahlberg_paradigm_2015}. This is illustrated in Figure \ref{fig:LCS}. Exceptions or irregularities in the paradigms can be accounted for by collapsing the similar patterns. The experiment has been quite successful for a few Indo-European languages (German, Spanish, Catalan, French, Galician, Italian, Portuguese, Russian), as well as Maltese and Finnish.
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=10cm]{figs/Ahlberg2015-LCS.PNG}
-\caption[Ahlberg et al. (2015)]{Ahlberg et al. (2015): Inducing paradigms. The longest common subsequences (LCS) \textit{rng} or \textit{swm} are extracted (step 1) and represented as \textit{x\textsubscript{1}} and \textit{x\textsubscript{2}} which replace the LCS (step 2). Words with the same inflectional patterns will be identical (step 3) and can be generalized into paradigms (step 4). The remaining characters \textit{i}, \textit{a}, \textit{u} are assumed to be inflectional affixes.}
-\label{fig:LCS}
-\end{center}
-\end{figure}
-
-\cite{monson_paramorfinding_2007b} give two guiding principles for computational paradigm induction. One is that inflected forms of a lemma will look similar to each other. This principle does not always hold because languages abound with exceptions. Also, inflection can be suppletive (e.g. \textit{am} vs. \textit{are}, etc. in Table \ref{tab:EngParadigm}). However, the principle holds often enough to serve as a solid working assumption.  
-
-The second principle is that ``in any given corpus, a particular lexeme will likely not occur in all possible inflected forms''.  Even with a large corpus of IGT, attempts to recreate paradigms like Table \ref{tab:RuParadigm} will result in empty gaps. This is why the language documentation and description workflow listed in section \ref{sec:LDD} explicitly includes elicitation of morphological paradigms despite the language documentation's emphasis on naturally occurring speech \citep{lupke_data_2010,boerger_language_2016}. In fact, it is possible that certain forms may never occur in natural language even though they are grammatically possible \citep{silfverberg_encoder-decoder_2018}. Even if it is possible to find all the inflected forms of very frequent lexemes, frequent words often follow irregular patterns, as, for example, does the English ``be'' verb as shown in Table \ref{tab:EngParadigm}. 
-
-\begin{table}[h!]
+\begin{table}[tb]
     \begin{center}
     \begin{tabular}{l|c|c|c|c}
       & \multicolumn{2}{c}{\textbf{present}} & \multicolumn{2}{|c}{\textbf{past}} \\
@@ -249,7 +235,7 @@ The second principle is that ``in any given corpus, a particular lexeme will lik
       \textbf{2 person} & are & are  & were & were  \\
       \textbf{3 person} & is & are & was & were \\
     \end{tabular}
-    \caption[Inflectional paradigm of the English verb ``to be'']{Inflectional paradigm of the English verb ``to be''. 
+    \caption[Inflectional paradigm of the English verb ``be'']{Inflectional paradigm of the English verb ``to be''. 
     %This verb has more inflected forms than any other English lemma, with 6 cells and four unique word forms, but is quite small compared to paradigms in many other languages.
     }
     \label{tab:EngParadigm}
@@ -257,7 +243,72 @@ The second principle is that ``in any given corpus, a particular lexeme will lik
 \end{table}
 
 
-\section{POS Tagging in Computational Morphology}
+Computational models have successfully learned frequent and regular paradigmatic patterns with high accuracy even in low-resource settings \citep{hammarstrom_unsupervised_2011,durrett_supervised_2013,ahlberg_semi-supervised_2014}. Most early work on paradigm induction applied unsupervised learning to concatenative morphology \citep{goldsmith_unsupervised_2001,chan_learning_2006,monson_paramorfinding_2007b}. Semi-supervised models have been more recently applied on concatenative and non-concatenative languages \citep{dreyer_discovering_2011,durrett_supervised_2013}. 
+
+Supervised learning has also been applied to inflectional morphology. Some work focuses on generating inflected forms, including work motivated by the Paradigm Cell Filling Problem (PCFP), illustrated in Figure \ref{fig:PCFP} \citep{ackerman2009}. Work on paradigm completion -- or the \textit{paradigm cell filling problem} (PCFP) -- attempt to model how new speakers infer the inflected forms they have not encountered \citep{dreyer_discovering_2011,ahlberg_paradigm_2015,malouf_generating_2016,silfverberg_encoder-decoder_2018}. 
+
+
+\begin{figure}[tb]
+\begin{center}
+\includegraphics[width=10cm]{figs/PCFP.PNG}
+\caption[Paradigm Cell Filling Problem]{Illustration of the Paradigm Cell Filling Problem \citep{silfverberg_encoder-decoder_2018} with Spanish verb paradigms.}
+\label{fig:PCFP}
+\end{center}
+\end{figure}
+
+
+Other work with supervised learning has attempted to induce inflectional paradigms from text. Paradigms have to be completed by finding overlapping patterns from several incomplete paradigms that are found in text. One method abstracts the longest common subsequence of characters in words and then clusters words with same or similar patterns  \citep{ahlberg_semi-supervised_2014,ahlberg_paradigm_2015}. This is illustrated in Figure \ref{fig:LCS}. Exceptions or irregularities in the paradigms can be accounted for by collapsing the similar patterns. The experiment has been quite successful for a few Indo-European languages (German, Spanish, Catalan, French, Galician, Italian, Portuguese, Russian), as well as Maltese and Finnish. Paradigms completion work includes
+\citet{malouf_generating_2016}, who trained recurrent neural networks and applied them successfully to Irish, Maltese, and Khaling, among other languages.
+\citet{silfverberg_encoder-decoder_2018} also trained neural networks for the task.  \citet{kann-etal-2017-neural} differed from other approaches in that they encoded multiple inflected forms of a lemma to provide complementary information for the generation of unknown forms of the same lemma.
+Finally, \citet{cotterell-etal-2017-neural} introduced neural graphical models which completed paradigms based on principal parts.
+
+The unsupervised version of the paradigm completion task \citep{jin2020unsupervised} has been the subject of a recent shared task \citep{kann2020sigmorphon}, with the conclusion that it is extremely challenging for current state-of-the-art systems. 
+
+\begin{figure}[tb]
+\begin{center}
+\includegraphics[width=10cm]{figs/Ahlberg2015-LCS.PNG}
+\caption[Ahlberg et al. (2015)]{Ahlberg et al. (2015): Inducing paradigms. The longest common subsequences (LCS) \textit{rng} or \textit{swm} are extracted (step 1) and represented as \textit{x\textsubscript{1}} and \textit{x\textsubscript{2}} which replace the LCS (step 2). Words with the same inflectional patterns will be identical (step 3) and can be generalized into paradigms (step 4). The remaining characters \textit{i}, \textit{a}, \textit{u} are assumed to be inflectional affixes.}
+\label{fig:LCS}
+\end{center}
+\end{figure}
+
+
+Most recent work in the area of paradigm induction has been concerned with generation (as opposed to analysis) of inflected words and has focused on morphological inflection or reinflection. Approaches include \citet{durrett-denero-2013-supervised,nicolai-etal-2015-inflection,faruqui-etal-2016-morphological,kann-schutze-2016-single,aharoni-goldberg-2017-morphological}. Partially building on these, other research has developed machine learning models which are more suitable for low-resource languages and perform well with limited data \citep{kann-etal-2017-one,sharma-etal-2018-iit,makarov-clematide-2018-imitation,wu-cotterell-2019-exact,kann2020learning,wu2020applying}. These are relevant approaches and models for this dissertation, since it aims to aid the documentation and description of low-resource languages. 
+%Accordingly, we use the systems by \citet{wu-cotterell-2019-exact} and \citet{wu2020applying} in our experiments.
+
+With formal notation, we can describe the most important generation tasks from the computational morphology literature. 
+
+Formally, paradigm of a lemma~$\ell$ can be denoted as:
+\begin{equation}
+    \pi(\ell) = \left\langle f(\ell, \vec{t}_\gamma)\right\rangle_{\gamma \in \Gamma(\ell)}
+\end{equation}
+
+\noindent where $f : \Sigma^* \times \mathcal{T} \to \Sigma^*$ defines a mapping from a tuple consisting of the lemma and a vector $\vec{t}_\gamma \in \mathcal{T}$ of morphological features to the corresponding inflected form. $\Sigma$ is an alphabet of discrete symbols, i.e., the characters used in the natural language. $\Gamma(\ell)$ is the set of slots in lemma $\ell$'s paradigm. 
+We will abbreviate $f(\ell, \vec{t}_\gamma)$ as $f_{\gamma}(\ell)$ for simplicity.
+
+
+\paragraph{Morphological inflection.}
+The task of morphological inflection consists of generating unknown inflected forms, given a lemma 
+$\ell$ and a feature vector $\vec{t}_\gamma$. Thus, it corresponds to learning the mapping $f : \Sigma^* \times \mathcal{T} \to \Sigma^*$. Training data consists of lemmas and paradigms.
+
+
+\paragraph{Morphological reinflection. }
+Morphological \textit{re}inflection is a generalized version of the previous task. Here, instead of having a lemma as input, system are given some \textit{inflected form}  
+$f(\ell, \vec{t}_{\gamma_1})$ -- optionally together with $\vec{t}_{\gamma_1}$ -- and a target feature vector $\vec{t}_{\gamma_2}$. The goal is then to produce the inflected form $f(\ell, \vec{t}_{\gamma_2})$. This task is conducted in Chapters \ref{chap:IGT2P} and \ref{chap:POS}.
+
+
+\paragraph{Paradigm completion. }
+The task of paradigm completion consists of, given a \textit{partial} paradigm $\pi_P(\ell) = \left\langle f(\ell, \vec{t}_\gamma)\right\rangle_{\gamma \in \Gamma_P(\ell)}$ of a lemma $\ell$, generating all inflected forms for all slots $\gamma \in \Gamma(\ell) - \Gamma_P(\ell)$.
+Training data for this task consists of entire paradigms.
+
+\paragraph{Unsupervised morphological paradigm completion. } For the \textit{unsupervised} version of the paradigm completion task, systems are given a corpus $\mathcal{D}=w_1,\dots,w_{|\mathcal{D}|}$ with a vocabulary $V$ of word types $\{w_i\}$ and a lexicon $\mathcal{L} = \{\ell_j\}$ with $|\mathcal{L}|$~lemmas belonging to the same part of speech. However, no explicit paradigms are observed during training.
+The task of unsupervised morphological paradigm completion then consists of
+generating the paradigms~$\{\pi(\ell)\}_{\ell\in\mathcal{L}}$ of all lemmas $\ell \in \mathcal{L}$.
+
+
+
+
+\section{POS Tagging and Computational Morphology}
 \label{sec:POSlitreview}
 
 Parts of speech (POS), also known as word classes or lexical categories, communicate information about a word, its morphological structure and inflectional paradigm, and its potential grammatical role in a clause. POS tagging is a well-studied problem in NLP. Work on POS tagging has led to the development of several related resources in NLP and linguistics including numerous methods for automatic tagging (e.g. \citet{kupiec_robust_1992,toutanova_bayesian_2008}) as well as tag sets. The most popular tag set for English was developed by the Penn Treebank Project \cite{taylor_penn_2003}. A universal POS tag set was proposed by \cite{petrov_universal_2012} and has been widely adopted. It closely follows traditional linguistic conventions for common lexical categories as can be seen by comparing to the the Leipzig Glossing Rules \citep{leipzig_2008} which also has recommended tags for less common categories.
@@ -265,6 +316,6 @@ Parts of speech (POS), also known as word classes or lexical categories, communi
 %\paragraph{Morpheme Segmentation and Glossing.}
 %Many NLP models have been applied to automated segmentation and glossing of low-resource languages, but they often tackle just one of the two tasks. Automatic morpheme segmentation was introduced by \citet{harris_phoneme_1970} and much early segmentation research implemented unsupervised learning \cite{goldsmith_unsupervised_2001,creutz_unsupervised_2002,poon_unsupervised_2009}. Supervised models depend on annotated data that is provided by linguists. Published linguistic descriptive data is used usually after some preprocessing. 
 %\citet{moeller_automatic_2018} trained a joint segmentation and glossing system on Lezgi using field data.
-Work in computational morphology for low-resource languages often make the assumption that other interlinear information is available and POS tags are a frequent example of this assumption. For example, 
+Work in computational morphology for low-resource languages generally makes the assumption that other interlinear information is available. POS tags are an example of information frequently assumed to be available. For example, 
 %\citet{mcmillan-major_automating_2020} trained a conditional random field (CRF) model to produce a gloss line for several high-resource languages and three low-resource languages. The low-resource language data came from interlinearized data that was polished for publication. 
 \citet{mcmillan-major_automating_2020} and other experiments such as \citet{samardzic_automatic_2015} assumed information from lines of interlinearized texts such as translation and POS tags. This assumption is also visible in work on morphological inflection paradigm learning or reinflection, such as in the universal presence of POS tags in work developed as part of the SIGMORPHON Shared Tasks. 

@@ -1,4 +1,5 @@
 \chapter{To POS Tag or Not to POS Tag: The Impact of POS Tags on Morphological Analysis in Low-Resource Settings}
+\label{chap:POS}
   
 
 \begin{figure}[htb]
@@ -6,7 +7,7 @@
     \includegraphics[height=5cm]{figs/POS-avgSegGlossCropped.jpg}
     \hspace{3cm}
     \includegraphics[height=5cm]{figs/POS-avgReinfl.jpg}
-    \caption{Average  F$_1$-scores (right) on joint segmentation and glossing on interlinear glossed texts from fieldwork in five languages found that POS-tags have little and irregular impact. Also, reinflection (left) on four interlinear field corpora and four ``cleaned" versions of those corpora who POS tags make make minimal significant or consistent difference in accuracy.}
+    \caption[Comparison of Morphological Tasks with/out POS tags]{Average  F$_1$-scores (right) on joint segmentation and glossing on interlinear glossed texts from fieldwork in five languages found that POS-tags have little and irregular impact. Also, reinflection (left) on four interlinear field corpora and four ``cleaned" versions of those corpora who POS tags make make minimal significant or consistent difference in accuracy.}
     \label{fig:avgseggls}
 \end{figure}
 
@@ -63,7 +64,7 @@ The study described here uses published data in ten languages and unpublished da
         Swahili & \textsc{n}, \textsc{v}, \textsc{adj} \\
         Turkish & \textsc{n}, \textsc{v}, \textsc{adj} \\
     \end{tabular}
-    \caption{SIGMORPHON/Unimorph languages and the lexical categories available in the data.}
+    \caption[SIGMORPHON/Unimorph Data]{SIGMORPHON/Unimorph languages and the lexical categories available in the data.}
     \label{tab:SIGPOSdata}
 \end{table}
 
@@ -92,7 +93,7 @@ Table \ref{tab:IGTPOSdata} describes the IGT corpora that were selected for this
          \hline
          Natügu  & 10,994  & 1,954 & \textsc{\textbf{a-d-p2}, \textbf{adj}, \textbf{adv}, clause, \textbf{conj}, \textbf{dem}, \textbf{det}, \textbf{gen}, \textbf{gerund}, interrog, intj, \textbf{n}, \textbf{n.(kx.cl)}, ncomp, \textbf{neg}, \textbf{nom1}, np, np(comp), nprop, \textbf{num}, \textbf{ord}, \textbf{particle}, \textbf{pclf}, \textbf{perspro}, \textbf{phrase}, \textbf{pn}, \textbf{posspro}, \textbf{prep}, \textbf{pro}, \textbf{rprn}, \textbf{subr}, \textbf{unk}, \textbf{v}, \textbf{vi}, vp, \textbf{vt}, z-gerund} \\
     \end{tabular}
-    \caption{The number of segmented, glossed, and POS-tagged tokens. The number of unique inflected words. All POS tags were used for the segmentation and glossing task but tags in boldface were found on inflected words and therefore only used in the reinflection task.}
+    \caption[IGT POS tags]{The number of segmented, glossed, and POS-tagged tokens. The number of unique inflected words. All POS tags were used for the segmentation and glossing task but tags in boldface were found on inflected words and therefore only used in the reinflection task.}
     \label{tab:IGTPOSdata}
 \end{table}
 
@@ -210,7 +211,7 @@ The system either performs worse, or, in the case of Lezgi, makes very small imp
        \hline
        Nat\"ugu & .8995 & .8748 & .8782 & .8864 & .8855 & .8932 & .8999 & .8965 & \textbf{.9006} \\
     \end{tabular}
-    \caption{F$_1$ scores on segmenting and glossing when trained on all data with increasing percentages of POS tags.}
+    \caption[Results with More POS Tags]{F$_1$ scores on segmenting and glossing when trained on all data with increasing percentages of POS tags.}
     \label{tab:POSSGpsp}
 \end{table}
 
@@ -243,14 +244,14 @@ For the Unimorph data, the original SIGMORPHON training/validation/test splits w
 \begin{figure}[htb]
     \centering
     \includegraphics[width=34em]{figs/pos_2018data.pdf}
-    \caption{The difference in accuracy with/out POS on the reinflection task with SIGMORPHON languages. Negative scores indicates that adding POS tags improves results. The bar shows the mean of the differences and lines indicate the range of the mean plus or minus the standard deviation.}
+    \caption[SIGMORPHON Reinflection with/out POS Tags]{The difference in accuracy with/out POS on the reinflection task with SIGMORPHON languages. Negative scores indicates that adding POS tags improves results. The bar shows the mean of the differences and lines indicate the range of the mean plus or minus the standard deviation.}
     \label{fig:sigreinfl}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=41em]{figs/pos_igtdata.pdf}
-    \caption{The difference in accuracy with/out POS on the reinflection task with cleaned and noisy field data. Negative scores indicates that adding POS tags improve results. The bar shows the mean of the differences and line indicates the range of the mean plus or minus the standard deviation.}
+    \caption[IGT Reinflection with/out POS Tags]{The difference in accuracy with/out POS on the reinflection task with cleaned and noisy field data. Negative scores indicates that adding POS tags improve results. The bar shows the mean of the differences and line indicates the range of the mean plus or minus the standard deviation.}
     \label{fig:igtreinfl}
 \end{figure}
 
