@@ -45,6 +45,7 @@
 \dept{Department of}			%  #1 {designation}
 	{Linguistics and Institute of Cognitive Science}		%  #2 {name}
 
+
 \advisor{Dr.}				%  #1 {title}
 	{Mans Hulden}			%  #2 {name}
 
@@ -57,27 +58,24 @@
 
 \abstract{  \OnePageChapter	% because it is very short
 
-Any attempt to integrate NLP systems to the study of endangered languages must take into consideration traditional approaches by both NLP and linguistics. This paper tests different strategies and workflows for morpheme segmentation and glossing that may affect the potential to integrate machine learning. Two experiments train Transformer models on documentary corpora from five under-documented languages. In one experiment, a model learns segmentation and glossing as a joint step and another model learns the tasks into two sequential steps. We find the sequential approach yields somewhat better results.
+Any attempt to integrate Natural Language Processing (NLP) machine learning systems to the study of languages must take into consideration approaches and expectations of both NLP and linguistics. This dissertation examines various strategies and workflows that may affect the potential to integrate machine learning in the documentation and description of endangered languages. Unlike previous studies, it applies machine learning to multiple corpora of typologically diverse endangered languages. 
+
+
+First, it examines automating segmentation and glossing as a way to remove the ``annotation bottleneck'' that plagues documentary and descriptive linguistics. Three experiments train Transformer models on interlinearized corpora from five under-documented languages. The first experiment compares segmentation and glossing as a joint step to approaching the tasks as two sequential steps. We find the sequential approach yields somewhat better results.
 %, indicating that linguist should perhaps adjust their traditional approach. 
-In a second experiment, one model is trained on surface segmented data, where strings of texts have been simply divided at morpheme boundaries. Another model is trained on canonically segmented data, the approach preferred by linguists, where abstract, underlying forms are represented. We find no clear advantage to either segmentation strategy and note that the difference between them disappears as training data increases. On average the models achieve more than a 0.5 F$_1$-score, with the best models scoring 0.6 or above. An analysis of errors leads us to conclude consistency during manual segmentation and glossing may facilitate higher scores from automatic evaluation but in reality the scores may be lowered when evaluated against original data because instances of annotator error in the original data are ``corrected'' by the model.
-
-Any attempt to integrate NLP systems to the study of endangered languages must take into consideration traditional approaches by both NLP and linguistics. This paper tests different strategies and workflows for morpheme segmentation and glossing that may affect the potential to integrate machine learning. Two experiments train Transformer models on documentary corpora from five under-documented languages. In one experiment, a model learns segmentation and glossing as a joint step and another model learns the tasks into two sequential steps. We find the sequential approach yields somewhat better results.
-%, indicating that linguist should perhaps adjust their traditional approach. 
-In a second experiment, one model is trained on surface segmented data, where strings of texts have been simply divided at morpheme boundaries. Another model is trained on canonically segmented data, the approach preferred by linguists, where abstract, underlying forms are represented. We find no clear advantage to either segmentation strategy and note that the difference between them disappears as training data increases. On average the models achieve more than a 0.5 F$_1$-score, with the best models scoring 0.6 or above. An analysis of errors leads us to conclude consistency during manual segmentation and glossing may facilitate higher scores from automatic evaluation but in reality the scores may be lowered when evaluated against original data because instances of annotator error in the original data are ``corrected'' by the model.
+The second experiment looks at the outcome when training on surface-segmented data, where strings of texts have been simply divided at morpheme boundaries as is common in NLP, and compares it to same corpora trained on canonically segmented data, the segmentation strategy preferred by linguists where abstract, underlying forms are represented. No clear advantage to either segmentation strategy is found and the difference between them disappears as the training data increases. On average the models achieve more than a 0.5 F$_1$-score, with the best models scoring 0.6 or above. An analysis of errors indicates that consistency during manual segmentation and glossing may facilitate higher scores from NLP models, and, although scores evaluated against  instances of annotator error in the original data are ``corrected'' by the model.
 
 
-An intermediate step in the linguistic analysis of an under-documented language 
-is to find and organize inflected forms that are attested in natural speech. 
-From this data, linguists generate unseen inflected word forms in order to test hypotheses about the language's inflectional patterns and to complete inflectional paradigm tables. To get the data linguists spend many hours manually creating interlinear glossed texts (IGTs). We introduce a new task that speeds this process and automatically generates new morphological resources for natural language processing systems: IGT-to-paradigms (IGT2P). 
+An intermediate step in the linguistic analysis of an under-documented language is to discover morphological inflectional patterns. The first step towards this goal can be to induces patterns from the inflected forms that are attested in transcribed texts.  
+From this data, new inflected word forms can be created in order to test hypotheses about the language's inflectional patterns and to begin to construct inflectional paradigm tables. This dissertation presents a new task that speeds this process and automatically generates new morphological resources for natural language processing systems: IGT-to-paradigms (IGT2P). 
 IGT2P generates entire morphological paradigms from IGT input.
-We show that existing morphological reinflection models can 
-solve the task with $21\%$ to $64\%$ accuracy, depending on the language. 
-We further find that (i) having a language expert spend only a few hours cleaning the noisy IGT data improves performance by as much as 21 percentage points, and (ii) POS tags, which are generally considered a necessary part of NLP morphological reinflection input, have no effect on the accuracy of the models considered here.
+The study shows that existing morphological reinflection models can solve the task with $21\%$ to $64\%$ accuracy, depending on the language. 
+It also finds that (i) having a language expert spend only a few hours cleaning the noisy IGT data improves performance by as much as 21 percentage points, and (ii) POS tags, which are generally considered a necessary part of NLP morphological reinflection input, have no effect on the accuracy of the models considered here.
 
 
 Part-of-Speech (POS) tags routinely appear as features in morphological tasks. POS taggers are often one of the first NLP tools developed for low-resource languages. However, as NLP expands to new languages it cannot assume that POS tags will be available to train a POS tagger. This paper empirically examines the impact of POS tags on two morphological tasks with the Transformer architecture. Each task is run twice, once with and once without POS tags, on otherwise identical data from ten well-described languages and five under-documented languages. We find that the presence or absence of POS tags does not have a significant bearing on the performance of either task. In joint segmentation and glossing, the largest average difference is an .09 improvement in F$_1$-scores by removing POS tags. In reinflection, the greatest average difference is 1.2\% in accuracy for published data and 5\% for unpublished data. These results are indicators that NLP may benefit from documentary linguistic data even when a POS tag set does exist for a language yet, and \textit{vice versa}.
   
-	}
+}
 
 \dedication[Dedication]{	% NEVER use \OnePageChapter here.
 		To my parents who have a habit of replying, ``Go for it!"

@@ -28,7 +28,6 @@ The selected data corpora are representative of a range of typical documentary a
     Natügu & ntu & Austronesian & Isolating & Stable \\
     %\hline
     Tsez & ddo & Nakh-Daghestanian & Agglutinative & Endangered   \\
-    
 	\end{tabular}
 	\caption[Data]{Language name, ISO 639-3 code, language family, predominant morphological type, endangerment status.}
 	\label{tab:langs}
@@ -181,17 +180,14 @@ The research assumes certain issues are more significant than others. The less s
 \section{Models}
 \label{sec:models}
 
-The proposed research will use supervised machine learning systems. All have achieved state-of-the-art NLP results in low-resource settings. They include the feature-based Conditional Random Fields and LSTM-based encoder-decoder, and one neural system (Transformer). All models have been trained on an NVIDIA GP102 [TITAN Xp] GPU
+The proposed research will use supervised machine learning systems. All have achieved state-of-the-art NLP results in low-resource settings. They include the feature-based Conditional Random Fields and Support Vector Machine, and the neural LSTM-based encoder-decoder and Transformer. All models have been trained on an NVIDIA GP102 [TITAN Xp] GPU unless otherwise mentioned.
+% Some of Ling's stuff was trained on the the research computing infrastructure.
 %The models will be trained for three tasks: 1) morpheme segmentation and glossing, 2) translation, and 3) inflectional paradigm induction.
 
 \paragraph{Conditional Random Fields (CRF).} The best performing non-neural model for sequence prediction such as morpheme segmentation and glossing is Conditional Random Fields (CRF) \citep{lafferty_conditional_2001,muller_efficient_2013,ruokolainen_comparative_2016}. A linear-chain CRF \citep{lafferty_conditional_2001} will be implemented with \textit{CRFsuite} \citep{okazaki2007} and its Python API.\footnote{\url{https://python-crfsuite.readthedocs.io/en/latest/}} 
 The CRF is a sequence classifier that considers the whole sequence of symbols (words, letters, glosses, etc.) when making an individual prediction. It tries to optimize the probability of a complete sequence of labels, where each individual label is given a conditional probability based on the previous label and an arbitrary number of surrounding inputs. %\mans{This is tricky to word correctly. A CRF tries to optimize the probability of a complete sequence labeling, where each individual label gets a conditional probability based on the previous label and arbitrary surrounding inputs. Let's make sure to revisit this at some point.} 
 The CRF has performed well on boundary detection (segmentation) and labeling (glossing). 
 
-%CRF learn to predict sequences with the help of pre-chosen features extracted from the data. Logistic regression allows the predictions to be generalized from arbitrary and possibly dependent features \citep{ruokolainen_supervised_2013}.  
-%According to Ruokolainen et al. \cite{ruokolainen_comparative_2016}, discriminative models, compared to generative models, generalize better and optimize boundary detection.
-%The strength of a discriminative model such as the CRF lies in its ability to examine more features than the ones extracted for the current symbol. 
-%It assigns arbitrary weights to the features during training. 
 
 \begin{figure}
     \centering
@@ -199,6 +195,12 @@ The CRF has performed well on boundary detection (segmentation) and labeling (gl
     \caption[Conditional Random Fields]{Conditional Random Fields sequence classifier.\footnote{source: www.slideplayer.com/slide/9361527}}
     \label{fig:CRF}
 \end{figure}
+
+
+%CRF learn to predict sequences with the help of pre-chosen features extracted from the data. Logistic regression allows the predictions to be generalized from arbitrary and possibly dependent features \citep{ruokolainen_supervised_2013}.  
+%According to Ruokolainen et al. \cite{ruokolainen_comparative_2016}, discriminative models, compared to generative models, generalize better and optimize boundary detection.
+%The strength of a discriminative model such as the CRF lies in its ability to examine more features than the ones extracted for the current symbol. 
+%It assigns arbitrary weights to the features during training. 
 
 For the CRF (Fig. \ref{fig:CRF}), predictions are scored over the whole sequence and then transformed into a probability distribution. The conditional distribution of the output sequence {\bf y}, given the input {\bf x} can be modeled as
 
