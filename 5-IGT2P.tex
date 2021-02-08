@@ -16,7 +16,7 @@ we explore how to leverage interlinear glossed text (IGT) to generate unseen for
 % flowchart IGT to paradigm completion
 \begin{figure}
     \centering
-    \includegraphics[width=10cm]{figs/IGT-Paradigm-Workflow.png}
+    \includegraphics[width=12cm]{figs/IGT-Paradigm-Workflow2.pdf}
     \caption[IGT2P Overview]{Inflected word forms attested in interlinear glossed texts (IGT) train transformer encoder-decoder to generalize morphological paradigmatic patterns and generate word forms when given known morphosyntatic features of missing paradigm cells. Noisy paradigms are automatically constructed from IGT and a language expert creates ``cleaned'' paradigms. Both sets are tested on the same missing word forms and the results are compared.}
     \label{fig:Workflow}
 \end{figure}
@@ -127,7 +127,7 @@ The automatically extracted paradigms were preprocessed in two ways. The resulti
 %\footnote{https://github.com/LINGuistLIU/IGT} 
 In the first preprocessing method, a language domain expert was asked to ``clean'' the automatically extracted paradigms. Example results are in shown Figure \ref{fig:cleaning}. Experts reorganized words into correct inflectional paradigms, for example, by regrouping Lezgi copula verbs. They also completed missing morphosyntatic information; for example, adding PL (plural) or SG (singular) where the nouns were otherwise glossed identically. Finally, they removed any words that are not inflected in the language. This usually included words that are morphologically derived from another part of speech but not inflected. For example, an affix might derive an adverb from a noun root, and if the adverbializing affix was glossed, then the word form would have been extracted automatically, resulting in more noise since it displays derivational morphology and no inflectional morphology. Experts were asked to spend no more than six hours on the cleaning task. 
 
-For the second preprocessing method, the automatically extracted paradigms were surveyed by a non-expert. Since non-experts could not be expected to identify and correct most issues, they simply removed obvious mistakes such as glosses of stem morphemes that were misidentified as affix glosses and word forms with obviously incomplete glosses or ambiguous glosses (due to identical glosses on one or more word forms). For some languages, this cleaning-by-removal made these paradigms smaller than the ``cleaned'' dataset.  
+For the second preprocessing method, the automatically extracted paradigms were surveyed by a non-expert. Since non-experts could not be expected to identify and correct most issues, they simply removed obvious mistakes such as glosses of stem morphemes that were misidentified as affix glosses and word forms with obviously incomplete glosses or ambiguous glosses (due to identical glosses on one or more word forms). For some languages, this cleaning-by-removal made these paradigms smaller than the ``cleaned'' dataset.\mans{Remember to convert the Lezgi paradigms to vector graphics before final submission.}  
 
 \begin{figure}
     \centering
