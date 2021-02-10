@@ -6,7 +6,7 @@
 The proposed research will address the question of machine learning integration by experimenting with documentary and descriptive data. Using field data will 1) reveal how current annotation methods affect the performance of NLP systems, 2) test the practicality of incorporating machine learning into the documentary and descriptive workflow, 3) demonstrate that IGT output of documentary and descriptive projects is sufficient to train machine learning models, and 4) enrich the selected data with the results of the experiments.
 %A consensus among LDD practitioners is that more documented data is always better to support linguistic description or revitalization. This holds true for NLP as well: the more training data, the better the results. Yet, the combination of funding limitations and lack of integrated machine learning assistance means that the amount of interlinearized data that LDD projects is almost always less than what is collected and transcribed. 
 
-The selected data corpora are representative of a range of typical documentary and descriptive projects. They consist of manually interlinearized glossed texts (IGT) from the seven under-documented and endangered languages presented in Table \ref{tab:langs}.   
+The selected data corpora are representative of a range of typical documentary and descriptive projects. They consist of manually interlinearized glossed texts (IGT) from the nine under-documented and endangered languages summarized in Table \ref{tab:langs}.   
 
 \bgroup
 \def\arraystretch{1.25}
@@ -27,7 +27,9 @@ The selected data corpora are representative of a range of typical documentary a
     %\hline
     Natügu & ntu & Austronesian & Isolating & Stable \\
     %\hline
-    Tsez & ddo & Nakh-Daghestanian & Agglutinative & Endangered   \\
+    Sierra Miwok &  &  & Polysynthetic & Endangered \\ 
+    Tsez & ddo & Nakh-Daghestanian & Agglutinative & Endangered \\
+    Upper Tanana & tau & Athabaskan & Polysynthetic & Critically Endangered \\
 	\end{tabular}
 	\caption[Data]{Language name, ISO 639-3 code, language family, predominant morphological type, endangerment status.}
 	\label{tab:langs}
@@ -42,27 +44,36 @@ The selected languages are spoken across five continents.
 Published linguistic resources are limited, meaning all these languages are under-documented. Information about speaker population and endangerment status was retrieved from the \emph{Ethnologue} \citep{eberhard_ethnologue:2020} and \emph{Catalogue of Endangered Languages} \citep{elcat_2020}.
 %UNESCO’s \underline{Atlas of Endangered Languages} \citep{moseley_atlas_2010}.
 
-\paragraph{Alas.}
-Alas [btz] (Alas-Kluet, Batak Alas, Batak Alas-Kluet) belongs to the Malayo-Polynesian branch of the Austronesian family. It is spoken by 200,000 people on the Indonesian island of Sumatra. It is unclear if the three dialects (Alas, Kluet, and Singkil) constitute one language. The selected corpus is from the Alas dialect.  Its morphology features reduplication, infixation, and circumfixation. The corpus consists of 12 transcribed texts and one set of elicited sentences written with the Indonesian orthography. 
+\paragraph{Alas}
+[btz] (Alas-Kluet, Batak Alas, Batak Alas-Kluet) belongs to the Malayo-Polynesian branch of the Austronesian family. It is spoken by 200,000 people on the Indonesian island of Sumatra. It is unclear if the three dialects (Alas, Kluet, and Singkil) constitute one language. The selected corpus is from the Alas dialect.  Its morphology features reduplication, infixation, and circumfixation. The corpus consists of 12 transcribed texts and one set of elicited sentences written with the Indonesian orthography. 
 % Although the data was processed in FLEx, it is not surface segmented. I"m not sure how/why this is.
 
-\paragraph{Arapaho.}
-Arapaho [arp] is an Algonquian language spoken by about 1,000 people in Wyoming and Oklahoma, USA, but spoken fluently by less than 200. It is a highly polysynthetic, with as much information as possible going into the verb's morphology \citep{cowell_arapaho_2008}. This includes noun incorporation where special forms of certain nouns become part of the verb. The corpus contains texts and elicited sentences documented from the 1880s until the present day, including a few translated texts. They are written in the Arapaho orthography. Most of the data is available through the Endangered Languages Archive.\footnote{https://elar.soas.ac.uk/Collection/MPI189644}
+\paragraph{Arapaho}
+[arp] is an Algonquian language spoken by about 1,000 people in Wyoming and Oklahoma, USA, but spoken fluently by less than 200. It is a highly polysynthetic, with as much information as possible going into the verb's morphology \citep{cowell_arapaho_2008}. This includes noun incorporation where special forms of certain nouns become part of the verb. The corpus contains texts and elicited sentences documented from the 1880s until the present day, including a few translated texts. They are written in the Arapaho orthography. Most of the data is available through the Endangered Languages Archive.\footnote{\url{https://elar.soas.ac.uk/Collection/MPI189644}}
 
-\paragraph{Lamkang.} 
-Lamkang [lmk] is a Northern Kuki-Chin Tibeto-Burman language. Depending on the primary source of population numbers, speakers are estimated between 4 to 10 thousand people. Speakers live primarily in Manipur, India but also in Burma \cite{lamkang_2007}. Its endangerment status is also not clear. It tends toward agglutination with many stem-stem patterns to signal syntactic categories. Many morphemes are written as separate words in the corpus. There is limited literacy material available. The corpus is at the Computational Resources for South Asian Languages (CoRSAL) digital archive at the University of North Texas.\footnote{https://digital.library.unt.edu/explore/collections/SAALT/}
+\paragraph{Lamkang} 
+[lmk] is a Northern Kuki-Chin Tibeto-Burman language. Depending on the primary source of population numbers, speakers are estimated between 4 to 10 thousand people. Speakers live primarily in Manipur, India but also in Burma \cite{lamkang_2007}. Its endangerment status is also not clear. It tends toward agglutination with many stem-stem patterns to signal syntactic categories. Many morphemes are written as separate words in the corpus. There is limited literacy material available. The corpus is at the Computational Resources for South Asian Languages (CoRSAL) digital archive at the University of North Texas.\footnote{\url{https://digital.library.unt.edu/explore/collections/SAALT/}}
 
-\paragraph{Lezgi.} 
-Lezgi [lez] (Lezgian) belongs to the Lezgic branch of the Nakh-Daghestanian (Northeast Caucasian) family. It is spoken by over 400,000 speakers in Russia and Azerbaijan. Lezgi is an highly agglutinative language with overwhelmingly suffixing morphology. The corpus contains oral texts in the endangered Qusar dialect of Azerbaijan. This dialect differs from the standard written dialect in a few ways, such as a locative case suffix borrowed from Azerbaijani which is used alongside the native inessive case suffix with the same meaning. The texts are transcribed into the language's Cyrillic orthography. They are being deposited at SIL Language and Culture Archives.
+\paragraph{Lezgi} 
+[lez] (Lezgian) belongs to the Lezgic branch of the Nakh-Daghestanian (Northeast Caucasian) family. It is spoken by over 400,000 speakers in Russia and Azerbaijan. Lezgi is an highly agglutinative language with overwhelmingly suffixing morphology. The corpus contains oral texts in the endangered Qusar dialect of Azerbaijan. This dialect differs from the standard written dialect in a few ways, such as a locative case suffix borrowed from Azerbaijani which is used alongside the native inessive case suffix with the same meaning. The texts are transcribed into the language's Cyrillic orthography and is the only corpus used in this research that is transcribed in a non-Latin alphabet. The corpus is being deposited at SIL Language and Culture Archives.
 
-\paragraph{Manipuri.}
-Manipuri [mni] (Meitei, Meetei) belongs to the Tibeto-Burman branch of the Sino-Tibetan family. It is spoken by nearly two million people, primarily in the state of Manipur, and is one of India's official languages. It has nevertheless been classified as vulnerable to extinction by UNESCO. It is a tonal language and has weakly suffixing, agglutinative morphology \citep{Chelliah-1997}. It is the only Tibeto-Burman language in India with its own script, but the corpus was transcribed with the international Phonetic Alphabet (IPA). The corpus is available through the Computational Resources for South Asian Languages (CoRSAL) digital archive.\footnote{https://digital.library.unt.edu/explore/collections/MDR/}
+\paragraph{Manipuri} 
+[mni] (Meitei, Meetei) belongs to the Tibeto-Burman branch of the Sino-Tibetan family. It is spoken by nearly two million people, primarily in the state of Manipur, and is one of India's official languages. It has nevertheless been classified as vulnerable to extinction by UNESCO. It is a tonal language and has weakly suffixing, agglutinative morphology \citep{Chelliah-1997}. It is the only Tibeto-Burman language in India with its own script, but the corpus was transcribed with the international Phonetic Alphabet (IPA). The corpus is available through the Computational Resources for South Asian Languages (CoRSAL) digital archive.\footnote{\url{https://digital.library.unt.edu/explore/collections/MDR/}}
 
-\paragraph{Natügu.}
-Natügu [ntu] belongs to the Reefs-Santa Cruz group in the Austronesian family. It is spoken by about 4,000 people in the Temotu Province of the Solomon Islands. It has a mainly agglutinative morphology with complex verb structures \citep{naess_ntu_2008}. The corpus contains transcribed narratives and a large written text. The data is available through SIL Language and Culture Archives\footnote{https://www.sil.org/resources/search/language/ntu} and is being deposited at the Pacific and Regional Archive for Digital Sources in Endangered Cultures (PARADISEC).
+\paragraph{Natügu}
+[ntu] belongs to the Reefs-Santa Cruz group in the Austronesian family. It is spoken by about 4,000 people in the Temotu Province of the Solomon Islands. It has a mainly agglutinative morphology with complex verb structures \citep{naess_ntu_2008}. The corpus contains transcribed narratives and a large written text. The data is available through SIL Language and Culture Archives\footnote{\url{https://www.sil.org/resources/search/language/ntu}} or is being deposited at the Pacific and Regional Archive for Digital Sources in Endangered Cultures (PARADISEC).
 
-\paragraph{Tsez.}
-Tsez [ddo] (Dido) belongs the Tsez-Hinukh branch of the Nakh-Daghestanian family. It is spoken by about 12,500 speakers in Daghestan, Russia. It has a rich agglutinative, suffixing morphology. The corpus is made up of folklore and is part of the Tsez Annotated Corpus Project \citep{abdulaev-tsezcorpus-2010}. It is available online\footnote{https://tsezacp.clld.org/} stored and preserved by Zenodo.\footnote{zenodo.org}
+\paragraph{Sierra Miwok}
+
+\paragraph{Tsez}
+[ddo] (Dido) belongs the Tsez-Hinukh branch of the Nakh-Daghestanian family. It is spoken by about 12,500 speakers in Daghestan, Russia. It has a rich agglutinative, suffixing morphology. The corpus is made up of folklore and is part of the Tsez Annotated Corpus Project \citep{abdulaev-tsezcorpus-2010}. It is available online\footnote{\url{https://tsezacp.clld.org/}} stored and preserved by Zenodo.\footnote{zenodo.org}
+
+\paragraph{Upper Tanana}
+[tau] (Nabesna, Tabesna) belongs to the Alaskan sub-group of the Northern Dene (Athabaskan) family. Although it is one of the official languages of Alaska and has been taught in a Canadian school, it is critically endangered, with barely 50 adult speakers in the eastern interior of Alaska (USA) and the Yukon Territory (Canada)  \citep{eberhard_ethnologue:2020}. Its complex morphology features non-continuous lexical, derivational, and inflectional prefixes on verbs \citep{lovick_computational_2018}. The corpus was collected in 2006-2019 in Alaska; most speakers represented the Tetlin and Northway dialects. 
+%Two annotators did most of the interlinearization with small contributions from 2 or 3 others. 
+The primary data (recordings, transcripts) is archived at the Alaska Native Language Archive.\footnote{\url{https://www.uaf.edu/anla/}}.
+
+
 
 \subsection{Corpora}
 
@@ -90,7 +101,7 @@ In most cases, more data was recorded and transcribed than could be interlineari
          % POS tagged: 3845/4462 = .861
          %inflected: 412
          \hline
-         Arapaho & 300k &  56,922 & 202,993 & 68\%  & 202,993 & 68\% & 0 & 0\% \\
+         Arapaho & 300k &  56,922 & 202,993 & 68\%  & 202,993 & 68\% & \multicolumn{2}{c}{0}  \\
          % 294,774 arp actual number of tokens
          % segmented and glossed: 202993/294774 = 0.688
          % MWE count:
@@ -138,9 +149,13 @@ In most cases, more data was recorded and transcribed than could be interlineari
          % translated: 1541/1542
          % POS tagged: 10994/16520 = .665
          \hline
-         Tsez & 53k & 7,315 &  & 99\% &  & 99\% & 0 & 0\% 
+         Sierra Miwok &  & n/a &  &  &  &  &  \\
+         \hline
+         Tsez & 53k & 7,315 &  & 99\% &  & 99\% & \multicolumn{2}{c}{0}  \\
+         \hline
+         Upper Tanana & 17.5k & n/a & 11,930 & 68\% & 11,867 & 67\% & 11,198 & 64\% 
     \end{tabular}
-    \caption[Data Statistics]{The total token count ignores multiple word expressions (when parsed as such) as single tokens. Inflected refers to the number of unique inflected forms that can be used to train the inflection task. The percentage and total number of tokens that are segmented or glossed are shown.  The segmentation and glossing task trains on both. The inflection task needs only glossed tokens.}
+    \caption[Data Statistics]{Tokens include multiple word expressions (when parsed as such) as single tokens and ignores tagged English words, proper nouns, digits, and punctuation. Inflected refers to the number of unique inflected forms that can be used to train the inflection task. The percentage and total number of tokens that are segmented or glossed are shown.  The segmentation and glossing task trains on both. The inflection task needs only glossed tokens.}
     \label{tab:dissdata}
 \end{table*}
 
