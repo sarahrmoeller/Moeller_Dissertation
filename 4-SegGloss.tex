@@ -295,11 +295,11 @@ Allomorphy and isomorphy (same character sequence, different meaning) caused rep
 
 \pex   
 \label{ex:isomorphy}
-\foreignlanguage{russian}{-ди}\#\textsc{ent} \\
-\foreignlanguage{russian}{-ди}\#\textsc{dir} \\
-\foreignlanguage{russian}{-ди}\#\textsc{erg} \\
-\foreignlanguage{russian}{-ди}\#\textsc{obl} \\
-\foreignlanguage{russian}{-ди}\#\textsc{sbst} 
+-di\#\textsc{ent} \\
+-di\#\textsc{dir} \\
+-di\#\textsc{erg} \\
+-di\#\textsc{obl} \\
+-di\#\textsc{sbst} 
 \xe
 
 Sometimes multiple glosses are not due to morphological structure, but because the same morph(eme) was given different glosses. For example, interchanging `be' and `is' and `\textsc{cop}' for copular verbs or alternating between lexical glosses (e.g. `you') and grammatical glosses (e.g. `\textsc{2sg.erg}'). Sometimes different glosses appear because the item can be translated by different English words depending on the context. For example, one Lezgi word can be, and is, translated as `be' in some context or 'happen' in others. If alternative labels such as \textit{bahaye\#danger} and \textit{bahaye\#dangerous} are equally frequent, the model must choose randomly. Such inconsistency is to be expected from manual work and could be reduced with more automated assistance from machine learning.
@@ -311,7 +311,7 @@ Many quality issues unpredictably increase the number of possible labels and amp
 %did.again.ENT INESS did.again.ENT ENT - INESS is not on verbs
 repeated mispelling of glosses (e.g. apperance---appereance---appearance, fourty---forty). Other misspellings originate in transcription. In the Lezgi test data, over 50 misspelled or incorrectly segmented strings were found in the first 200 hundred unique segments, although a few spelling changes are representation of dialectical variations.  
 
-%Lezgi: Some of them should probably not be mulitple:  \foreignlanguage{russian}{-бур} --\textrangle{} ABS.PL/SBST.PL ==\textrangle{} PL,  \foreignlanguage{russian}{-в} --\textrangle{} AD/ADESS should be one or the other. 
+%Lezgi: Some of them should probably not be mulitple:  -bur --\textrangle{} ABS.PL/SBST.PL ==\textrangle{} PL,  -v --\textrangle{} AD/ADESS should be one or the other. 
 %Lezgi: The multiple glosses per segment is clearly seen. As our misspellings pr variant spellings in original text:  \foreignlanguage{russian}{вуч вуш} 'what'. 
 
 The results from the Alas corpus were quite good when compared to the much larger corpora. However, the errors are less predictable and more random. It seems likely that the small data set increased the noise to signal ratio and obscured general patterns. 
@@ -331,11 +331,11 @@ One noticeable confusion was caused by the canonical representation of circumfix
 %variation of glosses that should probably be one gloss, perhaps due to context: -\textlangle{}n\textlangle{}\textrangle{}ken#CAUSATIVE -\textlangle{}n\textlangle{}\textrangle{}ken#TO.CAUSE.TO.BECOME..., bahaye#danger bahaye#dangerous
 
 Nevertheless, error analysis shows that the models deal with data sparsity quite well. Even incorrect segments often have very similar character sequences to the correct choice, particularly when the difference is due to a change in the root vowel (e.g. dakhi $\sim$ dikhi). One of the most interesting errors, indicating the model's strong ability to learn patterns even in the face of data sparsity, occurred in Lezgi. The transcribed oral speech has a few dozen codeswitched Russian words. The test data include one or two examples, and in one case the model substituted one codeswitched word with another codeswitched word. 
-%Codeswitched: \foreignlanguage{russian}{порядок окружения -е}
+%Codeswitched: poryadok okruzheniya -е
 %\foreignlanguage{russian}{эвецӏун -на эвецӏна -на, хан хун}
 %root vowel changes, especially this root 'say' which is quite common in narratives with reported speech:  \foreignlanguage{russian}{лугьун -на лагьа -на}. Also another very common root, 'go' which changes root vowel in difference conjugations:  \foreignlanguage{russian}{хъфена -на хъфин -на}
-%Incorrect segmentation that the model corrected:  \foreignlanguage{russian}{и.арада -е и.арада, эхъвена -на экъвен -на, я ни я -ни}
-%Or just confused by incorrect segmentation in training data:  \foreignlanguage{russian}{пӏузарар -ар -ар пӏузарар -ар -е, гада -ди -з гададиз, гададин гада -ди -н}
+%Incorrect segmentation that the model corrected:  \foreignlanguage{russian}{i.arada -е i.arada, эхъвена -на экъвен -nа, ya ni ya -ni}
+%Or just confused by incorrect segmentation in training data:  пӏузарар -ar -ar пӏузарар -ar -е, gada -di -z gadadiz, gadadin gаdа -di -n
 %Confused by semantically motivated allomorphy of ERG/INESS stem:  \foreignlanguage{russian}{къачун -да къачу -е}
 %Reduplication?:  \foreignlanguage{russian}{гьагьам гьам, гьа-гьа-гьа гьа-гьа}
 %The models Chooses misspelling/variant spelling:  \foreignlanguage{russian}{и кьван икьван}
@@ -343,7 +343,7 @@ Nevertheless, error analysis shows that the models deal with data sparsity quite
 Many errors noted during error analysis were not actually errors. Since the annotation was originally done by hand, sometimes by multiple annotators, the glosses varied due to misspellings or synonomous glossing choices (e.g. 'BE.PST' vs. 'was'). There was a clear pattern in all datasets for one of the variants to be predicted rather than a random, unrelated label. These cases would not be considered errors by human annotators but were evaluated automatically as errors in the test data. For instance, one Lezgi demonstrative pronoun was sometimes glossed as `these' and sometimes as `this \textsc{-abs.pl}'. In at least once case, the second (and more linguistically precise) analysis was predicted. Unfortunately, because we did not have access to language experts for every corpora, we were not able to normalize our scores based on this knowledge; however, in the future it may be useful to consider that the performance of models trained on field data may, for all practical purposes, be better than the initial scores indicate.
 
 In other cases, the labels in the test data were evaluated as errors, but closer examination revealed that the original human annotation were incorrect in that particular instance and the predicted label was actually the best fit to the data. So, an human error had been ``corrected''. 
-%\foreignlanguage{russian}{авайбур, авариядиз, аватна}. 2sg.erg - 2sg.abs - ERG.  Some clearly never or inconsistently segmented in training data, or model learns consistent patterns of inconsistent segmenting. Things like  \foreignlanguage{russian}{абур} -\textrangle{} just inconsistent segmentation/glossing mostly likely. Sometimes right because not always segmented in data (cf. case-stacking). 
+avaybur, avariydiz, avatna 2sg.erg - 2sg.abs - ERG.  Some clearly never or inconsistently segmented in training data, or model learns consistent patterns of inconsistent segmenting. Things like  abur -\textrangle{} just inconsistent segmentation/glossing mostly likely. Sometimes right because not always segmented in data (cf. case-stacking). 
 Word instances that had been incorrectly segmented by the human annotators were sometimes correctly segmented by the model, although again these examples were evaluated as incorrect because they did not match the gold standard data. For Lezgi, these examples of ``correction'' by the model were more frequent in the sequential system, and may explain why biggest improvement by the sequential system over the joint system is found in the Lezgi data, which we know had many incorrect or incomplete segmentations.  Again, due to the lack of language experts, we are unable to say whether this holds true for all corpora but this should be explored deeper in future research.
 
 
@@ -369,7 +369,7 @@ Finally, these studies could serve as a foundation towards more efficient use of
 %However, the differences between the joint and sequential systems are not great.
 %and other factors hint that linguists should adjust their approach to other things than workflows. 
 Finally, as \citet{mcmillan-major_automating_2020} noted in glossing research, consistency of the annotations has a strong effect on system performance. This is most clearly seen in Lezgi which is known to be particularly noisy. Random strange characters were found at morpheme boundaries (e.g. {\tt *} instead of  {\tt -}). The human annotators frequently segmented one pair of characters whenever it occurred because it matched a frequent suffix. Allomorphs were frequently glossed as if they were different morphemes, undoing the benefit of canonical segmentation. Finally, its unique case-stacking caused confusion both to the human annotator and to the system results, in particular because one morpheme with several semantically-motivated allomorphs is (incorrectly) glossed one way when it stands as a single case marker and glossed another way when it precedes additional case markers.
-%LEzgi: Missing intermedial affixes in case stacking:  \foreignlanguage{russian}{ими -ди -ни имни}
+%LEzgi: Missing intermedial affixes in case stacking:  imi -di -ni imni
 %Confusing OBL and ERG. They are identical but OBL is tagged in case stacking (fairly consistently). 
 
 So what would happen if linguists emphasized quality over quantity? We can answer this question by comparing Lezgi to Alas. According to the accounts of the linguists involved, and evidenced by our experimental results, the Alas data was annotated much more consistently and meticulously. With a corpus one third the size of the Lezgi corpus, the Alas model performs almost equally well. It is possible but seems unlikely that this is due to differing morphological structure. Unlike Lezgi---which is overwhelmingly suffixing and has fairly limited morphophonological changes---Alas features prefixing, suffixing, circumfixing, and infixing with various morphophonological processes. The main difficulty for the Alas systems was the sparsity of stems, compared to oft-repeated affixes. 
