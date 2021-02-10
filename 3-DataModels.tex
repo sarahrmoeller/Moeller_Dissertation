@@ -3,7 +3,7 @@
 
 \section{Data}
 
-The proposed research will address the question of machine learning integration by experimenting with documentary and descriptive data. Using field data will 1) reveal how current annotation methods affect the performance of NLP systems, 2) test the practicality of incorporating machine learning into the documentary and descriptive workflow, 3) demonstrate that IGT output of documentary and descriptive projects is sufficient to train machine learning models, and 4) enrich the selected data with the results of the experiments.
+This work addresses the question of machine learning integration by experimenting with documentary and descriptive data. Using field data will 1) reveal how current annotation methods affect the performance of NLP systems, 2) test the practicality of incorporating machine learning into the documentary and descriptive workflow, 3) demonstrate that IGT output of documentary and descriptive projects is sufficient to train machine learning models, and 4) enrich the selected data with the results of the experiments.
 %A consensus among LDD practitioners is that more documented data is always better to support linguistic description or revitalization. This holds true for NLP as well: the more training data, the better the results. Yet, the combination of funding limitations and lack of integrated machine learning assistance means that the amount of interlinearized data that LDD projects is almost always less than what is collected and transcribed. 
 
 The selected data corpora are representative of a range of typical documentary and descriptive projects. They consist of manually interlinearized glossed texts (IGT) from the nine under-documented and endangered languages summarized in Table \ref{tab:langs}.   
@@ -25,9 +25,9 @@ The selected data corpora are representative of a range of typical documentary a
     %\hline
     Manipuri & mni & Sino-Tibetan & Agglutinative & Vulnerable  \\
     %\hline
-    Natügu & ntu & Austronesian & Isolating & Stable \\
+    Natügu & ntu & Austronesian & Agglutinative & Stable \\
     %\hline
-    Sierra Miwok &  &  & Polysynthetic & Endangered \\ 
+    Southern Sierra Miwok & skd & Utian & Polysynthetic & Nearly Extinct \\ 
     Tsez & ddo & Nakh-Daghestanian & Agglutinative & Endangered \\
     Upper Tanana & tau & Athabaskan & Polysynthetic & Critically Endangered \\
 	\end{tabular}
@@ -49,29 +49,30 @@ Published linguistic resources are limited, meaning all these languages are unde
 % Although the data was processed in FLEx, it is not surface segmented. I"m not sure how/why this is.
 
 \paragraph{Arapaho}
-[arp] is an Algonquian language spoken by about 1,000 people in Wyoming and Oklahoma, USA, but spoken fluently by less than 200. It is a highly polysynthetic, with as much information as possible going into the verb's morphology \citep{cowell_arapaho_2008}. This includes noun incorporation where special forms of certain nouns become part of the verb. The corpus contains texts and elicited sentences documented from the 1880s until the present day, including a few translated texts. They are written in the Arapaho orthography. Most of the data is available through the Endangered Languages Archive.\footnote{\url{https://elar.soas.ac.uk/Collection/MPI189644}}
+is an Algonquian language spoken by about 1,000 people in Wyoming and Oklahoma, USA, but spoken fluently by less than 200. It is a highly polysynthetic, with as much information as possible going into the verb's morphology \citep{cowell_arapaho_2008}. This includes noun incorporation where special forms of certain nouns become part of the verb. The corpus contains texts and elicited sentences documented from the 1880s until the present day, including a few translated texts. They are written in the Arapaho orthography. Most of the data is available through the Endangered Languages Archive.\footnote{\url{https://elar.soas.ac.uk/Collection/MPI189644}}
 
 \paragraph{Lamkang} 
-[lmk] is a Northern Kuki-Chin Tibeto-Burman language. Depending on the primary source of population numbers, speakers are estimated between 4 to 10 thousand people. Speakers live primarily in Manipur, India but also in Burma \cite{lamkang_2007}. Its endangerment status is also not clear. It tends toward agglutination with many stem-stem patterns to signal syntactic categories. Many morphemes are written as separate words in the corpus. There is limited literacy material available. The corpus is at the Computational Resources for South Asian Languages (CoRSAL) digital archive at the University of North Texas.\footnote{\url{https://digital.library.unt.edu/explore/collections/SAALT/}}
+is a Northern Kuki-Chin language in the Tibeto-Burman family. Depending on the primary source of population numbers, speakers are estimated between 4 to 10 thousand people. Speakers live primarily in Manipur, India but also in Burma \cite{lamkang_2007}. Its endangerment status is also not clear. It tends toward agglutination with many stem-stem patterns to signal syntactic categories. Many morphemes are written as separate words in the corpus. There is limited literacy material available. The corpus is at the Computational Resources for South Asian Languages (CoRSAL) digital archive at the University of North Texas.\footnote{\url{https://digital.library.unt.edu/explore/collections/SAALT/}}
 
 \paragraph{Lezgi} 
-[lez] (Lezgian) belongs to the Lezgic branch of the Nakh-Daghestanian (Northeast Caucasian) family. It is spoken by over 400,000 speakers in Russia and Azerbaijan. Lezgi is an highly agglutinative language with overwhelmingly suffixing morphology. The corpus contains oral texts in the endangered Qusar dialect of Azerbaijan. This dialect differs from the standard written dialect in a few ways, such as a locative case suffix borrowed from Azerbaijani which is used alongside the native inessive case suffix with the same meaning. The texts are transcribed into the language's Cyrillic orthography and is the only corpus used in this research that is transcribed in a non-Latin alphabet. The corpus is being deposited at SIL Language and Culture Archives.
+(Lezgian) belongs to the Lezgic branch of the Nakh-Daghestanian (Northeast Caucasian) family. It is spoken by over 400,000 speakers in Russia and Azerbaijan. Lezgi is an highly agglutinative language with overwhelmingly suffixing morphology. The corpus contains oral texts in the endangered Qusar dialect of Azerbaijan. This dialect differs from the standard written dialect in a few ways, such as a locative case suffix borrowed from Azerbaijani which is used alongside the native inessive case suffix with the same meaning. The texts are transcribed into the language's Cyrillic orthography and is the only corpus used in this research that is transcribed in a non-Latin alphabet. The corpus is being deposited at SIL Language and Culture Archives.
 
 \paragraph{Manipuri} 
-[mni] (Meitei, Meetei) belongs to the Tibeto-Burman branch of the Sino-Tibetan family. It is spoken by nearly two million people, primarily in the state of Manipur, and is one of India's official languages. It has nevertheless been classified as vulnerable to extinction by UNESCO. It is a tonal language and has weakly suffixing, agglutinative morphology \citep{Chelliah-1997}. It is the only Tibeto-Burman language in India with its own script, but the corpus was transcribed with the international Phonetic Alphabet (IPA). The corpus is available through the Computational Resources for South Asian Languages (CoRSAL) digital archive.\footnote{\url{https://digital.library.unt.edu/explore/collections/MDR/}}
+(Meitei, Meetei) belongs to the Tibeto-Burman branch of the Sino-Tibetan family. It is spoken by nearly two million people, primarily in the state of Manipur, and is one of India's official languages. It has nevertheless been classified as vulnerable to extinction by UNESCO. It is a tonal language and has weakly suffixing, agglutinative morphology \citep{Chelliah-1997}. It is the only Tibeto-Burman language in India with its own script, but the corpus was transcribed with the international Phonetic Alphabet (IPA). The corpus is available through the Computational Resources for South Asian Languages (CoRSAL) digital archive.\footnote{\url{https://digital.library.unt.edu/explore/collections/MDR/}}
 
 \paragraph{Natügu}
-[ntu] belongs to the Reefs-Santa Cruz group in the Austronesian family. It is spoken by about 4,000 people in the Temotu Province of the Solomon Islands. It has a mainly agglutinative morphology with complex verb structures \citep{naess_ntu_2008}. The corpus contains transcribed narratives and a large written text. The data is available through SIL Language and Culture Archives\footnote{\url{https://www.sil.org/resources/search/language/ntu}} or is being deposited at the Pacific and Regional Archive for Digital Sources in Endangered Cultures (PARADISEC).
+belongs to the Reefs-Santa Cruz group in the Austronesian family. It is spoken by about 4,000 people in the Temotu Province of the Solomon Islands. It has a mainly agglutinative morphology with complex verb structures \citep{naess_ntu_2008}. The corpus contains transcribed narratives and a large written text. The data is available through SIL Language and Culture Archives\footnote{\url{https://www.sil.org/resources/search/language/ntu}} or is being deposited at the Pacific and Regional Archive for Digital Sources in Endangered Cultures (PARADISEC).
 
-\paragraph{Sierra Miwok}
+\paragraph{Southern Sierra Miwok} 
+is a member of the Utian (Miwok-Costanoan) family of central California (USA) \citep{broadbent_southern_1964}. There are very few known speakers. Its verbs inflects inflect for both subjects and objects and has fairly complex derivational morphology with extensive allomorphy. The corpus is archived at .
 
 \paragraph{Tsez}
-[ddo] (Dido) belongs the Tsez-Hinukh branch of the Nakh-Daghestanian family. It is spoken by about 12,500 speakers in Daghestan, Russia. It has a rich agglutinative, suffixing morphology. The corpus is made up of folklore and is part of the Tsez Annotated Corpus Project \citep{abdulaev-tsezcorpus-2010}. It is available online\footnote{\url{https://tsezacp.clld.org/}} stored and preserved by Zenodo.\footnote{zenodo.org}
+(Dido) belongs the Tsez-Hinukh branch of the Nakh-Daghestanian family. It is spoken by about 12,500 speakers in Daghestan, Russia. It has a rich agglutinative, suffixing morphology. The corpus is made up of folklore and is part of the Tsez Annotated Corpus Project \citep{abdulaev-tsezcorpus-2010}. It is available online\footnote{\url{https://tsezacp.clld.org/}} stored and preserved by Zenodo.org.
 
 \paragraph{Upper Tanana}
-[tau] (Nabesna, Tabesna) belongs to the Alaskan sub-group of the Northern Dene (Athabaskan) family. Although it is one of the official languages of Alaska and has been taught in a Canadian school, it is critically endangered, with barely 50 adult speakers in the eastern interior of Alaska (USA) and the Yukon Territory (Canada)  \citep{eberhard_ethnologue:2020}. Its complex morphology features non-continuous lexical, derivational, and inflectional prefixes on verbs \citep{lovick_computational_2018}. The corpus was collected in 2006-2019 in Alaska; most speakers represented the Tetlin and Northway dialects. 
+(Nabesna) belongs to the Alaskan sub-group of the Northern Dene (Athabaskan) family. Although it is one of the official languages of Alaska and has been taught in a Canadian school, it is critically endangered, with barely 50 adult speakers in the eastern interior of Alaska (USA) and the Yukon Territory (Canada) \citep{lovick_grammar_2020}. Its complex morphology features non-continuous lexical, derivational, and inflectional prefixes on verbs. The corpus was collected in 2006-2019 in Alaska; most speakers represented the Tetlin and Northway dialects. 
 %Two annotators did most of the interlinearization with small contributions from 2 or 3 others. 
-The primary data (recordings, transcripts) is archived at the Alaska Native Language Archive.\footnote{\url{https://www.uaf.edu/anla/}}.
+The primary data (recordings, transcripts) is preserved at the Alaska Native Language Archive.\footnote{\url{https://www.uaf.edu/anla/}}
 
 
 
@@ -79,11 +80,13 @@ The primary data (recordings, transcripts) is archived at the Alaska Native Lang
 
 %Publicly available structured resources such as UniMorph and Wiktionary are convenient sources for minority language data. They allow community contribution of material that can support the development of NLP and Human Language Technology.
 
-The data was selected primarily to represent a range of “typical” outputs by documentary and descriptive projects. Less effort was made to represent typological structures, geographic areas, or a range of language families. No effort was made to include a range of genre and origin; the texts are mostly narratives that were transcribed from recorded speech. Because the sample of languages is small, the proposed research will avoid sweeping claims that may depend on linguistic typology or discourse genre. 
-The corpora were generously shared in the form of backup XML or CSV files. The rights holders gave informed consent to use the data for the proposed research. 
+The data was selected primarily to represent a range of “typical” outputs by documentary and descriptive projects. Less effort was made to represent typological structures, geographic areas, or a range of language families, although some attempt was made to keep an even distribution of morphological types. No attempt was made to include fusional morphology since it is already well-represented in high-resource languages. The texts are mostly narratives that were transcribed from recorded speech. Since the sample of languages is small, the analyses in this work avoid sweeping claims that depend on linguistic typology or discourse genre. 
+The corpora were generously shared in the form of backup XML or CSV files. The rights holders gave informed consent to use the data research purposes. 
 %The data providers also agreed to be available to answer questions about their projects and conduct error analysis when necessary.
 
-In most cases, more data was recorded and transcribed than could be interlinearized within the project's budget. Only the Arapaho and Tsez corpora can be considered completed (though missing annotations were found in both during preprocessing). Each project's unique priorities and workflow resulted in different proportions of data that were fully segmented and glossed, as shown in Table \ref{tab:dissdata}.
+Even though most of the corpora resulted from many years of work, they still stand as prime examples of the annotation bottleneck in language documentation and description. More data was recorded and transcribed than could be interlinearized within the project's budget. Each project's unique priorities and workflow resulted in different proportions of fully segmented and glossed data, as shown in Table \ref{tab:dissdata}.
+Only the Arapaho and Tsez corpora can be considered completed (though missing annotations were found in both during preprocessing). 
+
 
 \begin{table*}
     \centering
@@ -187,15 +190,16 @@ Gold standard data for training and testing was produced by filtering incomplete
 
 The projects that produced the corpora spent different amounts of time on interlinearization, had different short-term goals, and varied by team size, team members' education or linguistic training. For example, the Alas corpus was produced in a matter of months while the Arapaho and Natügu corpora were produced by projects that have extended over many years. These two corpora, as well as the Tsez corpus, were annotated by teams with multiple linguists and native speakers. In contrast, the projects that produced the Alas corpus and most of the Lezgi corpus had one linguist and one or two native speaker annotators. The smaller, shorter projects were usually not able to provide as much training to annotators. Most projects were undertaken with the primary goal of documenting and describing the language, but the shorter-term goal of the Alas project is to support literacy efforts while most of the work on the Lezgi corpus was done to support an MA thesis on verbs. These factors are reflected in the quality of the interlinearization. For example, in the Lezgi corpus only verbs were consistently annotated by a trained linguist. The rest was annotated by a native speaker with minimal linguistic training and, therefore, contains more errors and inconsistencies. 
 
-The proposed research is centered around issues that arise from the quality of interlinearization. 
-%Variation can be problematic. One kind of variation is the typological differences among the languages. Another kind of variation arises in the IGT corpora. They vary in size and quality. The issues due to size are self-evident and the consensual answer is that more data is better. Issues of quality will be brought to focus in the proposed research. These issues are varied. 
-The research assumes certain issues are more significant than others. The less significant ones, such as typos in glosses and inconsistent morpheme segmentation, are ignored or handled during preprocessing. The more significant issues are different segmentation strategies (surface vs. canonical) and different proportions of completed lines of interlinearization.
+The analyses of results in this research often refers to issues that arise from the annotation process. 
+Variation in the IGT corpora is problematic for comparative analysis. The IGT vary in size and annotation quality. The issues due to size become clear in most cases when comparing results, and the answer from consensus would be that more data is always better. Some of the quality factors are brought to focus in the error analyses and discussions.
+%The research assumes certain issues are more significant than others. 
+The less significant factors, such as typos in glosses and inconsistent morpheme segmentation, are ignored or handled during preprocessing. Some of the more significant issues, such as different segmentation strategies (surface vs. canonical) and varying proportions of POS tagged data is addressed directly in this work.
 
 
 \section{Models}
 \label{sec:models}
 
-The proposed research will use supervised machine learning systems. All have achieved state-of-the-art NLP results in low-resource settings. They include the feature-based Conditional Random Fields and Support Vector Machine, and the neural LSTM-based encoder-decoder and Transformer. All models have been trained on an NVIDIA GP102 [TITAN Xp] GPU unless otherwise mentioned.
+The experiments use supervised machine learning systems. All implement models have achieved state-of-the-art NLP results in low-resource settings. They include the feature-based Conditional Random Fields and Support Vector Machine, and the neural LSTM-based encoder-decoder and Transformer. All models have been trained on an NVIDIA GP102 [TITAN Xp] GPU unless otherwise mentioned.
 % Some of Ling's stuff was trained on the the research computing infrastructure.
 %The models will be trained for three tasks: 1) morpheme segmentation and glossing, 2) translation, and 3) inflectional paradigm induction.
 
@@ -231,7 +235,7 @@ p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_
 
 \noindent Here, $Z$ is the ``partition function'' which normalizes the expression to a proper distribution over all possible taggings given an input. 
 
-\paragraph{Support Vector Machine (SVM).} The proposed research will experiment with a pipeline method that first segments morphemes with the CRF and then glosses them with a Support Vector Machine (SVM) \citep{svm_cortes}. The SVM will label only after segmentationg is done by the CRF, using its own feature scheme. The SVM will be implemented as a multi-class linear SVM using the LIBLINEAR package \citep{fan2008}. It creates hyperplanes to separate the data into classes. The optimal hyperplane is found by maximizing the margin between the closest data points in each class, as illustrated in Figure \ref{fig:SVM}. These data points are the support vectors. Like CRF, the SVM learns from extracted features.
+\paragraph{Support Vector Machine (SVM).} Experiments with segmentation and glossing will compare sequential and joint methods. One sequential methods first segments morphemes with the CRF and then glosses them with a Support Vector Machine (SVM) \citep{svm_cortes}. The SVM will label only after segmentationg is done by the CRF, using its own feature scheme. The SVM will be implemented as a multi-class linear SVM using the LIBLINEAR package \citep{fan2008}. It creates hyperplanes to separate the data into classes. The optimal hyperplane is found by maximizing the margin between the closest data points in each class, as illustrated in Figure \ref{fig:SVM}. These data points are the support vectors. Like CRF, the SVM learns from extracted features.
 
 %\Mans{You should make clear that we used an SVM as a labeler after the segmentation was done, using some feature scheme. Otherwise a reader will be confused as to how you an SVM as a sequence labeler (possible, but not normally done) vs. a CRF which is inherently a sequence labeler.}
 
@@ -243,9 +247,9 @@ p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_
 \end{figure}
 
 \paragraph{Transformer.} 
-The proposed research will use the neural transformer model \citep{vaswani_attention_2017} in all three studies. Transformers have achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 
+The primary model used in this work is the neural transformer model \citep{vaswani_attention_2017} in all three studies. Transformers have achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 
 %Like most neural models, the transformer’s main drawback in low-resource settings is its sensitivity to hyper-parameters.
-The proposed research will use the parameters of the Fairseq toolkit \citep{ott2019fairseq} implementation\footnote{\url{https://fairseq.readthedocs.io/en/latest/}}.
+In all cases, the model is implemented with the Fairseq\footnote{\url{https://fairseq.readthedocs.io/en/latest/}} toolkit \citep{ott2019fairseq}.
 For reinflection tasks, \citep{wu_applying_2020} that have been successful with character-level transduction  for morphology learning in low-resource settings
 
 %The standard Transformer encoder consists of identical layers, each of which has a multi-headed self-attention layer, and  one feed-forward layer. A residual connection is around two sub-layers, followed by layer normalization.
@@ -259,6 +263,4 @@ The Transformer is a encoder-decoder model that uses Attention to boost speed an
     \label{fig:transformer}
 \end{figure}
 
-\paragraph{LSTM encoder-decoder.} In one study the proposed research will use a LSTM sequence-to-sequence model with exact hard monotonic attention for character-level transduction \citep{wu-cotterell-2019-exact}. This model is used as neural comparison to the Transformer. 
-
-%DESCRIBE (used for IGT2P).
+\paragraph{LSTM encoder-decoder.} In Chapter \ref{chap:IGT2P} a LSTM sequence-to-sequence model with exact hard monotonic attention for character-level transduction is used \citep{wu-cotterell-2019-exact}. This model is serves as baseline to compare the newer transformer model. 
