@@ -79,9 +79,9 @@ Another issue is that IGT annotators do not usually differentiate between differ
 \section{Experimental Approach}
 
 From the IGT corpora described in Chapter \ref{chap:datamodels} this study used Arapaho, Alas, Lezgi, Manipuri, Nat\"ugu, and Tsez.
-As a first step, partial inflectional paradigms were automatically extracted from the IGT. Words were organized into paradigms based on the gloss of the stem morpheme. Then, these stem glosses were removed, leaving only the affix glosses which serve as morphosyntactic feature tags. 
+As a first step, partial inflectional paradigms were automatically extracted from the IGT. Words were organized into paradigms based on the gloss of the stem morpheme. Then, these stem glosses were removed, leaving only the affix glosses which serve as morphosyntactic feature tags. The data is summarized in Table \ref{tab:IGT2Pdata}.
 
-\begin{table}[]
+\begin{table}[htb]
     \centering
     %\setlength{\tabcolsep}{5.pt}
     \begin{tabular}{l|ccccccc}
@@ -127,12 +127,12 @@ The automatically extracted paradigms were preprocessed in two ways. The resulti
 %\footnote{https://github.com/LINGuistLIU/IGT} 
 In the first preprocessing method, a language domain expert was asked to ``clean'' the automatically extracted paradigms. Example results are in shown Figure \ref{fig:cleaning}. Experts reorganized words into correct inflectional paradigms, for example, by regrouping Lezgi copula verbs. They also completed missing morphosyntatic information; for example, adding PL (plural) or SG (singular) where the nouns were otherwise glossed identically. Finally, they removed any words that are not inflected in the language. This usually included words that are morphologically derived from another part of speech but not inflected. For example, an affix might derive an adverb from a noun root, and if the adverbializing affix was glossed, then the word form would have been extracted automatically, resulting in more noise since it displays derivational morphology and no inflectional morphology. Experts were asked to spend no more than six hours on the cleaning task. 
 
-For the second preprocessing method, the automatically extracted paradigms were surveyed by a non-expert. Since non-experts could not be expected to identify and correct most issues, they simply removed obvious mistakes such as glosses of stem morphemes that were misidentified as affix glosses and word forms with obviously incomplete glosses or ambiguous glosses (due to identical glosses on one or more word forms). For some languages, this cleaning-by-removal made these paradigms smaller than the ``cleaned'' dataset.\mans{Remember to convert the Lezgi paradigms to vector graphics before final submission.}  
+For the second preprocessing method, the automatically extracted paradigms were surveyed by a non-expert. Since non-experts could not be expected to identify and correct most issues, they simply removed obvious mistakes such as glosses of stem morphemes that were misidentified as affix glosses and word forms with obviously incomplete glosses or ambiguous glosses (due to identical glosses on one or more word forms). For some languages, this cleaning-by-removal made these paradigms smaller than the ``cleaned'' dataset.
 
 \begin{figure}
     \centering
-    \includegraphics[width=13cm]{figs/IGT2P-paradigms.pdf}
-    \caption[Noisy to Clean Paradigms]{Lezgi paradigms were automatically constructed from IGT (left columns) and have typos or incorrect paradigms clusters. Experts filtered or corrected these issues, resulting in ``clean'' paradigms (middle). These can be compared with the published description (right column) which includes historic forms that are rarely used today.}
+    \includegraphics[width=15cm]{figs/LezgiParadigms.pdf}[h]
+    \caption[Noisy to Clean Paradigms]{Lezgi paradigms were automatically constructed from IGT (left column) which have typos, incorrect glosses, and wrongly clustered paradigms. Domain experts ``cleaned'' the automatically extracted paradigms (middle column). These can be compared with the published description (right column) which includes several forms that are rarely used in modern spoken Lezgi.}
     \label{fig:cleaning}
 \end{figure}
 
