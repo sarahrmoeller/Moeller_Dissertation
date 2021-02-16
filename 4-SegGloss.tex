@@ -27,10 +27,12 @@ This paper describes experiments that test results of Transformer models \citep{
 
 
 
+\begin{comment}
+
 \section{Data}
 \label{sec:data}
 
-Each project's unique priorities and workflow resulted in different amounts of data and percentages of segmented and glossed tokens, as shown in Table \ref{tab:data}. We selected the four corpora that had been interlinearized with FLEx because that software allowed the annotators to provide both surface and canonical segments. 
+Each project's unique priorities and workflow resulted in different amounts of data and percentages of segmented and glossed tokens, as shown in Table \ref{tab:dissdata}. .
 
 \begin{table}
     \centering
@@ -46,12 +48,15 @@ Each project's unique priorities and workflow resulted in different amounts of d
          Manipuri & 12k & 11,904 & 98\% \\
          \hline
          Natügu & 16.5k & 13,925 & 84\%  \\
+         \hline
+         Upper Tanana & 11,867 & 67\% 
     \end{tabular}
     \caption[Data for Segmentation and Glossing]{The approximate total token considers multiple word expressions (when parsed as such) as single tokens. The percentage and total number of tokens that are both segmented (canonical and surface) and glossed are shown.}
     \label{tab:data}
 \end{table}
 
-%Even projects that employed the same software tool had variable formatting. For example, both Natugu and Bahasa Alas have circumfixing, but in one corpus the prefixed part was labeled as a circumfix and the suffixed part as a suffix, while the other corpus took the opposite approach.
+\end{comment}
+
 
 
 \section{Segmentation and Glossing Experiments}
@@ -126,6 +131,9 @@ The second experiment compares the Transformer's performance when trained on dif
 
 The intention of this study is not to provide a direct comparison, since technically the corpora of surface and canonical segments are different datasets. The study assumes that if one strategy was conducted first, then the other type of segmentation might be more easily learned from it. For example, if a corpus could be surface segmented very quickly with very high accuracy based on initial hypotheses of morpheme shapes, then having the predicted surface segments for the whole corpus might make the discovery of canonical, underlying morphemes easier and faster for linguists, as well as matching a common expectation in NLP. 
 
+For this study, only the corpora that had been interlinearized with FLEx was selected:  Alas, Lamkang, Lezgi, Manipuri, Nat\"ugu, Upper Tanana. This is because FLEx allows the annotators to provide both surface and canonical segments.
+Even though the projects employed the same software tool the corpora had some differences in formatting. For example, in FLEx only one part of the circumfix is labeled as circumfix, the other part as prefix or affix. Both Natugu and Bahasa Alas were annotated for circumfixing, but in one corpus the prefixed part was labeled as a circumfix and the suffixed part as a suffix while the other corpus took the opposite approach. These kinds of variations had to be identified and preprocessed
+
 The difference in the methodology of the two strategies is their outputs. Their input does not change and it is the same as the models described in section \ref{sec:joint}. The output for surface segmentation is shown (\ref{ex:surfout}), and the corresponding output for canonical segmentation is in (\ref{ex:CanOut}).
 
 \pex   
@@ -187,7 +195,7 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
 %Variation of scores for all systems and strategies were very similar.
 %Since less variation is expected from the CRF, it is evaluated on a single training. 
 
-\begin{table}[h]
+\begin{table}[h!]
     \centering
     \begin{tabular}{l|cc|cc}
           & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} \\
@@ -195,6 +203,8 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
          \hline
          Alas & .4280 & \textbf{.4565} & .5166 & \textbf{.5291} \\
           % difference & \multicolumn{2}{c}{.0285} & \multicolumn{2}{c}{.0125} \\
+         \hline
+         Arapaho &  &  & n/a & n/a \\
          \hline
          Lamkang & .7091 & \textbf{.7391} & .5414 & \textbf{.5785} \\
          % difference & \multicolumn{2}{c}{.0300} & \multicolumn{2}{c}{.0371} \\
@@ -208,8 +218,15 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
          Natügu & \textbf{.5423} & .5263 & .6083 & \textbf{.6335 }\\
          % difference & \multicolumn{2}{c}{.0160} & \multicolumn{2}{c}{.0252} \\
          \hline
+         Tsez & n/a & n/a &  &  \\
          \hline
-         Average & .5400 & .5670 & .5011 & .5895 \\
+         So. Sierra Miwok &  &  & n/a & n/a/ \\
+         \hline
+         Upper Tanana &  &  &  &  \\
+         \hline
+         \hline
+         Average &  &  &  & \\
+         %Average (original 4 lgs) & .5400 & .5670 & .5011 & .5895 \\
     \end{tabular}
     \caption[Results of Transformer on Joint and Sequential models]{F$_1$-scores of Transformer joint and sequential models on both segmentation strategies. Scores are an average across a 10-fold cross-validation. The bottom row shows the average score across all languages.}
     \label{tab:allresults}
@@ -250,6 +267,8 @@ The differences in the results in both joint and sequential systems are shown in
          \hline
          Natügu  & -.0660 & -.1072  \\
          %Natügu all & -.0030 & n/a \\
+         \hline
+         Upper Tanana &  &  \\
     \end{tabular}
     \caption[F$_1$-score Differences between Surface and Canonical Segmentation]{Average F$_1$ differences between surface and canonical segmentation strategies. Positive scores mean surface segmentation outperformed canonical segmentation.}
     \label{tab:segdiffresults}
@@ -258,25 +277,37 @@ The differences in the results in both joint and sequential systems are shown in
 
 The segmentation strategies were also compared using all available data in the joint system. Table \ref{tab:segsizeresults} shows the how doubling the training data affects the performance. Doubling the training data always improves F$_1$-scores by about .2 to .4 points. While the difference between the two strategies becomes less noticeable when the data is increased, canonical segmentation tends to outperform surface segmentation, but in all languages the difference between the strategies becomes almost negligible (less than .15 points). 
 
-\begin{table}[h]
+\begin{table}[h!]
     \centering
     \begin{tabular}{l|rr}
           & \textbf{Surface} & \textbf{Canon} \\
          \hline
-         Alas & .4280 & .5166  \\
-         Alas all & .6771 & \textbf{.6902} \\
+         Alas \textit{half} & .4280 & .5166  \\
+         Alas \textit{all} & .6771 & \textbf{.6902} \\
          \hline
-         Lamkang  & .7091 & .5414  \\
-         Lamkang all & .8547 & \textbf{.8573} \\
+         Arapaho \textit{half} &  & n/a \\
+         Arapaho \textit{all} &  & n/a \\
          \hline
-         Lezgi  & .5489 & .4993  \\
-         Lezgi all & \textbf{.7834} & .7735 \\
+         Lamkang \textit{half} & .7091 & .5414  \\
+         Lamkang \textit{all} & .8547 & \textbf{.8573} \\
          \hline
-         Manipuri & .4719 & .6401   \\
-         Manipuri all & .8693 & \textbf{.8903} \\
+         Lezgi \textit{half} & .5489 & .4993  \\
+         Lezgi \textit{all} & \textbf{.7834} & .7735 \\
          \hline
-         Natügu  & .5423 & .6083  \\
-         Natügu all & .8965 & \textbf{.8995} \\
+         Manipuri \textit{half} & .4719 & .6401   \\
+         Manipuri \textit{all} & .8693 & \textbf{.8903} \\
+         \hline
+         Natügu \textit{half}  & .5423 & .6083  \\
+         Natügu \textit{all} & .8965 & \textbf{.8995} \\
+         \hline
+         Tsez \textit{half} & n/a &  \\
+         Tsez \textit{all} & n/a &  \\
+         \hline
+         So. Sierra Miwok \textit{half} &  & n/a \\
+         So. Sierra Miwok \textit{all} &  & n/a \\
+         \hline
+         Upper Tanana \textit{half} &  &  \\
+         Upper Tanana \textit{\textit{all}} &  &  \\
     \end{tabular}
     \caption[Results of Joint Segmentation and Glossing with Increased Data]{Results the joint model with surface and canonical segmentation strategies when using half the training data compared to all training data.}
     \label{tab:segsizeresults}
