@@ -82,16 +82,18 @@ Table \ref{tab:IGTPOSdata} describes the IGT corpora that were selected for this
     \begin{tabular}{l|c|c|p{0.55\linewidth}}
          \textbf{Language} & \textbf{Tokens}  & \textbf{Inflected} & \textbf{POS tag}\\
          \hline
-         Alas & 3845 & 623 & \textsc{\textbf{adj}, \textbf{adv}, aux, cardnum, clf, \textbf{conj}, cop, dem, distrnum, existmrkr, interj,
+         Alas & 3,845 & 412 & \textsc{\textbf{adj}, \textbf{adv}, aux, cardnum, clf, \textbf{conj}, cop, dem, distrnum, existmrkr, interj,
         \textbf{n}, nprop, ordnum, \textbf{prep}, \textbf{pro}, prt, quant, refl, relpro, \textbf{v}, vd, \textbf{vi}, \textbf{vt}} \\
          \hline
          Lamkang  & 46,557  & n/a & \textsc{adn, advl, dem, conn, coordconn, cop, interj, n, npr, num, ordnum, postp, pron, ptc, quant, subo, unk, v, vc, vi, vt} \\
          \hline
-         Lezgi  & 13,636  & 843 & \textsc{\textbf{adj}, \textbf{adv}, cardnum, conn, coordconn, \textbf{dem}, det, indfpro, interj, interrog, msd, multipnum, \textbf{n}, \textbf{nprop}, \textbf{num}, ordnum, \textbf{pers}, \textbf{poss}, post, prep, \textbf{pro}, proform, prt, ptcp, \textbf{recp}, subordconn, \textbf{v}, \textbf{verbprt}, \textbf{vf}, \textbf{vnf}, voc} \\
+         Lezgi  & 13,636  & 588 & \textsc{\textbf{adj}, \textbf{adv}, cardnum, conn, coordconn, \textbf{dem}, det, indfpro, interj, interrog, msd, multipnum, \textbf{n}, \textbf{nprop}, \textbf{num}, ordnum, \textbf{pers}, \textbf{poss}, post, prep, \textbf{pro}, proform, prt, ptcp, \textbf{recp}, subordconn, \textbf{v}, \textbf{verbprt}, \textbf{vf}, \textbf{vnf}, voc} \\
          \hline
-         Manipuri  & 2067  & 3,260 & \textsc{\textbf{adv}, \textbf{interj}, \textbf{n}, \textbf{proform}, \textbf{unk}, \textbf{v}} \\
+         Manipuri  & 2,067  & 2,192 & \textsc{\textbf{adv}, \textbf{interj}, \textbf{n}, \textbf{proform}, \textbf{unk}, \textbf{v}} \\
          \hline
          Natügu  & 10,994  & 1,954 & \textsc{\textbf{a-d-p2}, \textbf{adj}, \textbf{adv}, clause, \textbf{conj}, \textbf{dem}, \textbf{det}, \textbf{gen}, \textbf{gerund}, interrog, intj, \textbf{n}, \textbf{n.(kx.cl)}, ncomp, \textbf{neg}, \textbf{nom1}, np, np(comp), nprop, \textbf{num}, \textbf{ord}, \textbf{particle}, \textbf{pclf}, \textbf{perspro}, \textbf{phrase}, \textbf{pn}, \textbf{posspro}, \textbf{prep}, \textbf{pro}, \textbf{rprn}, \textbf{subr}, \textbf{unk}, \textbf{v}, \textbf{vi}, vp, \textbf{vt}, z-gerund} \\
+         \hline
+         Upper Tanana & 11,198 & n/a & \textsc{} \\
     \end{tabular}
     \caption[IGT POS tags]{The number of segmented, glossed, and POS-tagged tokens. The number of unique inflected words. All POS tags were used for the segmentation and glossing task but tags in boldface were found on inflected words and therefore only used in the reinflection task.}
     \label{tab:IGTPOSdata}
@@ -177,6 +179,8 @@ The training/development/test split is 8/1/1. All models are trained and evaluat
        %  & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & .7708 & .8012 & 0.0 \\
        %Nat\"ugu delta & .0053 & .0324 & .0249 & .0284 & .0209 & .0417 & .0377 & -.0011 \\
        Nat\"ugu & .01 & .03 & .02 & .03 & .02 & .03 & .04 & .00 \\
+       \hline
+       Upper Tanana &  &  &  &  &  &  &  &  \\
     \end{tabular}
     \caption[Segmenting and Glossing with/out POS tags]{The difference in F$_1$ scores with/out POS tags when training segmentation and glossing on increasing amounts of annotated data, as percentages of total available training data. Negative scores indicates that adding POS tags improve results.
     %(pos) and morpheme-level ``POS'' tags (mpos).
@@ -210,6 +214,8 @@ The system either performs worse, or, in the case of Lezgi, makes very small imp
        Manipuri & .8903 & .8885 & .8877 & .8882 & .8889 & .8874 & .8896 & .8897 & \textbf{.8921} \\
        \hline
        Nat\"ugu & .8995 & .8748 & .8782 & .8864 & .8855 & .8932 & .8999 & .8965 & \textbf{.9006} \\
+       \hline
+       Upper Tanana &  &  &  &  &  &  &  &  \\
     \end{tabular}
     \caption[Results with More POS Tags]{F$_1$ scores on segmenting and glossing when trained on all data with increasing percentages of POS tags.}
     \label{tab:POSSGpsp}
