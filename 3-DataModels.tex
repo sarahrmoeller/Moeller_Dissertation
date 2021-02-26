@@ -12,7 +12,7 @@ The selected data corpora are representative of a range of typical documentary a
 \def\arraystretch{1.25}
 \begin{table}[h!]
     \begin{center}
-    \begin{tabular}{lcccccc} 
+    \begin{tabular}{lllll} 
     \textbf{Language} & \textbf{ISO} & \textbf{Family} & \textbf{Morphology} & \textbf{Status} \\
     \hline
     Alas & btz & Austronesian & Agglutinative & Stable \\
@@ -49,7 +49,7 @@ Published linguistic resources are limited, meaning all these languages are unde
 % Although the data was processed in FLEx, it is not surface segmented. I"m not sure how/why this is.
 
 \paragraph{Arapaho}
-is an Algonquian language spoken by about 1,000 people in Wyoming and Oklahoma, USA, but spoken fluently by less than 200. It is a highly polysynthetic, with as much information as possible going into the verb's morphology \citep{cowell_arapaho_2008}. This includes noun incorporation where special forms of certain nouns become part of the verb. The corpus contains texts and elicited sentences documented from the 1880s until the present day, including a few translated texts. They are written in the Arapaho orthography. Most of the data is available through the Endangered Languages Archive\footnote{\url{https://elar.soas.ac.uk/Collection/MPI189644}} or the Center for the Study of Indigenous Languages of the West\footnote{\url{https://www.colorado.edu/center/csilw/arapaho-language-archives}} at the University of Colorado.
+is an Algonquian language spoken by about 200 people in Wyoming, USA, but spoken fluently by less than 50. It is highly agglutinating and polysynthetic, with the verb carrying the heaviest morphological load \citep{cowell_arapaho_2008}. This includes noun incorporation, where special forms of certain nouns become part of the verb. The corpus contains narratives and conversation from the 1880s until the present day, including a few religious texts that are translations from English. The corpus is in the popular Arapaho orthography. Much of the data is available through the Endangered Languages Archive\footnote{\url{https://elar.soas.ac.uk/Collection/MPI189644}} or the Center for the Study of Indigenous Languages of the West\footnote{\url{https://www.colorado.edu/center/csilw/arapaho-language-archives}} at the University of Colorado.
 
 \paragraph{Lamkang} 
 is a Northern Kuki-Chin language in the Tibeto-Burman family. Depending on the primary source of population numbers, speakers are estimated between 4 to 10 thousand people. Speakers live primarily in Manipur, India but also in Burma \cite{lamkang_2007}. Its endangerment status is also not clear. It tends toward agglutination with many stem-stem patterns to signal syntactic categories. Many morphemes are written as separate words in the corpus. There is limited literacy material available. The corpus is at the Computational Resources for South Asian Languages (CoRSAL) digital archive at the University of North Texas.\footnote{\url{https://digital.library.unt.edu/explore/collections/SAALT/}}
@@ -64,7 +64,7 @@ is a Northern Kuki-Chin language in the Tibeto-Burman family. Depending on the p
 belongs to the Reefs-Santa Cruz group in the Austronesian family. It is spoken by about 4,000 people in the Temotu Province of the Solomon Islands. It has a mainly agglutinative morphology with complex verb structures \citep{naess_ntu_2008}. The corpus contains transcribed narratives and a large written text. The data is available through SIL Language and Culture Archives\footnote{\url{https://www.sil.org/resources/search/language/ntu}} or is being deposited at the Pacific and Regional Archive for Digital Sources in Endangered Cultures (PARADISEC).
 
 \paragraph{Southern Sierra Miwok} 
-is a member of the Utian (Miwok-Costanoan) family of central California (USA) \citep{broadbent_southern_1964}. There are very few known speakers. Its verbs inflects inflect for both subjects and objects and has fairly complex derivational morphology with extensive allomorphy. The corpus is archived and available upon request from the Center for the Study of Indigenous Languages of the West at the University of Colorado.\footnote{\url{https://www.colorado.edu/center/csilw/arapaho-language-archives}}
+is a member of the Utian (Miwok-Costanoan) family of central California (USA) \citep{broadbent_southern_1964}. There are likely no fully fluent native speakers remaining. Verbs inflect for both subjects and objects and have fairly complex derivational morphology with extensive allomorphy. The corpus consists of narratives and conversation from the early 1900s to the 1980s, and is archived and available upon request from the Center for the Study of Indigenous Languages at the University of Colorado.\footnote{\url{https://www.colorado.edu/center/csilw/arapaho-language-archives}}
 
 \paragraph{Tsez}
 (Dido) belongs the Tsez-Hinukh branch of the Nakh-Daghestanian family. It is spoken by about 12,500 speakers in Daghestan, Russia. It has a rich agglutinative, suffixing morphology. The corpus is made up of folklore and is part of the Tsez Annotated Corpus Project \citep{abdulaev-tsezcorpus-2010}. It is available online\footnote{\url{https://tsezacp.clld.org/}} stored and preserved by Zenodo.org.
@@ -104,14 +104,8 @@ Only the Arapaho and Tsez corpora can be considered completed (though missing an
          % POS tagged: 3845/4462 = .861
          %inflected: 412
          \hline
-         Arapaho & 300k &  56,922 & 202,993 & 68\%  & 202,993 & 68\% & 0  & 0\%  \\
+         Arapaho & 300k &  56,922 & 202,760 & 69\%  & 201,915 & 68\% & 0  & 0\%  \\
          % 294,774 arp actual number of tokens
-         % segmented and glossed: 202993/294774 = 0.688
-         % MWE count:
-         % MWE seg & glossed: 
-         % surf segmented: 
-         % canonically segmented: 
-         % glossed: 
          \hline
          Lamkang & 101k & n/a & 49,699 & 49\%  & 50,252 & 50\% & 46,557 & 46\% \\
          % segmented & glossed: 50252/101005 = 0.497
@@ -155,6 +149,8 @@ Only the Arapaho and Tsez corpora can be considered completed (though missing an
          Sierra Miwok & 10k  & n/a & 7,422 & 72\% & 7,413 & 72\% & 0  & 0\% \\
          \hline
          Tsez & 53k & 7,315 & 53,025 & 100\% & 53,025 & 100\% & 0  & 0\%  \\
+         %lines: 4949
+         %raw tokens: 53145
          \hline
          Upper Tanana & 17.5k & n/a & 11,930 & 68\% & 11,867 & 67\% & 11,198 & 64\% 
     \end{tabular}
@@ -203,9 +199,10 @@ The experiments use supervised machine learning systems. All implement models ha
 % Some of Ling's stuff was trained on the the research computing infrastructure.
 %The models will be trained for three tasks: 1) morpheme segmentation and glossing, 2) translation, and 3) inflectional paradigm induction.
 
-\paragraph{Conditional Random Fields (CRF).} The best performing non-neural model for sequence prediction such as morpheme segmentation and glossing is Conditional Random Fields (CRF) \citep{lafferty_conditional_2001,muller_efficient_2013,ruokolainen_comparative_2016}. A linear-chain CRF \citep{lafferty_conditional_2001} will be implemented with \textit{CRFsuite} \citep{okazaki2007} and its Python API.\footnote{\url{https://python-crfsuite.readthedocs.io/en/latest/}} 
-The CRF is a sequence classifier that considers the whole sequence of symbols (words, letters, glosses, etc.) when making an individual prediction. It tries to optimize the probability of a complete sequence of labels, where each individual label is given a conditional probability based on the previous label and an arbitrary number of surrounding inputs. %\mans{This is tricky to word correctly. A CRF tries to optimize the probability of a complete sequence labeling, where each individual label gets a conditional probability based on the previous label and arbitrary surrounding inputs. Let's make sure to revisit this at some point.} 
+\paragraph{Conditional Random Fields (CRF).} The best performing non-neural model for sequence prediction such as morpheme segmentation and glossing is Conditional Random Fields (CRF) \citep{lafferty_conditional_2001,muller_efficient_2013,ruokolainen_comparative_2016}. The CRF is a sequence classifier that considers the whole sequence of symbols (words, letters, glosses, etc.) when making an individual prediction. It tries to optimize the probability of a complete sequence of labels, where each individual label is given a conditional probability based on the previous label and an arbitrary number of surrounding inputs. %\mans{This is tricky to word correctly. A CRF tries to optimize the probability of a complete sequence labeling, where each individual label gets a conditional probability based on the previous label and arbitrary surrounding inputs. Let's make sure to revisit this at some point.} 
 The CRF has performed well on boundary detection (segmentation) and labeling (glossing). 
+
+This work implements a linear-chain CRF \citep{lafferty_conditional_2001} with \textit{CRFsuite} \citep{okazaki2007} and its Python API.\footnote{\url{https://python-crfsuite.readthedocs.io/en/latest/}} The training parameters uses L-BFGS optimization \cite{liu1989} and Elastic Net regularization, i.e. a linear combination of $L_1$ and $L_2$ penalties. Maximum iterations for early stopping are set at 50.
 
 
 \begin{figure}
@@ -235,11 +232,11 @@ p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_
 
 \noindent Here, $Z$ is the ``partition function'' which normalizes the expression to a proper distribution over all possible taggings given an input. 
 
-\paragraph{Support Vector Machine (SVM).} Experiments with segmentation and glossing will compare sequential and joint methods. One sequential methods first segments morphemes with the CRF and then glosses them with a Support Vector Machine (SVM) \citep{svm_cortes}. The SVM will label only after segmentationg is done by the CRF, using its own feature scheme. The SVM will be implemented as a multi-class linear SVM using the LIBLINEAR package \citep{fan2008}. It creates hyperplanes to separate the data into classes. The optimal hyperplane is found by maximizing the margin between the closest data points in each class, as illustrated in Figure \ref{fig:SVM}. These data points are the support vectors. Like CRF, the SVM learns from extracted features.
+\paragraph{Support Vector Machine (SVM).} Experiments with segmentation and glossing will compare sequential and joint methods. One sequential methods first segments morphemes with the CRF and then glosses them with a Support Vector Machine (SVM) \citep{svm_cortes}. The SVM will label only after segmenting is done by the CRF, using its own feature scheme. The SVM will be implemented as a multi-class linear SVM using the LIBLINEAR package \citep{fan2008}. It creates hyperplanes to separate the data into classes. The optimal hyperplane is found by maximizing the margin between the closest data points in each class, as illustrated in Figure \ref{fig:SVM}. These data points are the support vectors. Like CRF, the SVM learns from extracted features.
 
 %\Mans{You should make clear that we used an SVM as a labeler after the segmentation was done, using some feature scheme. Otherwise a reader will be confused as to how you an SVM as a sequence labeler (possible, but not normally done) vs. a CRF which is inherently a sequence labeler.}
 
-\begin{figure}
+\begin{figure}[b]
     \centering
     \includegraphics[width=5cm]{figs/SVM1.jpg}
     \caption[Support Vector Machine]{A Support Vector Machine (SVM).\footnote{source: www.aitrends.com/ai-insider/support-vector-machines-svm-ai-self-driving-cars/}}
@@ -247,20 +244,21 @@ p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_
 \end{figure}
 
 \paragraph{Transformer.} 
-The primary model used in this work is the neural transformer model \citep{vaswani_attention_2017} in all three studies. Transformers have achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 
+The primary model used in this work is the neural transformer model \citep{vaswani_attention_2017} in all three studies. The Transformer is a state-of-the-art neural model architecture for morphological tasks \citep{vylomova2020sigmorphon} that has achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 
 %Like most neural models, the transformer’s main drawback in low-resource settings is its sensitivity to hyper-parameters.
-In all cases, the model is implemented with the Fairseq\footnote{\url{https://fairseq.readthedocs.io/en/latest/}} toolkit \citep{ott2019fairseq}.
-For reinflection tasks, \citep{wu_applying_2020} that have been successful with character-level transduction  for morphology learning in low-resource settings
-
+It is a encoder-decoder model that uses Attention to boost speed and performance, as illustrated in Figure \ref{fig:transformer}. Attention allows the model to look at different elements in the sequence to help it encode/decode a given element before feeding it to the next encoder. The decoder has an additional attention layer that allows it to focus not only on the input sentence but also on the output sequence up to the element it is decoding. The order of elements in the sequence is represented as an embedding which is input to the encoder/decoder. 
 %The standard Transformer encoder consists of identical layers, each of which has a multi-headed self-attention layer, and  one feed-forward layer. A residual connection is around two sub-layers, followed by layer normalization.
-
-The Transformer is a encoder-decoder model that uses Attention to boost speed and performance, as illustrated in Figure \ref{fig:transformer}. Attention allows the model to look at different elements in the sequence to help it encode/decode a given element before feeding it to the next encoder. The decoder has an additional attention layer that allows it to focus not only on the input sentence but also on the output sequence up to the element it is decoding. The order of elements in the sequence is represented as an embedding which is input to the encoder/decoder. 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=14cm]{figs/Transformer_simplified.png}
+    \includegraphics[width=10cm]{figs/Transformer_simplified.png}
     \caption[Transformer]{The Transformer encoder.\footnote{source: http://jalammar.github.io/illustrated-transformer/}}
     \label{fig:transformer}
 \end{figure}
+
+In all cases, the model is implemented with the Fairseq\footnote{\url{https://fairseq.readthedocs.io/en/latest/}} toolkit \citep{ott2019fairseq} with modifications and code \citep{wu_applying_2020} that have been successful with character-level transduction for morphology learning in low-resource settings. The parameters employed were $N=4$ layers for the encoder and the decoder, each with 4 self-attention heads. The embedding size for the encoder and decoder is 256, and the hidden layer size is 1024. A dropout rate of 0.3 for encoding and beam search with a width of 5 at decoding time was used. The adam algorithm \citep{kingma2014adam} ($\beta_1 = 0.9$, $\beta_2 = 0.98$) was used to optimize the cross entropy loss with label smoothing \citep{szegedy2016rethinking} of 0.1. 
+%\footnote{4 encoder-decoder layers, 4 self-attention heads, 256 embedding size, 1024 hidden size of feed-forward layer, layer normalization before self-attention, decoding left-to-right in a greedy fashion} 
+
+
 
 \paragraph{LSTM encoder-decoder.} In Chapter \ref{chap:IGT2P} a LSTM sequence-to-sequence model with exact hard monotonic attention for character-level transduction is used \citep{wu-cotterell-2019-exact}. This model is serves as baseline to compare the newer transformer model. 

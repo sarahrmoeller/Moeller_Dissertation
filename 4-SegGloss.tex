@@ -59,12 +59,12 @@ Each project's unique priorities and workflow resulted in different amounts of d
 
 
 
-\section{Segmentation and Glossing Experiments}
+\section{Experiments}
 \label{sec:methodology}
 
-The experiments assume access to field data that has only been segmented and glossed. Therefore, no other information was leveraged from the interlinearized glossed texts or elsewhere. Gold standard data was assembled by filtering out tokens that were not completely segmented and glossed as far as could be determined automatically by assuring that the surface, canonical, and gloss lines aligned with each other. 
+The segmentation and glossing experiments assume access to field data that has only been segmented and glossed. For this reason, no other information was leveraged from the interlinearized glossed texts or elsewhere. Gold standard data was assembled by filtering out tokens that were not completely segmented and glossed as far as could be determined automatically by assuring that the surface, canonical, and gloss lines aligned with each other. 
 %Glosses were standardized by capitalizing affix glosses. Glosses for one morpheme that had alternate English words separate by spaces were joined by periods.
-Morpheme boundary markers such as hyphens and equal signs were preserved to distinguish clitics from bound morphemes and to indicate relative ordering of morphemes (i.e. pre-/suf/infixing); angle brackets (\textlangle{} \textrangle{}) were used to denote circumfixes. 
+Morpheme boundary markers such as hyphens ( - ) and equal signs ( = ) were preserved to distinguish clitics from bound morphemes and to indicate relative ordering of morphemes (i.e. pre-/suf/infixing); angle brackets ( \textlangle{}\textrangle{} ) were used to denote circumfixes. 
 
 The data was arranged so as to accommodate both joint and sequential learning. That is, after withholding ten percent of the corpus as a test set, the remaining data was split into two equal training sets. It is assumed that segments and glosses exist for the first part which can be used for training in the sequential system, but not for the second part. Ten percent of each part was used as a development set. For easier comparison, the joint model was trained on only one part, the same part used for training the segmentation step in the sequential system. One additional experiment was run with the joint model that trained on both parts together, minus the held-out data. For each experiment, a ten-fold cross validation was run. 
 
@@ -72,7 +72,7 @@ All tasks are treated as a problem of converting an input sequence of characters
 %Pilot work showed that any context provided by training on a whole sentence confused the system more than helped it, so each data instance is a word. 
 
 
-\subsection{Joint versus Sequential System}
+\subsection{Joint vs. Sequential}
 \label{sec:joint}
 
 The first experiment tested whether joint or sequential segmentation and glossing is a better approach to interlinearization when integrating automated assistance. Joint segmentation assumes that segmented data without glosses is unlikely because identifying a morpheme usually means there has already been an identification of the morpheme's meaning.
@@ -124,7 +124,7 @@ The output of the segmentation model is used as input to the second model, as sh
 %\xe
 
 
-\subsection{Segmentation Strategy}
+\subsection{Surface vs. Canonical Segmentation Strategies}
 \label{sec:strategies}
 
 The second experiment compares the Transformer's performance when trained on different segmentation strategies. Both systems described above are trained on both strategies. Canonical segmentation gives more information about a language's underlying morphological structure. At the same time, it reduces the number of unique labels in languages that reflect allomorphy and morphophonological processes in the orthography. On the other hand, surface segmentation does not require computational models to learn allomorphy or morphophonology \citep{goldsmith_computational_2017} and does not provide a thorough analysis of the language's morphology by annotators. It simply divide strings of text into segments known as ``morphs'' \citep{virpioja_empirical_2011} without regard to potential relationships between the segments. 
@@ -158,33 +158,26 @@ In addition to the alternation between surface morphs and underlying morpheme re
 
 
 \subsection{Feature-based vs. Deep Learning}
+\label{sec:CRFvNN}
 
-The authors' previous work on Lezgi \citep{moeller_automatic_2018} used the same corpus as the current work and compared sequential vs. joint models as well as feature-based vs. deep learning models. The reported F$_1$-scores were nearly .9. However, a direct comparison between the two studies cannot be made because the previous work only segmented and glossed affixes while the current work includes root and affixes.
+This third experiment compare segmentation and glossing approaches when using feature-based versus deep learning models. In low-resource settings, it is still important to compare the two types of models. Until recently, non-neural models regularly outperformed neural models in low-resource settings and do still sometimes outperform them. For example, previous work on Lezgi \citep{moeller_automatic_2018} used the same corpus as the current work does and found the CRF outperformed the then state-of-the-art LSTM with reported F$_1$-scores of nearly .9. (A direct comparison cannot be made to this work because only affixes were glossed while the current work also glosses roots.) 
 
+With the neural Transformer, this task is treated exactly as described in sections \ref{sec:joint} and \ref{sec:strategies} using the Fairseq model as described in \ref{chap:datamodels}. The CRF and the SVM are the two non-neural models are used, as described below.
 
-The Conditional Random Fields (CRF) \citep{lafferty_conditional_2001}, the state-of-art non-neural sequence labeling model, has not performed as well as neural models on low-resource sequence-to-sequence tasks since about 2016 \citep{liu2016morphological}, we selected the Transformer \citep{vaswani_attention_2017} as our model. The Transformer is a supervised machine learning system that has achieved 
-%Until recently, non-neural models regularly outperformed neural models in low-resource settings, so we the feature-based Conditional Random Fields model (CRF) and the neural Transformer model. 
-promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. It is a stateless encoder-decoder model that uses additional attention layers to boost speed and performance. 
-%The decoder has an additional attention layer that allows it to focus not only on the input sentence but also on the ouput sequence up to the element it is decoding. The order of elements in the sequence is represented as an embedding which is input to the encoder/decoder. 
-We used the Fairseq \citep{ott2019fairseq} implementation with the modifications and code described by \citet{wu2020applying} which have been successful in low-resource character-level morphological tasks.\footnote{Code available here: \url{github.com/shijie-wu/neural-transducer}}
-%\footnote{4 encoder-decoder layers, 4 self-attention heads, 256 embedding size, 1024 hidden size of feed-forward layer, layer normalization before self-attention, decoding left-to-right in a greedy fashion} 
-%The CRF \citep{lafferty_conditional_2001} is the best performing non-neural model for sequence prediction such as morpheme segmentation and glossing \citep{muller_efficient_2013,ruokolainen_comparative_2016}. The CRF scores predictions over the whole sequence and then transformed into a probability distribution. A linear-chain CRF was implemented with \textit{CRFsuite} \citep{okazaki2007} and its Python API.\footnote{\url{https://python-crfsuite.readthedocs.io/en/latest/}} 
-%The CRF is a sequence classifier that considers the whole sequence of symbols (words, letters, glosses, etc.) when making an individual prediction. It optimizes the probability of a complete sequence of labels, where each individual label is given a conditional probability based on the previous label and an arbitrary number of surrounding inputs. 
-%The CRF has performed well on boundary detection (segmentation) and labeling (glossing). 
+\paragraph{BIO-labeling.} 
+We use a linear-chain Conditional Random Field (CRF) \cite{lafferty2001} to train a sequence model where the input consists of individual characters and the output of a BIO-labeling \cite{ramshaw1999} of the sequence, i.e. we treat this as a labeling problem of converting an input sequence of letters $\vect{x} = (x_1, \ldots, x_n)$ to an output sequence of BIO-labels $\vect{y} = (y_1, \ldots, y_n)$.
 
-%The conditional distribution of the output sequence {\bf y}, given the input {\bf x} can be modeled as
+In the training data, each letter is associated with a Beginning-Inside-Outside (BIO) tag---a type of tagging where each position is declared either the beginning (B) of a chunk or morpheme, inside (I) or outside (O). The BIO tags are specific to each type of morpheme. BIO tags include (1) the morpheme type for stem morphemes (e.g. B-stem) or (2) affix glosses (e.g. I-DAT for a non-initial letter of a morpheme marking dative case). This combination of BIO tags and specific labels allows the system to perform segmentation and labeling/glossing simultaneously.  For example, in tagging the Lezgi verb \textit{ava}, with the morphemes \textit{y} (PTP), and \textit{di} (SBST) the representation would be as in (\ref{ex:BIOlabels}):
 
-%\begin{equation}
-%p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_i,\vect{x},i)\Big)
-%\end{equation}
+\pex   
+\label{ex:BIOlabels}
+\a<a> {\bf INPUT:} \hspace{8 mm}  a \hspace{6 mm}  v \hspace{5 mm} a \hspace{7 mm} y \hspace{9 mm} d \hspace{10 mm} i
+\a<b> {\bf OUTPUT:} \hspace{1 mm} B-\textsc{be} & I-\textsc{be} & I-\textsc{be} & B-\textsc{ptp} & B-\textsc{sbst} & I-\textsc{sbst}
+\xe
 
-%\noindent where $\phi$ is the feature extraction function which can be expressed through a sum of $k$ individual component functions
+\paragraph{Sequential Approach: CRF+SVM.}
+The sequential approach that first segments and then glosses allows a richer set of contextual features for the glossing step. Here, the CRF is employed only for segmentation and is used as described above but without the morpheme specific labels. After predicting BIO tags at the character-level, characters are combined into predicted morpheme strings. Then a multi-class linear Support Vector Machine (SVM) is trained to classify the segmented morphemes with the glosses. This allows the SVM to use surrounding morphemes as features (but not subsequent glosses). The SVM is trained on the concatenated features of every character in the CRF-predicted morphemes and the gloss of the morpheme's CRF-predicted initial letter.
 
-%\begin{equation}
-%\phi(y_{i-1}, y_i,\vect{x},i) = \sum_k w_k f_k(y_{i-1}, y_i,\vect{x},i)
-%\end{equation}
-
-%\noindent Here, $Z$ is the ``partition function'' which normalizes the expression to a proper distribution over all possible taggings given an input.
 
 \section{Results}
 \label{sec:results}
@@ -275,7 +268,7 @@ The differences in the results in both joint and sequential systems are shown in
 \end{table}
 
 
-The segmentation strategies were also compared using all available data in the joint system. Table \ref{tab:segsizeresults} shows the how doubling the training data affects the performance. Doubling the training data always improves F$_1$-scores by about .2 to .4 points. While the difference between the two strategies becomes less noticeable when the data is increased, canonical segmentation tends to outperform surface segmentation, but in all languages the difference between the strategies becomes almost negligible (less than .15 points). 
+The segmentation strategies were also compared using all available data in the joint system. Table \ref{tab:segsizeresults} shows the how doubling the training data affects the performance of the Transformer. Doubling the training data always improves F$_1$-scores by about .2 to .4 points. While the difference between the two strategies becomes less noticeable when the data is increased, canonical segmentation tends to outperform surface segmentation, but in all languages the difference between the strategies becomes almost negligible (less than .15 points). 
 
 \begin{table}[h!]
     \centering

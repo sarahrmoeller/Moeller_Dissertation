@@ -110,10 +110,6 @@ It is worth emphasizing that the Lamkang (used only for the segmentation and glo
 %`~~~' and unk is used for untagged words. Not included
 
 
-\section{Models}
-
-For simple comparisons, a single neural model architecture was chosen for both tasks. The tasks were trained with the Transformer \citep{vaswani_attention_2017}, a state-of-the-art neural model architecture for morphological tasks \citep{vylomova-etal-2020-sigmorphon}, using the implementation of the Transformer model in the Fairseq toolkit \cite{ott_fairseq_2019}\footnote{\url{https://fairseq.readthedocs.io/en/latest/}} with character-level transduction \citep{wu_applying_2020} for morphology learning in low-resource settings. Following \citep{wu_applying_2020}, the parameters employed were $N=4$ layers for the encoder and the decoder, each with 4 self-attention heads. The embedding size for the encoder and decoder is 256, and the hidden layer size is 1024. A dropout rate of 0.3 for encoding and beam search with a width of 5 at decoding time was used. The adam algorithm \citep{kingma2014adam} ($\beta_1 = 0.9$, $\beta_2 = 0.98$) was used to optimize the cross entropy loss with label smoothing \citep{szegedy2016rethinking} of 0.1. All models were trained on an NVIDIA GP102 [TITAN Xp] GPU for 10k maximum updates with a batch size of 400.
-
 \section{POS for Segmentation and Glossing}
 \label{sec:seggls}
 
@@ -122,7 +118,7 @@ The first study asks whether POS tags makes a significant impact on automated mo
 \subsection{Experimental Setup}
 \label{sec:segglssetup}
 
-Three Transformer models were trained. The English example in (\ref{ex:POSSG}) shows the input and output of models 1, 2, and 3. Model 1, shown in (\ref{ex:POSSG1in}), has no POS tags. Model 2 and 3 has a POS tags, as shown in (\ref{ex:POSSG23in}). Model 2 has POS tags on every word but Model 3 includes POS tags only for certain proportions of word, simulating projects unable to complete POS-tagging.
+For simple comparisons, the Transformer was chosen for both tasks. Three Transformer models were trained. The English example in (\ref{ex:POSSG}) shows the input and output of models 1, 2, and 3. Model 1, shown in (\ref{ex:POSSG1in}), has no POS tags. Model 2 and 3 has a POS tags, as shown in (\ref{ex:POSSG23in}). Model 2 has POS tags on every word but Model 3 includes POS tags only for certain proportions of word, simulating projects unable to complete POS-tagging.
 
 \pex<POSSG>   
 \label{ex:POSSG}
