@@ -1,13 +1,24 @@
 \chapter{Introduction}
 \label{chap:intro}
 
-In the early 1990s it was suggested that linguistics might be the first academic discipline to preside over its own demise. As much as 90\% of the world’s 7,000 languages are predicted to become extinct by the end of the 21st century \citep{krauss_worlds_1992,krauss_keynote--mass_2007,campbell_new_2013}. We have little data or knowledge about most of those languages. It is critical that languages  be documented and described before they disappear. % without sufficient accessible data.Since the disquieting warning about language endangerment, 
+In the early 1990s it was suggested that linguistics might be the first academic discipline to preside over its own demise. As much as 90\% of the world’s 7,000 languages were predicted to become extinct by the end of the 21st century \citep{krauss_worlds_1992,krauss_keynote--mass_2007,campbell_new_2013}. 
+Linguists responded by putting greater emphasis on the documentation and description of endangered languages, and over the past thirty years have steadily broadened our knowledge of the world's languages. Today the estimate has been reduced \cite{eberhard_ethnologue:2020} but we still have little data or knowledge about most of the endangered languages. It is critical that languages be documented and described quickly before they disappear. % without sufficient accessible data.Since the disquieting warning about language endangerment, 
 %Linguistic structures and language development cannot be studied without accessible data. 
-We have little data or knowledge about most of those languages, making it critical to document and describe new languages quickly. Linguists responded by putting greater emphasis on the documentation and description of endangered languages, and over the past thirty years have steadily broadened our knowledge of the world's languages. However, current methods are
-%including the process of annotating texts and analyzing morphological paradigms, 
-are too slow to counteract the crisis of language endangerment. 
+%We have little data or knowledge about most of those languages, making it critical to document and describe new languages quickly. 
 
-If the production of accessible data is to match the pace of language extinction, computational methods must be effectively integrated into the workflow of language documentation and description. Unfortunately, natural language processing (NLP) has not responded as quickly to the language endangerement crisis. Since the 1990s, machine learning systems, capable of learning complex patterns in data, have gained tremendous success in NLP
+\begin{figure}[tb]
+\centering
+\includegraphics[width=5.75cm]{figs/Flowchart.PNG}
+\caption[Language Data Production]{Language Data Production}
+\label{fig:flowchart}
+\end{figure}
+
+The general flow of documentary and descriptive work is illustrated in Figure \ref{fig:flowchart}. A team of linguists and native speakers (a) collaborate to document and conduct basic linguistic analysis and annotate language data. Annotated data can be used for linguistic research, NLP development, and to benefit the community of speakers. However, because annotation is time- and labor-intensive work, a significant portion of documented language data remains inaccessible (b) to the first two groups, and to a lesser extent, to the communities. The methods presented here will make more data accessible by integrating NLP machine learning systems to speed and improve linguistic analysis and annotation (c). The research also looks at ways linguists and NLP scientists may want to adjust their expectations and customary workflows in order to more effectively integrate machine learning and linguistic field data for optimal results. 
+
+Current methods in language documentation and description are
+%including the process of annotating texts and analyzing morphological paradigms, 
+are too slow to counteract the crisis of language endangerment.
+If the production of accessible data is to match the pace of language extinction, computational methods must be effectively integrated into the workflow of language documentation and description. However, natural language processing (NLP) has not responded as quickly to the language endangerement crisis. Since the 1990s, machine learning systems, capable of learning complex patterns in data, have gained tremendous success in NLP
 %Typically, state-of-the-art systems, specifically neural networks, require hundreds of thousands, or even millions, of data instances (words, sounds, sentences, etc.) to achieve state-of-the-art results. Few languages have more than a couple of thousand tokens,
 %, let alone much available data, 
 but research has been focused on a handful of beyond a handful economically or politically powerful languages such as Chinese, Arabic, English and other European languages. These languages are well documented and described. None 
@@ -16,35 +27,19 @@ are endangered.%\mans{The big data requirement is pretty specific to neural mode
 
 Fortunately, this is changing. In recent years, NLP research with limited data has burgeoned. This is evidenced, for instance, by the 2015-2019 DARPA-funded LORELEI project, motivated in part by the 2014 Haiti earthquake where disaster aid was hampered by language. Haitian Creole is a language rarely encountered in NLP. When medicine and clean water were available, foreign aid workers struggled to process information that told them where supplies were most urgent. 
 
-Despite this growth, very few NLP systems have been integrated into the process of documenting and describing endangered languages. This may be due to challenges presented by the dynamic, evolving nature of ongoing linguistic analysis and the inconsistencies that arise from manual annotation of data. To overcome these challenges linguists must know how to adjust their methods
-%their methods to the specifications of machine learning specifications 
-so they can benefit from NLP tools.
+Despite this growth, very few NLP systems have been integrated into the process of documenting and describing endangered languages. This is undoubtedly due in large part to the fact that state-of-the-art supervised machine learning models depends on large amounts of annotated data (on the order of hundreds of thousands or millions of tokens) and to challenges presented by the dynamic, evolving nature of ongoing linguistic analysis and the inconsistencies that arise from manual annotation of field data. To overcome these challenges methods must be developed that allow documentary and descriptive linguists from NLP and \textit{vice versa}.
+This dissertation investigates methods for more effectively leveraging machine learning systems for language documentation and description, particularly for morphological analysis and annotation. 
 
 
-\section{Overview of Research}
+%\section{Overview of Research}
 
-\begin{figure}[b]
-\centering
-\includegraphics[width=5.75cm]{figs/Flowchart.PNG}
-\caption[Language Data Production]{Language Data Production}
-\label{fig:flowchart}
-\end{figure}
-
-
-!!!! WRITE OUT MOTIVATIONS AND BACKGROUND FROM PROSPECTUS PRESENTATION !!!!
-
-The proposed dissertation research will examine some current language documentation and description methods and investigate how they might be leveraged to more effectively integrate NLP. The general flow of documentary and descriptive work and outcomes is illustrated in Figure \ref{fig:flowchart}. A team of linguists and native speakers (a) collaborate to document and conduct basic linguistic analysis on language data. That data benefits linguistic sciences, NLP development, and the community of speakers. However, because annotating the data is time- and labor-intensive work, a significant portion of that data remains inaccessible (b) to the first two groups, and to a lesser extent, to the community. The proposed dissertation will promote ways to make more data accessible through the integrating NLP systems of machine learning (c). Machine learning can increase %provide automated assistance to document and describe endangered languages with 
-speed and accuracy of annotation, but only if linguists know how to make effective use of it. The proposed research 
-%will focus on effective integration of machine learning into language documentation and description. It 
-will look at ways linguists can adjust their work, specifically as related to interlinearization, so that when machine learning is integrated optimal results are achieved. 
-%The proposed research focuses on effective integration for morphological annotation and analysis.
-
-The proposed dissertation is motivated by a “yawning gap” between the amount of documented data deposited in language archives and the portion of the data that is actually usable for research \citep{seifart_language_2018}. This gap is caused by what has been described as an ``annotation bottleneck'', illustrated in Figure \ref{fig:bottleneck}. The bottleneck exists because the accepted annotations methods are tedious, time-consuming, and expensive, performed primarily by hand from start to finish \citep{simons_worlds_2013,holton_developing_2017}.
-%The process is labor- and time-intensive. Manual annotation is subject to human error, with many mistakes and inconsistencies due not to the difficulty of the task, but to its repetitive and monotonous nature.
-Budget and time constraints often mean that large portions of the data produced by field projects are left unannotated. They remain untapped resources. 
+This work is motivated by a “yawning gap” between the amount of documented data deposited in language archives and the portion of the data that is actually usable for research \citep{seifart_language_2018}. This gap is caused by what has been described as an ``annotation bottleneck'' (Figure \ref{fig:bottleneck}) because currently tedious, time-consuming, and expensive annotations are performed primarily by hand from start to finish \citep{simons_worlds_2013,holton_developing_2017}. Manual annotation is subject to human error, introducing inconsistencies and typos, due often not to the difficulty of the task, but to its repetitive and monotonous nature. Other noise in the annotation arise because early annotation is the method for linguists to discover and understand the language's structure. As their understanding grows, analyses change and this is reflected in later annotations.
+Budget and time constraints often mean that large portions of the data produced by field projects are left uncorrected and simply unannotated. The unannotated portions of documentary corpora remain untapped resources. 
 %These resources could inform the development of linguistics science and NLP. They could also build human language technology that would benefit the communities that speak them. 
 
-\begin{figure}[hbt]
+The overarching question of this dissertation asks: \emph{How might the integration of machine learning into language documentation and description affect currently accepted expectations, methods, and workflows?} It addresses that question by examining how current expectations and methods affect machine learning performance on morphological analysis and annotation and exploring new methods for effectively exploiting existing annotations to boost machine learning performance on these tasks. This will be done with three studies with various NLP machine learning models and documentary and descriptive corpora from several under-documented languages:
+
+\begin{figure}[t]
     \centering
     \includegraphics[width=5.5cm]{figs/AnnotationFunnel.jpg}
     \caption[Annotation Bottleneck]{Annotation bottleneck in language documentation and description.}
@@ -52,33 +47,26 @@ Budget and time constraints often mean that large portions of the data produced 
 \end{figure}
 
 
-The proposed dissertation asks: \emph{How would/should the integration of machine learning affect currently accepted workflows of language documentation and description?} It will address the annotation bottleneck by examining how current methods affect machine learning performance and investigating the potential of incorporating machine learning as automated assistance. This will be done with three studies that use NLP machine learning models and documentary and descriptive corpora from several endangered or under-documented languages.
-
 \begin{enumerate}
-\item{} \textbf{Automating Joint Segmentation and Glossing:} How do choices made during interlinearization (i.e. surface versus canonical segmentation, in/consistent manual annotation) affect machine learning results on morpheme segmentation and glossing? How do different machine learning models perform on the data?
+\item{} \emph{Automating Segmentation and Glossing:} How do variations conventional expectations from NLP and from linguistics and their resulting research designs affect machine learning performance on morpheme segmentation and glossing of documentary and descriptive data? 
 
-%\item{} \textbf{Balance of Interlinearization Tasks:} When faced with limited time, how does integration of machine learning dictate the priorities of completing different interlinear lines? 
-%segmentation and glossing over free translation? 
-%    \begin{itemize}
-%        \item{} What ratio of completed lines achieves optimal machine learning performance on all interlinear lines?
-%        \item{} To what extent does completion of other interlinear lines affect the results on any one line? I.e.  Does leveraging glosses improve machine translation? Can information extracted from other lines of interlinear glossed texts improve segmentation and glossing?  
-%    \end{itemize}
+\item{} \emph{Morphological Paradigm Induction from Interlinear Glossed Texts (IGT2P):} To what extent can machine learning models learn morphological inflection patterns from manually interlinearized texts?
 
-\item{} \textbf{Morphological Description:} To what extent can manually interlinearized texts be utilized for computational induction of morphological inflection patterns?
-
-\item \textbf{Priority of Part of Speech Tagging:} How should the priorities of part of speech tagging in NLP influence the priorities of documentary and descriptive work?
-
+\item \emph{Priority of Part of Speech Tagging:} 
+What impact does traditional high priority of part of speech tagging in NLP have on machine learning of morpheme segmentation and glossing and paradigm induction?
 \end{enumerate}
 
-\section{Expected Results and Implications}
 
-The contribution of the proposed research will be four-fold. First, this research will automated typical documentary/descriptive tasks in different languages, testing cross-linguistic techniques that can produce new data in any language more quickly and accurately than is possible with current methods. Second, by testing a process to learn inflectional paradigms the research will integrate machine learning to build and test holistic hypotheses about a new language's structure. Third, Rather than using the curated and polished data that NLP systems are normally trained on, this research will leverage field data which is sometimes the only annotated data available for a language. As such, it may uncover as-yet unforeseen challenges for NLP systems in low-resource settings. 
-%Third, it will establish not only that new computational methods can be successfully integrated into language documentation and description, but it will examine how NLP assumptions about data might impact linguistics field methods. It will study what happens when NLP priorities are borrowed directly for documentary and descriptive linguistics, specifically the priority of part of speech (POS) tagging. 
-Fourth, the proposed research will increase annotated data in seven low-resource languages. These languages represent a range of linguistic structures and language families. They are spoken by communities across five continents. Increased annotated data will allow more thorough testing of linguistic theories and computational models.
+%\section{Contributions}
+
+The goals of this research is four-fold. First, it shows that it is possible and practical to use machine learning to perform annotation by developing and applying methods that improve results on typologically diverse languages with limited training data. Second, by learning inflectional paradigms and accurately generation inflected forms, it demonstrates that machine learning can be used to build and test hypotheses about a language's morphological structure. Third, by training on noisy linguistic field data rather than curated and polished data that NLP systems are typically trained on, this research proves that the sometimes only annotated data available for a under-documented language can be used to effectively train machine learning models. 
+%As such, it may uncover as-yet unforeseen challenges for NLP systems in low-resource settings. 
+%It will study what happens when NLP priorities are borrowed directly for documentary and descriptive linguistics, specifically the priority of part of speech (POS) tagging. 
+Fourth,  it will increases annotated data in several low-resource languages that represent a range of linguistic structures and language families. This increased annotated data allows more thorough testing of linguistic theories and computational models.
+In summary, this work will establish that new computational methods can be successfully integrated into language documentation and description. 
 
 %One goal of the research is to prove that machine learning systems can achieve reasonable performance when trained on the often noisy data produced by documentary and descriptive projects.
 
-%The contribution of the proposed dissertation will be four-fold. 
 %study effective integration of computational methods that could open the annotation bottleneck. 
 %caused by current time-consuming manual methods to produce morpheme segmentation, glossing, free translation, and first-pass hypotheses of morphological inflectional paradigms. 
 
