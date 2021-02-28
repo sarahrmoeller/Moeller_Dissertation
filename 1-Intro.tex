@@ -33,10 +33,6 @@ This dissertation investigates methods for more effectively leveraging machine l
 
 %\section{Overview of Research}
 
-This work is motivated by a “yawning gap” between the amount of documented data deposited in language archives and the portion of the data that is actually usable for research \citep{seifart_language_2018}. This gap is caused by what has been described as an ``annotation bottleneck'' (Figure \ref{fig:bottleneck}) because currently tedious, time-consuming, and expensive annotations are performed primarily by hand from start to finish \citep{simons_worlds_2013,holton_developing_2017}. Manual annotation is subject to human error, introducing inconsistencies and typos, due often not to the difficulty of the task, but to its repetitive and monotonous nature. Other noise in the annotation arise because early annotation is the method for linguists to discover and understand the language's structure. As their understanding grows, analyses change and this is reflected in later annotations.
-Budget and time constraints often mean that large portions of the data produced by field projects are left uncorrected and simply unannotated. The unannotated portions of documentary corpora remain untapped resources. 
-%These resources could inform the development of linguistics science and NLP. They could also build human language technology that would benefit the communities that speak them. 
-
 The overarching question of this dissertation asks: \emph{How might the integration of machine learning into language documentation and description affect currently accepted expectations, methods, and workflows?} It addresses that question by examining how current expectations and methods affect machine learning performance on morphological analysis and annotation and exploring new methods for effectively exploiting existing annotations to boost machine learning performance on these tasks. This will be done with three studies with various NLP machine learning models and documentary and descriptive corpora from several under-documented languages:
 
 \begin{figure}[t]
@@ -57,13 +53,16 @@ What impact does traditional high priority of part of speech tagging in NLP have
 \end{enumerate}
 
 
-%\section{Contributions}
+This work is motivated by a “yawning gap” between the amount of documented data deposited in language archives and the portion of the data that is actually usable for research \citep{seifart_language_2018}. This gap is caused by what has been described as an ``annotation bottleneck'' (Figure \ref{fig:bottleneck}) because currently tedious, time-consuming, and expensive annotations are performed primarily by hand from start to finish \citep{simons_worlds_2013,holton_developing_2017}. Manual annotation is subject to human error, introducing inconsistencies and typos, due often not to the difficulty of the task, but to its repetitive and monotonous nature. Other noise in the annotation arise because early annotation is the method for linguists to discover and understand the language's structure. As their understanding grows, analyses change and this is reflected in later annotations.
+Budget and time constraints often mean that large portions of the data produced by field projects are left uncorrected and simply unannotated. The unannotated portions of documentary corpora remain untapped resources. 
+%These resources could inform the development of linguistics science and NLP. They could also build human language technology that would benefit the communities that speak them. 
+
 
 The goals of this research is four-fold. First, it shows that it is possible and practical to use machine learning to perform annotation by developing and applying methods that improve results on typologically diverse languages with limited training data. Second, by learning inflectional paradigms and accurately generation inflected forms, it demonstrates that machine learning can be used to build and test hypotheses about a language's morphological structure. Third, by training on noisy linguistic field data rather than curated and polished data that NLP systems are typically trained on, this research proves that the sometimes only annotated data available for a under-documented language can be used to effectively train machine learning models. 
 %As such, it may uncover as-yet unforeseen challenges for NLP systems in low-resource settings. 
 %It will study what happens when NLP priorities are borrowed directly for documentary and descriptive linguistics, specifically the priority of part of speech (POS) tagging. 
-Fourth,  it will increases annotated data in several low-resource languages that represent a range of linguistic structures and language families. This increased annotated data allows more thorough testing of linguistic theories and computational models.
-In summary, this work will establish that new computational methods can be successfully integrated into language documentation and description. 
+Fourth,  it increases annotated data in several low-resource languages that represent a range of linguistic structures and language families. This increased annotated data allows more thorough testing of linguistic theories and computational models.
+This work establishes that new computational methods can be successfully integrated into language documentation and description. 
 
 %One goal of the research is to prove that machine learning systems can achieve reasonable performance when trained on the often noisy data produced by documentary and descriptive projects.
 
