@@ -177,6 +177,7 @@ In the training data, each letter is associated with a Beginning-Inside-Outside 
 
 \paragraph{Sequential Approach: CRF+SVM.}
 The sequential approach that first segments and then glosses allows a richer set of contextual features for the glossing step. Here, the CRF is employed only for segmentation and is used as described above but without the morpheme specific labels. After predicting BIO tags at the character-level, characters are combined into predicted morpheme strings. Then a multi-class linear Support Vector Machine (SVM) is trained to classify the segmented morphemes with the glosses. This allows the SVM to use surrounding morphemes as features (but not subsequent glosses). The SVM is trained on the concatenated features of every character in the CRF-predicted morphemes and the gloss of the morpheme's CRF-predicted initial letter.
+\footnote{Downside to CRF - takes so long. LMK and ARP run for over 200 hours with finishing.}
 
 
 \section{Results}
