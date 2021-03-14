@@ -165,7 +165,7 @@ This third experiment compare segmentation and glossing approaches when using fe
 With the neural Transformer, this task is treated exactly as described in sections \ref{sec:joint} and \ref{sec:strategies} using the Fairseq model as described in \ref{chap:datamodels}. The CRF and the SVM are the two non-neural models are used, as described below.
 
 \paragraph{BIO-labeling.} 
-We use a linear-chain Conditional Random Field (CRF) \cite{lafferty2001} to train a sequence model where the input consists of individual characters and the output of a BIO-labeling \cite{ramshaw1999} of the sequence, i.e. we treat this as a labeling problem of converting an input sequence of letters $\vect{x} = (x_1, \ldots, x_n)$ to an output sequence of BIO-labels $\vect{y} = (y_1, \ldots, y_n)$.
+We use a linear-chain Conditional Random Field (CRF) \citep{lafferty2001} to train a sequence model where the input consists of individual characters and the output of a BIO-labeling \citep{ramshaw1999} of the sequence, i.e. we treat this as a labeling problem of converting an input sequence of letters $\vect{x} = (x_1, \ldots, x_n)$ to an output sequence of BIO-labels $\vect{y} = (y_1, \ldots, y_n)$.
 
 In the training data, each letter is associated with a Beginning-Inside-Outside (BIO) tag---a type of tagging where each position is declared either the beginning (B) of a chunk or morpheme, inside (I) or outside (O). The BIO tags are specific to each type of morpheme. BIO tags include (1) the morpheme type for stem morphemes (e.g. B-stem) or (2) affix glosses (e.g. I-DAT for a non-initial letter of a morpheme marking dative case). This combination of BIO tags and specific labels allows the system to perform segmentation and labeling/glossing simultaneously.  For example, in tagging the Lezgi verb \textit{ava}, with the morphemes \textit{y} (PTP), and \textit{di} (SBST) the representation would be as in (\ref{ex:BIOlabels}):
 
@@ -177,17 +177,21 @@ In the training data, each letter is associated with a Beginning-Inside-Outside 
 
 \paragraph{Sequential Approach: CRF+SVM.}
 The sequential approach that first segments and then glosses allows a richer set of contextual features for the glossing step. Here, the CRF is employed only for segmentation and is used as described above but without the morpheme specific labels. After predicting BIO tags at the character-level, characters are combined into predicted morpheme strings. Then a multi-class linear Support Vector Machine (SVM) is trained to classify the segmented morphemes with the glosses. This allows the SVM to use surrounding morphemes as features (but not subsequent glosses). The SVM is trained on the concatenated features of every character in the CRF-predicted morphemes and the gloss of the morpheme's CRF-predicted initial letter.
-\footnote{Downside to CRF - takes so long. LMK and ARP run for over 200 hours with finishing.}
+\footnote{Downside to CRF - takes so long. LMK and ARP run for over 200 hours with finishing. Whatever advantage may come from feature-based models has to be weighed against difficulty of formatting data and feature engineering.}
 
+%Since less variation is expected from the CRF, it is evaluated on a single training. 
+SVM glossing input was one morpheme per line?
+
+Lezgi and Lamkang took significantly longer to train on CRF. Because of Noise?
 
 \section{Results}
 \label{sec:results}
 
-Performance was evaluated by a cross-validation on ten training and development sets that were randomly split from the part of the data used for each experiment.
-The system predictions were automatically evaluated against the gold standard. Scores were calculated as a micro-average on all labels, independent of word accuracy. Since the system may predict more or fewer labels for a word, both precision and recall are calculated. Table \ref{tab:allresults} compares the average F$_1$-scores across a 10-fold validation. 
+The system predictions were automatically evaluated against the gold standard. Scores were calculated as a micro-average on all labels, independent of word accuracy. Since the system may predict more or fewer labels for a word, both precision and recall are calculated. 
+
+Performance for the surface \textit{vs.} canonical segmentation and the joint \textit{vs.} sequential approach with the Transformer were all evaluated by a cross-validation on ten training and development sets that were randomly split from the part of the data used for each experiment. Table \ref{tab:allresults} compares the average F$_1$-scores across a 10-fold validation. 
 For joint learning, the scores indicate morphemes that were correctly segmented and glossed. For the sequential system, the score is a weighted average of the scores from both the segmentation and glossing models. 
 %Variation of scores for all systems and strategies were very similar.
-%Since less variation is expected from the CRF, it is evaluated on a single training. 
 
 \begin{table}[h!]
     \centering
