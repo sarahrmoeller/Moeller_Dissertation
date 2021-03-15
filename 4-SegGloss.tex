@@ -1,15 +1,65 @@
 \chapter{Automated Segmentation and Glossing for Documentary and Descriptive Linguistics}
 \label{chap:seggloss}
 
-This chapter examines the direct effects of variations in research design when integrating machine learning into the morphological analysis and annotation of endangered languages. Morpheme segmentation and glossing are traditionally the first tasks undertaken by linguists after documenting a language's sound system. Both tasks provide essential linguistic information. Segmenting words into morphemes clarifies relationships between various word forms and can reduce confusion caused by data sparsity in NLP models. Glosses make implicit linguistic structures explicit and accessible for analysis and they can be leveraged to improve NLP models in low-resource settings, such as for machine translation \citep{shearing_improving_2018,zhou_using_2020}. Therefore, automating these tasks with NLP systems and integrating those systems into the documentary and descriptive workflow is important to both linguistics and NLP.
+This chapter examines how variations in research design affect the integration of machine learning into the tasks for morpheme segmentation and glossing for under-documented languages. Morpheme segmentation and glossing are traditionally the first tasks undertaken after transcription. Both segmentation and glossing provide essential linguistic information upon which deeper analysis can be done. Segmenting words into morphemes can reduce confusion in NLP models caused by data sparsity because it clarifies relationships between word forms. Glosses make implicit morphosyntactic structures explicit and accessible for analysis. Segmented words and glosses can be leveraged to improve NLP models in low-resource settings, such as for machine translation \citep{shearing_improving_2018,zhou_using_2020}. Therefore, automating these tasks and integrating the automation as assistance for documentary and descriptive work will benefit both linguistics and NLP.
 
-When we bring together two disciplinary fields for mutual benefit, different expectations or accepted conventions are also brought together. The issues that this paper addresses stem from conventional methods in natural language processing (NLP) and linguistic analysis. The methods are based or have led to differing expectations which raise potentially conflicting issues. For example, it is generally expected in NLP that textual data will be orthographic representations and that the goal is to process that form, whereas linguists may prefer to work with phonetic representations and see their goal to process underlying linguistic forms. These differences can make the interdisciplinary collaboration unnecessarily slow or confusing. When the differences affect overall research design, it is easy to simply choose one or the other convention without testing which choice might actually benefit the task at hand or be more efficient for long-term goals. This paper studies and compares the short-term affect of two pairs of differing expectations which have arisen during the authors' research.
+When we bring together two disciplinary fields for mutual benefit, different expectations or accepted conventions are also brought together. These expectations may seem to clash. This chapter addresses potential clashes that stem from differing approaches to the same tasks in natural language processing (NLP) and linguistic analysis. The approaches are based or have led to differing expectations about conventional methods or available data. For example, it is generally expected in NLP that a main goal is to process textual data that is an orthographic representation, whereas linguists may prefer to work with morphophonological representations and expect that the goal is to process underlying linguistic forms. These differences can make interdisciplinary collaboration unnecessarily complicated or perplexing. 
 
-The first study asks \textit{whether morpheme segmentation and glossing should be done jointly or sequentially}. In other words, are NLP systems more accurate when trained to do these two tasks separately or when trained to do them jointly? Instead of arbitrarily choosing one or the other method, we could test whether one approach gives more accurate results than the other. If the sequential approach is more accurate, then linguists might consider adjusting their workflow in order to gain optimal benefit from the NLP system, but if the joint task approach performs better, then perhaps NLP would benefit by adjusting experiments to match the linguists' expectations about data annotation methods. 
+When these differences affect overall research design, it is easy to simply choose one or the other convention without testing which choice might actually benefit the task at hand or might be more efficient for long-term goals. This chapter compares the short-term affect of three pairs of differing expectations which have arisen during the authors' research. 
+This first study examines \textit{how a choice of morpheme segmentation strategies affect NLP performance}. Linguistic theory assumes the existence of underlying, or canonical, morpheme forms and for linguists their segmentation strategy choice is guided by the goal to discover these forms. Canonical segmentation represent morphemes in their theoretical, underlying forms, which also allows orthographic changes triggered by surrounding phones to be ignored. This contrasts with surface segmentation which simply inserts morpheme breaks in the orthographic representation. Since NLP almost always deals with orthographic representations, its systems are trained to perform surface segmentation almost exclusively. 
+It might seem reasonable that linguists who want to integrate automated assistance would adjust their strategy to match NLP expectations. But without testing, are we sure that NLP systems perform better at surface or at canonical segmentation?
 
-This second issue we investigate is \textit{how morpheme segmentation strategies affect NLP performance}. Linguistic theory assumes the existence of underlying morpheme forms and generally the goal to discover these forms determines research design. The morphemes are often represented in their theoretical, underlying forms, which also allows orthographic changes triggered by surrounding phones to be ignored. This contrast with surface segmentation which simply inserts morpheme breaks in the orthographic representation. The two segmentation strategies are compared in (\ref{ex:canseg}) where the first two surface letters of each word in (\ref{ex:canseg1}) are represented by identical canonical segments in (\ref{ex:canseg2}). Since NLP almost always deals with orthographic representations, its systems are trained to perform surface segmentation almost exclusively. 
-%Linguists may also choose a surface segmentation strategy, which is also the strategy selected by segmentation algorithms that simply identify morpheme boundaries between characters in orthographic representations. 
-In practice, both strategies are encountered during language documentation and description, the initial strategy depending in part on software tools. For example, the older, but still popular, Toolbox\footnote{https://software.sil.org/toolbox/} allows surface segmentation whereas ELAN \citep{auer_elan_2010} supports both but as separate tasks, while FLEx \citep{baines_overview_2018} requires surface segmentation but facilitates simultaneous canonical segmentation. It might seem reasonable that linguists who want to integrate automated assistance would adjust their strategy to match NLP expectations. But without testing, are we sure that NLP systems perform better at surface or at canonical segmentation?
+
+The second study asks \textit{whether morpheme segmentation and glossing should be approached jointly or sequentially}. In other words, is an NLP system trained to do segmentation and glossing simultaneously as a joint task better than a system trained to treat them as two separate tasks? Instead of arbitrarily choosing one or the other method, we test whether one approach achieves more accurate results. If the sequential approach is more accurate, then linguists might want to consider adjusting their workflow in order to gain optimal benefit from NLP integration, but if the joint task approach performs better, then perhaps NLP would benefit by adjusting experiments to match how the linguists' produce new language data.
+
+The third pair of differing expectations is not between linguistics and NLP but within NLP. The study looks at \textit{whether the Transformer model can outperform feature-based models.} Until recently, non-neural models regularly outperformed neural models in low-resource settings. For example, previous work on Lezgi \citep{moeller_automatic_2018} used the same corpus as the current work does and found the CRF outperformed the then state-of-the-art LSTM with reported F$_1$-scores of nearly .9.\footnote{A direct comparison cannot be made to this work because only affixes were glossed while the current work also glosses roots.} This expectation is becoming less sure as methods for deep learning models improve. It is still important to test the two types of models. Linguists may want to know what models to recommend when they approach computer scientists for collaborative work. Also, if feature-based models are consistently more accurate at the task, then both linguists and NLP scientists will want to know what features can be extracted for good results in any language. 
+
+This rest of this chapter describes experiments that test machine learning segmentation and glossing systems and then compare those results between a joint and sequential approach to segmentation and glossing and between a surface and canonical strategy to segmentation and between feature-based and deep learning models.  The experiments are described in \autoref{sec:methodology}. The results are presented in \autoref{sec:results}. Only five of the corpora presented in \autoref{chap:datamodels} could be used for all experiments because they were annotated in FLEx and so have both surface and and canonical morpheme segments, as shown in \autoref{tab:segglossdata}. These languages are shown in \autoref{tab:segglossdata} and only their results are considerd in the analysis and discussion in \autoref{sec:errors}.
+
+
+\begin{table}[tbh]
+    \centering
+    \begin{tabular}{l|r|rc}
+         \textbf{Language} & \textbf{Tokens} & \multicolumn{2}{c}{\textbf{Seg/Gloss}} \\
+         \hline
+         Alas & 4.5k & 3,775 & 85\%  \\
+         \hline
+         Lamkang & 101k & 49,699 & 49\% \\
+         \hline
+         Lezgi & 14k & 13,353  & 94\% \\
+         \hline
+         Manipuri & 12k & 11,907 & 98\% \\
+         \hline
+         Natügu & 16.5k & 12,435 & 75\%  \\
+         \hline
+         Upper Tanana & 17,5k & 11,867 & 67\% 
+    \end{tabular}
+    \caption[Data for Segmentation and Glossing]{The approximate total token considers multiple word expressions (when parsed as such) as single tokens. The percentage and total number of tokens that are both segmented (canonical and surface) and glossed are shown.}
+    \label{tab:segglossdata}
+\end{table}
+
+
+
+\section{Experiments}
+\label{sec:methodology}
+
+For the segmentation and glossing experiments, the data was arranged so as to accommodate both joint and sequential learning. That is, after withholding ten percent of the corpus as a test set, the remaining data was split into two equal training sets.  Ten percent of each part was used as a development set. For easier comparison, the joint model was trained on only one part, the same part used for training the segmentation step in the sequential system. One additional experiment was run with the joint model that trained on both parts together, minus the held-out data. For each experiment, a ten-fold cross validation was run. 
+
+It was assumed that the documentary and descriptive field data had only been morpheme segmented and glossed. No other information was leveraged from the IGT or other resources. Gold standard data was created by filtering out tokens that were not completely segmented (both canonical and surface) or glossed, as far as could be determined. This was determined by assuring that the surface, canonical, and gloss lines aligned with each other. 
+Glosses were standardized by capitalizing affix glosses. When morphemes had multiple English words or symbols in their glosses, the words were joined by periods.
+Morpheme boundary markers such as hyphens ( - ) and equal signs ( = ) were preserved to distinguish clitics from bound morphemes and to indicate relative ordering of morphemes (i.e. pre-/suf/infixing); angle brackets ( \textlangle{}\textrangle{} ) were used to denote circumfixes. 
+
+All tasks are treated as a problem of converting an input sequence of characters $\vect{x} = (x_1, \ldots, x_n)$ to an output sequence of labels $\vect{y} = (y_1, \ldots, y_n)$. The output sequence of labels indicate the (canonical or surface) morpheme and/or the morpheme's gloss. 
+%Pilot work showed that any context provided by training on a whole sentence confused the system more than helped it, so each data instance is a word. 
+
+\subsection{Surface vs. Canonical Segmentation Strategies}
+\label{sec:strategies}
+
+The second experiment compares the Transformer's performance when trained on different segmentation strategies. Both systems described above are trained on both strategies. Canonical segmentation gives more information about a language's underlying morphological structure. At the same time, it reduces the number of unique labels in languages that reflect allomorphy and morphophonological processes in the orthography. On the other hand, surface segmentation does not require computational models to learn allomorphy or morphophonology \citep{goldsmith_computational_2017} and does not provide a thorough analysis of the language's morphology by annotators. It simply divide strings of text into segments known as ``morphs'' \citep{virpioja_empirical_2011} without regard to potential relationships between the segments. 
+
+The two segmentation strategies are compared in (\ref{ex:canseg}) where the first two surface letters of each word in (\ref{ex:canseg1}) are represented by identical canonical segments in (\ref{ex:canseg2}).%Linguists may also choose a surface segmentation strategy, which is also the strategy selected by segmentation algorithms that simply identify morpheme boundaries between characters in orthographic representations. 
+In practice, both strategies are encountered during language documentation and description, the initial strategy depending in part on software tools. For example, the older, but still popular, Toolbox\footnote{https://software.sil.org/toolbox/} allows surface segmentation whereas ELAN \citep{auer_elan_2010} supports both but as separate tasks, while FLEx \citep{baines_overview_2018} requires surface segmentation but facilitates simultaneous canonical segmentation. 
+
 
 \pex   
 \label{ex:canseg}
@@ -22,112 +72,6 @@ In practice, both strategies are encountered during language documentation and d
 \xe
 
 %This seems more natural since linguists are segmenting based on their understanding of the morphemes function/meaning, so in most cases a morpheme is segmented only because its gloss has been identified. So an automated system that assumes the steps occur consequently instead of simultaneously/jointly may not work well for linguists. It may be ever be accepted or may be difficult to integrate. It may make it difficult for linguists to benefit from automated assistance. On the other hand, this assumption of separate segmentation and glossing may point linguists to a better way. Linguists may benefit by integrating this NLP assumption into their work. 
-
-This paper describes experiments that test results of Transformer models \citep{vaswani_attention_2017} trained on segmented and glossed data and then compare those results between a joint and sequential approach to segmentation and glossing and between a surface and canonical strategy to segmentation. \autoref{sec:data} introduces the data used by the models that are described in \autoref{sec:models}. The experiments are described in \autoref{sec:methodology} and results are presented in \autoref{sec:results} and analyzed in \autoref{sec:errors}. 
-
-
-
-\begin{comment}
-
-\section{Data}
-\label{sec:data}
-
-Each project's unique priorities and workflow resulted in different amounts of data and percentages of segmented and glossed tokens, as shown in Table \ref{tab:dissdata}. .
-
-\begin{table}
-    \centering
-    \begin{tabular}{l|r|rc}
-         \textbf{Language} & \textbf{Tokens} & \multicolumn{2}{c}{\textbf{Seg/Gloss}} \\
-         \hline
-         Alas & 4.5k & 3,775 & 85\%  \\
-         \hline
-         Lamkang & 101k & 49,465 & 49\% \\
-         \hline
-         Lezgi & 14k & 13,262  & 94\% \\
-         \hline
-         Manipuri & 12k & 11,904 & 98\% \\
-         \hline
-         Natügu & 16.5k & 13,925 & 84\%  \\
-         \hline
-         Upper Tanana & 11,867 & 67\% 
-    \end{tabular}
-    \caption[Data for Segmentation and Glossing]{The approximate total token considers multiple word expressions (when parsed as such) as single tokens. The percentage and total number of tokens that are both segmented (canonical and surface) and glossed are shown.}
-    \label{tab:data}
-\end{table}
-
-\end{comment}
-
-
-
-\section{Experiments}
-\label{sec:methodology}
-
-The segmentation and glossing experiments assume access to field data that has only been segmented and glossed. For this reason, no other information was leveraged from the interlinearized glossed texts or elsewhere. Gold standard data was assembled by filtering out tokens that were not completely segmented and glossed as far as could be determined automatically by assuring that the surface, canonical, and gloss lines aligned with each other. 
-%Glosses were standardized by capitalizing affix glosses. Glosses for one morpheme that had alternate English words separate by spaces were joined by periods.
-Morpheme boundary markers such as hyphens ( - ) and equal signs ( = ) were preserved to distinguish clitics from bound morphemes and to indicate relative ordering of morphemes (i.e. pre-/suf/infixing); angle brackets ( \textlangle{}\textrangle{} ) were used to denote circumfixes. 
-
-The data was arranged so as to accommodate both joint and sequential learning. That is, after withholding ten percent of the corpus as a test set, the remaining data was split into two equal training sets. It is assumed that segments and glosses exist for the first part which can be used for training in the sequential system, but not for the second part. Ten percent of each part was used as a development set. For easier comparison, the joint model was trained on only one part, the same part used for training the segmentation step in the sequential system. One additional experiment was run with the joint model that trained on both parts together, minus the held-out data. For each experiment, a ten-fold cross validation was run. 
-
-All tasks are treated as a problem of converting an input sequence of characters $\vect{x} = (x_1, \ldots, x_n)$ to an output sequence of labels $\vect{y} = (y_1, \ldots, y_n)$. The output sequence of labels indicate the (canonical or surface) morpheme and/or the morpheme's gloss. 
-%Pilot work showed that any context provided by training on a whole sentence confused the system more than helped it, so each data instance is a word. 
-
-
-\subsection{Joint vs. Sequential}
-\label{sec:joint}
-
-The first experiment tested whether joint or sequential segmentation and glossing is a better approach to interlinearization when integrating automated assistance. Joint segmentation assumes that segmented data without glosses is unlikely because identifying a morpheme usually means there has already been an identification of the morpheme's meaning.
-%\footnote{One linguist claimed that native speakers could segment morphemes without knowing the function of morphemes (p.c) but in the first author's experience this results in many segmentation errors.} 
-Joint segmentation requires the model to learn the morpheme boundary and gloss simultaneously for each segment. The sequential system--glossing after segmenting the whole text---assumes that segmentation is easier to do by hand or that unsupervised segmentation tools such as Morfessor \citep{smit-etal-2014-morfessor} are available for low-resource languages. 
-
-For joint learning, the input is a character-level representation of a word, shown in (\ref{ex:Jointin}). Each character is treated as as separate symbol by the model. The output is a sequence of labels, one label per morpheme, shown in (\ref{ex:JointOut}). The label combines the morpheme's shape and gloss. The combination allows the system to perform segmentation and glossing simultaneously. 
-
-\pex   
-\label{ex:JointInOut}
-\a<a> \textbf{IN:} \hspace{6 mm} t \hspace{2 mm} a \hspace{2 mm} x \hspace{2 mm} e \hspace{2 mm} s 
-\label{ex:Jointin}
-\a<b> \textbf{OUT:} \hspace{2 mm} tax\#levy \hspace{3 mm} -es\#\textsc{pl} 
-\label{ex:JointOut}
-\xe
-
-The sequential system trains two models: one model learns morpheme segments and the other learns to gloss the predicted morphemes. In the sequential system the first equal part of the data was used for the segmentation step and its output was the training input for the glossing step. The output to the first model is a sequence of segments only, shown in (\ref{ex:Pipe1Out}). 
-
-\pex  
-\label{ex:Pipe1InOut}
-\a<a> \textbf{IN:} \hspace{6 mm} t \hspace{2 mm} a \hspace{2 mm} x \hspace{2 mm} e \hspace{2 mm} s 
-\label{ex:Pipe1in}
-\a<b> \textbf{OUT:} \hspace{2 mm} tax \hspace{3 mm} -es
-\label{ex:Pipe1Out}
-\xe
-
-The output of the segmentation model is used as input to the second model, as shown in (\ref{ex:Pipe2In}.) The glossing model then outputs the predicted glosses, shown in (\ref{ex:Pipe2Out}). 
-
-\pex  
-\label{ex:Pipe2InOut}
-\a<a> \textbf{IN:} \hspace{6 mm} tax \hspace{3 mm} -es
-\label{ex:Pipe2In}
-\a<b> \textbf{OUT:} \hspace{2 mm} levy \hspace{2 mm} \textsc{pl}
-\label{ex:Pipe2Out}
-\xe
-
-%This paper test that question with a neural transformer model and a feature-based CRF model. Feature-based models have outperformed neural models in low-resource settings until very recently, so both should still be tested. Both models are trained on data that has been both surface and canonically segmented in FLEx. The training/dev/test splits are the same, only the segmentation strategy has changed. 
-%Lastly, 
-%to determine whether Transformer model is indeed the best choice for documentary and descriptive projects of these sizes, 
-%joint learning was repeated on a CRF and a Transformer model that were trained on all the data, and tested on the same test set. As indicated in (\ref{ex:CRFin}) the CRF input is a feature function of each character. Features were chosen to be generalizable to any language. They include position of a character in the word (counted from beginning and end of word to account for suffixing and prefixing patterns) and surrounding characters up to 4-gram sequences. The output are BIO-labels \citep{ramshaw1999} that indicate the position of each character in the morpheme (B = beginning, I = inside), the predicted morpheme shape, and its gloss, as shown in (\ref{ex:CRFOut}). %This BIO labels declares each letter as either the beginning of a morpheme with ``B'' or as an inside position with``I''. 
-
-%\pex  
-%\label{ex:CRFInOut}
-%\a<a> \textbf{IN:}  \hspace{2 mm} [FEATURES:t] [FEATURES:a] [FEATURES:x] [FEATURES:e] [FEATURES:s] 
-%\label{ex:CRFin}
-%\a<b> \textbf{OUT:} \hspace{2 mm} B\#tax\#levy \hspace{2 mm} I\#tax\#levy \\
-%\hspace{2 mm} I\#tax\#levy \hspace{2 mm} B\#-es\#\textsc{pl} \hspace{2 mm} I\#-es\#\textsc{pl}
-%\label{ex:CRFOut}
-%\xe
-
-
-\subsection{Surface vs. Canonical Segmentation Strategies}
-\label{sec:strategies}
-
-The second experiment compares the Transformer's performance when trained on different segmentation strategies. Both systems described above are trained on both strategies. Canonical segmentation gives more information about a language's underlying morphological structure. At the same time, it reduces the number of unique labels in languages that reflect allomorphy and morphophonological processes in the orthography. On the other hand, surface segmentation does not require computational models to learn allomorphy or morphophonology \citep{goldsmith_computational_2017} and does not provide a thorough analysis of the language's morphology by annotators. It simply divide strings of text into segments known as ``morphs'' \citep{virpioja_empirical_2011} without regard to potential relationships between the segments. 
 
 The intention of this study is not to provide a direct comparison, since technically the corpora of surface and canonical segments are different datasets. The study assumes that if one strategy was conducted first, then the other type of segmentation might be more easily learned from it. For example, if a corpus could be surface segmented very quickly with very high accuracy based on initial hypotheses of morpheme shapes, then having the predicted surface segments for the whole corpus might make the discovery of canonical, underlying morphemes easier and faster for linguists, as well as matching a common expectation in NLP. 
 
@@ -157,87 +101,147 @@ In addition to the alternation between surface morphs and underlying morpheme re
 %Null morphemes should have been handled differently, but they weren't! They should have been eliminated it was discovered they remained because the selection of labels was based on the gloss line.
 
 
-\subsection{Feature-based vs. Deep Learning}
+\subsection{Joint vs. Sequential Segmentation and Glossing}
+\label{sec:joint}
+
+The first experiment tested whether joint or sequential segmentation and glossing is a better approach to interlinearization when integrating automated assistance. Joint segmentation assumes that segmented data without glosses is unlikely because identifying a morpheme usually means there has already been an identification of the morpheme's meaning.
+%\footnote{One linguist claimed that native speakers could segment morphemes without knowing the function of morphemes (p.c) but in the first author's experience this results in many segmentation errors.} 
+Joint segmentation requires the model to learn the morpheme boundary and gloss simultaneously for each segment. The sequential system--glossing after segmenting the whole text---assumes that segmentation is easier to do by hand or that unsupervised segmentation tools such as Morfessor \citep{smit-etal-2014-morfessor} are available for low-resource languages. 
+
+For joint learning, the input is a character-level representation of a word, shown in (\ref{ex:Jointin}). Each character is treated as as separate symbol by the model. The output is a sequence of labels, one label per morpheme, shown in (\ref{ex:JointOut}). The label combines the morpheme's shape and gloss. The combination allows the system to perform segmentation and glossing simultaneously. 
+
+\pex   
+\label{ex:JointInOut}
+\a<a> \textbf{IN:} \hspace{6 mm} t \hspace{2 mm} a \hspace{2 mm} x \hspace{2 mm} e \hspace{2 mm} s 
+\label{ex:Jointin}
+\a<b> \textbf{OUT:} \hspace{2 mm} tax\#levy \hspace{3 mm} -es\#\textsc{pl} 
+\label{ex:JointOut}
+\xe
+
+The sequential system trains two models: one model learns morpheme segments and the other learns to gloss the predicted morphemes. In the sequential system the first equal part of the data was used for the segmentation step and its output was the training input for the glossing step. In the sequential apporach, it is assumed that segments and glosses exist for the first part of the data and can be used for training in the sequential system, but not for the second part. The output to the first model is a sequence of segments only, shown in (\ref{ex:Pipe1Out}). 
+
+\pex  
+\label{ex:Pipe1InOut}
+\a<a> \textbf{IN:} \hspace{6 mm} t \hspace{2 mm} a \hspace{2 mm} x \hspace{2 mm} e \hspace{2 mm} s 
+\label{ex:Pipe1in}
+\a<b> \textbf{OUT:} \hspace{2 mm} tax \hspace{3 mm} -es
+\label{ex:Pipe1Out}
+\xe
+
+The output of the segmentation model is used as input to the second model, as shown in (\ref{ex:Pipe2In}.) The glossing model then outputs the predicted glosses, shown in (\ref{ex:Pipe2Out}). 
+
+\pex  
+\label{ex:Pipe2InOut}
+\a<a> \textbf{IN:} \hspace{6 mm} tax \hspace{3 mm} -es
+\label{ex:Pipe2In}
+\a<b> \textbf{OUT:} \hspace{2 mm} levy \hspace{2 mm} \textsc{pl}
+\label{ex:Pipe2Out}
+\xe
+
+\subsection{Feature-based vs. Deep Learning Models}
 \label{sec:CRFvNN}
 
-This third experiment compare segmentation and glossing approaches when using feature-based versus deep learning models. With the growing success of deep learning models, it has become expected in NLP that they will outperformed older, feature-based models. However, it is still unclear whether this holds true in low-resource settings. It is still important to compare the two types of models. Until recently, non-neural models regularly outperformed neural models in low-resource settings and do still sometimes outperform them. For example, previous work on Lezgi \citep{moeller_automatic_2018} used the same corpus as the current work does and found the CRF outperformed the then state-of-the-art LSTM with reported F$_1$-scores of nearly .9. (A direct comparison cannot be made to this work because only affixes were glossed while the current work also glosses roots.) 
+Since the mid-2010s, it is reasonable to expect that deep learning models will outperform feature-based models. With the advent of the Transformer \citep{vaswani_attention_2017}, it even seems reasonable to expect this in low-resource settings, although deep learning models are more dependent on very large amounts of training data. This third study compares the performance of feature-based and deep learning models on segmentation and glossing. It repeats the experiments described in \autoref{sec:joint} and \autoref{sec:strategies}, but this time with feature-based models.
 
-With the neural Transformer, this task is treated exactly as described in sections \ref{sec:joint} and \ref{sec:strategies} using the Fairseq model as described in \ref{chap:datamodels}. The CRF and the SVM are the two non-neural models are used, as described below.
+The joint task is performed with a Conditional Random Fields (CRF) model \citep{lafferty_conditional_2001}. The sequential approach uses the CRF for segmentation and a multi-class linear Support Vector Machine (SVM) for glossing.
+The sequence model has an input consisting of individual characters and the output of a sequence of BIO-labels \citep{ramshaw1999}. That is, all tasks are treated as a labeling problem of converting an input sequence of letters $\vect{x} = (x_1, \ldots, x_n)$ to an output sequence of symbols $\vect{y} = (y_1, \ldots, y_n)$.  
 
 \paragraph{BIO-labeling.} 
-We use a linear-chain Conditional Random Field (CRF) \citep{lafferty2001} to train a sequence model where the input consists of individual characters and the output of a BIO-labeling \citep{ramshaw1999} of the sequence, i.e. we treat this as a labeling problem of converting an input sequence of letters $\vect{x} = (x_1, \ldots, x_n)$ to an output sequence of BIO-labels $\vect{y} = (y_1, \ldots, y_n)$.
-
-In the training data, each letter is associated with a Beginning-Inside-Outside (BIO) tag---a type of tagging where each position is declared either the beginning (B) of a chunk or morpheme, inside (I) or outside (O). The BIO tags are specific to each type of morpheme. BIO tags include (1) the morpheme type for stem morphemes (e.g. B-stem) or (2) affix glosses (e.g. I-DAT for a non-initial letter of a morpheme marking dative case). This combination of BIO tags and specific labels allows the system to perform segmentation and labeling/glossing simultaneously.  For example, in tagging the Lezgi verb \textit{ava}, with the morphemes \textit{y} (PTP), and \textit{di} (SBST) the representation would be as in (\ref{ex:BIOlabels}):
+In the training data, each letter is associated with a Beginning-Inside-Outside (BIO) tag---a type of tagging where each letter position is declared either the beginning (B) of a morpheme or gloss, or the inside (I).\footnote{In all tasks, every letter are part of a morpheme, therefore the Outside (O) tag is not needed like it would be in Named Entity Recognition.} The BIO tags includes the morpheme shape and its gloss for the joint task, as shown in (\ref{ex:BIOlabelsjoint}), or the morpheme shape only for the segmentation only task, as shown in (\ref{ex:BIOlabelssegonly}). 
 
 \pex   
 \label{ex:BIOlabels}
-\a<a> {\bf INPUT:} \hspace{8 mm}  a \hspace{6 mm}  v \hspace{5 mm} a \hspace{7 mm} y \hspace{9 mm} d \hspace{10 mm} i
-\a<b> {\bf OUTPUT:} \hspace{1 mm} B-\textsc{be} & I-\textsc{be} & I-\textsc{be} & B-\textsc{ptp} & B-\textsc{sbst} & I-\textsc{sbst}
+\a<a> {\bf INPUT:} \hspace{35 mm}  a \hspace{10 mm}  v \hspace{10 mm} a \hspace{10 mm} y \hspace{10 mm} d \hspace{10 mm} i
+\a<b> {\bf JOINT OUTPUT:} \hspace{1 mm} B-ava\#\textsc{be} & I-ava\#\textsc{be} & I-ava\#\textsc{be} & B-d\#\textsc{ptp} & B-i\#\textsc{sbst} & I-i\#\textsc{sbst}
+\label{ex:BIOlabelsjoint}
+\a<b> {\bf SEGMENTATION OUTPUT:} \hspace{1 mm} B-\textsc{be} & I-\textsc{be} & I-\textsc{be} & B-\textsc{ptp} & B-\textsc{sbst} & I-\textsc{sbst}
+\label{ex:BIOlabelssegonly}
+\xe
+
+BIO-labeling is not used for the glossing only task because each input instance is a single morpheme and the output is its morpheme's gloss, as shown in (\ref{ex:BIOlabelsglossing}).
+
+\pex   
+\label{ex:BIOlabelsglossing}
+\a<a> {\bf GLOSSING INPUT:} \hspace{8 mm}  a v a 
+%\a<a> {\bf GLOSSING INPUT:} \hspace{8 mm}  a v a \hspace{7 mm} y \hspace{9 mm} d i
+\a<b> {\bf GLOSSING OUTPUT:} \hspace{5 mm} \textsc{be}
+%\a<b> {\bf GLOSSING OUTPUT:} \hspace{1 mm} B-\textsc{be} & I-\textsc{be} & I-\textsc{be} & B-\textsc{ptp} & B-\textsc{sbst} & I-\textsc{sbst}
 \xe
 
 \paragraph{Sequential Approach: CRF+SVM.}
-The sequential approach that first segments and then glosses allows a richer set of contextual features for the glossing step. Here, the CRF is employed only for segmentation and is used as described above but without the morpheme specific labels. After predicting BIO tags at the character-level, characters are combined into predicted morpheme strings. Then a multi-class linear Support Vector Machine (SVM) is trained to classify the segmented morphemes with the glosses. This allows the SVM to use surrounding morphemes as features (but not subsequent glosses). The SVM is trained on the concatenated features of every character in the CRF-predicted morphemes and the gloss of the morpheme's CRF-predicted initial letter.
-\footnote{Downside to CRF - takes so long. LMK and ARP run for over 200 hours with finishing. Whatever advantage may come from feature-based models has to be weighed against difficulty of formatting data and feature engineering.}
+The sequential approach first segments and then glosses using separate models for each step. In feature-based models, this allows a richer set of contextual features for the each step. 
+The CRF is employed only for segmentation. After predicting BIO-labels for morpheme shapes, the predicted morpheme strings are used as input to the SVM that uses features of the segmented morphemes to train the glossing step. 
 
-%Since less variation is expected from the CRF, it is evaluated on a single training. 
-SVM glossing input was one morpheme per line?
+The CRF input is actually a list of features. The features were chosen to be cross-linguistically applicable. They are:
 
-Lezgi and Lamkang took significantly longer to train on CRF. Because of Noise?
+\begin{itemize}
+    \item the letter as represented in text
+    \item the letter as lowercase
+    \item the whole word
+    \item the four preceding and subsequent letters
+    \item position of letter in word counted from both last and first letter
+\end{itemize}
+
+The input features to the SVM uses the above features plus morpheme-specific features. The features of each letter in the predicted morpheme shape are concatenated and then additional features are added:
+
+\begin{itemize}
+    \item surrounding morphemes shapes (but not subsequent glosses)
+    \item position of morpheme in the word as counted by morpheme from beginning of the word (i.e. un- in ``unlikely'' is the first morpheme)
+    
+\end{itemize}
+
 
 \section{Results}
 \label{sec:results}
 
 The system predictions were automatically evaluated against the gold standard. Scores were calculated as a micro-average on all labels, independent of word accuracy. Since the system may predict more or fewer labels for a word, both precision and recall are calculated. 
 
-Performance for the surface \textit{vs.} canonical segmentation and the joint \textit{vs.} sequential approach with the Transformer were all evaluated by a cross-validation on ten training and development sets that were randomly split from the part of the data used for each experiment. Table \ref{tab:allresults} compares the average F$_1$-scores across a 10-fold validation. 
+The evaluation of deep learning and feature-based models differed slightly. The feature-based models were evaluated on a single run without a development set. The performance of the Transformer on all tasks was all evaluated by a cross-validation on ten training and development sets that were randomly split from the half of the data used for each experiment. Table \ref{tab:allresults} compares the F$_1$-scores. Although only the corpora that were annotated in FLEx could be used for all studies, scores on the other three additional languages were added where available for comparison.
 For joint learning, the scores indicate morphemes that were correctly segmented and glossed. For the sequential system, the score is a weighted average of the scores from both the segmentation and glossing models. 
 %Variation of scores for all systems and strategies were very similar.
 
-\begin{table}[h!]
+\begin{table}[tbh]
     \centering
-    \begin{tabular}{l|cc|cc}
-          & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} \\
-          &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} \\
+    \begin{tabular}{l|cc|cc|cc|cc}
+          & \multicolumn{4}{c|}{\textbf{Transformer}} & \multicolumn{4}{c}{\textbf{CRF (and SVM)}} 
+          \\
+          & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c|}{\textbf{Canonical}}  & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} 
+          \\
+          &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} \\
          \hline
-         Alas & .4280 & \textbf{.4565} & .5166 & \textbf{.5291} \\
+         Alas & .4280 & \textbf{.4565} & .5166 & \textbf{.5291} &  &  & \\
           % difference & \multicolumn{2}{c}{.0285} & \multicolumn{2}{c}{.0125} \\
          \hline
-         Arapaho &  &  & n/a & n/a \\
+         Arapaho &  &  & n/a & n/a & n/a & n/a & n/a & n/a  \\
          \hline
-         Lamkang & .7091 & \textbf{.7391} & .5414 & \textbf{.5785} \\
+         Lamkang & .7091 & \textbf{.7391} & .5414 & \textbf{.5785} &  &  &  &  \\
          % difference & \multicolumn{2}{c}{.0300} & \multicolumn{2}{c}{.0371} \\
          \hline
-         Lezgi & .5489 & \textbf{.6062} & .4993 & \textbf{.5371} \\
+         Lezgi & .5489 & \textbf{.6062} & .4993 & \textbf{.5371} &  &  &  &  \\
          % difference & \multicolumn{2}{c}{.0573} & \multicolumn{2}{c}{.0378} \\
          \hline
-         Manipuri & .4719 & \textbf{.5067} & .6401 & \textbf{.6675}\\
+         Manipuri & .4719 & \textbf{.5067} & .6401 & \textbf{.6675} &  &  &  &  \\
          % difference & \multicolumn{2}{c}{.0348} & \multicolumn{2}{c}{.0274} \\
          \hline
-         Natügu & \textbf{.5423} & .5263 & .6083 & \textbf{.6335 }\\
+         Natügu & \textbf{.5423} & .5263 & .6083 & \textbf{.6335 } &  &  &  &  \\
          % difference & \multicolumn{2}{c}{.0160} & \multicolumn{2}{c}{.0252} \\
          \hline
-         Tsez & n/a & n/a &  &  \\
+         Tsez & n/a & n/a &  &  & n/a & n/a & n/a & n/a \\
          \hline
-         So. Sierra Miwok &  &  & n/a & n/a/ \\
+         So. Sierra Miwok &  &  & n/a & n/a & n/a & n/a & n/a & n/a \\
          \hline
-         Upper Tanana &  &  &  &  \\
+         Upper Tanana &  &  &  &  &  &  &  &  \\
          \hline
          \hline
-         Average &  &  &  & \\
+         % PUT THIS NEXT LINE IN JOINT VS. SEQUENTIAL RESULTS SECTION
+         Average &  &  &  &  &  &  &  &  \\
          %Average (original 4 lgs) & .5400 & .5670 & .5011 & .5895 \\
     \end{tabular}
     \caption[Results of Transformer on Joint and Sequential models]{F$_1$-scores of Transformer joint and sequential models on both segmentation strategies. Scores are an average across a 10-fold cross-validation. The bottom row shows the average score across all languages.}
     \label{tab:allresults}
 \end{table}
 
-\subsection{Joint vs Sequential Results}
 
-Overall, sequential learning does better than joint learning, but the differences are not great. The maximum improvement is less than 0.06 points on Lezgi [lez]. The best models achieved over 0.60 F$_1$ on all but the smallest corpus. Lamkang [lmk], which has the largest number of tokens by far, achieved over 0.70 average F$_1$ score. 
-
-The performance on the Nat\"ugu data is the only case where the sequential system is not consistently an improvement over the joint system. 
-%With surface segmentation, joint learning on Nat\"ugu outperforms sequential learning. 
-When considering word-level accuracy, Nat\"ugu joint learning outperformed sequential learning on canonical segmentation. Interestingly, it also has the smallest change in the number of unique labels between surface and canonical segmentation (an increase of 14 labels, compared to next lowest of 46). With so few languages, it is difficult to say whether the relative number of unique labels affect the relative performance when trained on surface vs. canonical segmentation. More corpora should be included for this question to be explored further. %Overall, the differences are still so slight that it seems any system or strategy may perform equally well on Nat\"ugu. 
- 
 \subsection{Surface vs. Canonical Results}
 
 When half of the total data is used, the comparison of surface and canonical segmentation paints a less clear picture. The differences when going from surface to canonical segmentation are shown in Table \ref{tab:segdiffresults}. The general trend when comparing segmentation strategies is that languages with a higher ratio of unique labels to total tokens do better with canonical segmentation. The differences are quite small for Alas [btz], Lezgi, and Nat\"ugu [ntu]. The biggest differences are found in Lamkang and Manipuri [mni], but their improvement goes in opposite directions. Surface segmentation gives higher scores for Lamkang data while Manipuri has higher scores with canonical. Interestingly, these two languages have the largest difference of the number of unique labels between surface and canonically segmented data. In Lamkang and Manipuri training data, the average number of unique joint labels increased by over 500 and 400, respectively, and in the segmentation step of the sequential system the number of segments increased by over 350. In the other languages the largest average increase of labels is 88 but usually the differences are less than 15. Since Lamkang and Manipuri belong to the same family, it is possible that significant differences in segmentation strategies are due to characteristics of their familial morphological structure, but it could be due to other factors such as idiosyncratic choices in the orthographic representation. 
@@ -307,9 +311,51 @@ The segmentation strategies were also compared using all available data in the j
          Upper Tanana \textit{half} &  &  \\
          Upper Tanana \textit{\textit{all}} &  &  \\
     \end{tabular}
-    \caption[Results of Joint Segmentation and Glossing with Increased Data]{Results the joint model with surface and canonical segmentation strategies when using half the training data compared to all training data.}
+    \caption[Results of Joint Segmentation and Glossing with Increased Data]{Results the Transformer joint model with surface and canonical segmentation strategies when using half the training data compared to all training data.}
     \label{tab:segsizeresults}
 \end{table}
+
+
+\subsection{Joint vs Sequential Results}
+
+Overall, sequential learning does better than joint learning, but the differences are not great. The maximum improvement is less than 0.06 points on Lezgi [lez]. The best models achieved over 0.60 F$_1$ on all but the smallest corpus. Lamkang [lmk], which has the largest number of tokens by far, achieved over 0.70 average F$_1$ score. 
+
+The performance on the Nat\"ugu data is the only case where the sequential system is not consistently an improvement over the joint system. 
+%With surface segmentation, joint learning on Nat\"ugu outperforms sequential learning. 
+When considering word-level accuracy, Nat\"ugu joint learning outperformed sequential learning on canonical segmentation. Interestingly, it also has the smallest change in the number of unique labels between surface and canonical segmentation (an increase of 14 labels, compared to next lowest of 46). With so few languages, it is difficult to say whether the relative number of unique labels affect the relative performance when trained on surface vs. canonical segmentation. More corpora should be included for this question to be explored further. %Overall, the differences are still so slight that it seems any system or strategy may perform equally well on Nat\"ugu. 
+ 
+
+\subsection{Feature-Based Models' Results}
+
+Since less variation is expected from the CRF and because the models take significantly longer to train, they were evaluated on a single run. 
+
+\begin{table}
+    \centering
+    \begin{tabular}{l|cc|cc}
+          & \textbf{\multicolumn{2}{c|}{Surface}} & \textbf{\multicolumn{2}{c|}{Canonical}} \\
+          & \textbf{Joint} & \textbf{Seq} \\
+         \hline
+         Alas  &  &   \\
+         \hline
+         Lamkang  &   &   \\
+         \hline
+         Lezgi  &  &   \\
+         \hline
+         Manipuri  &  &    \\
+         \hline
+         Natügu  &  &   \\
+         \hline
+         Upper Tanana &  &  \\
+    \end{tabular}
+    \caption[F$_1$-score Differences between Deep Learning and Feature-based Models]{Average F$_1$ differences between surface and canonical segmentation strategies and Joint vs. Sequential approaches. Positive scores mean the Tranformer outperformed the Feature-based model.}
+    \label{tab:segdiffresults}
+\end{table}
+
+%Downside to CRF - takes so long. LMK and ARP run for over 200 hours with finishing. Whatever advantage may come from feature-based models has to be weighed against difficulty of formatting data and feature engineering.
+
+%Lezgi and Lamkang took significantly longer to train on CRF. Because of Noise?
+
+
 
 
 \section{Error Analysis}
