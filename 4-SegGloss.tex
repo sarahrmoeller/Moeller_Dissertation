@@ -209,7 +209,7 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
           \\
           &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} \\
          \hline
-         Alas & .4280 & \textbf{.4565} & .5166 & \textbf{.5291} &  &  & \\
+         Alas & .4280 & \textbf{.4565} & .5166 & \textbf{.5291} &  & .6319 &  & .6360 \\
           % difference & \multicolumn{2}{c}{.0285} & \multicolumn{2}{c}{.0125} \\
          \hline
          Arapaho &  &  & n/a & n/a & n/a & n/a & n/a & n/a  \\
@@ -217,20 +217,20 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
          Lamkang & .7091 & \textbf{.7391} & .5414 & \textbf{.5785} &  &  &  &  \\
          % difference & \multicolumn{2}{c}{.0300} & \multicolumn{2}{c}{.0371} \\
          \hline
-         Lezgi & .5489 & \textbf{.6062} & .4993 & \textbf{.5371} &  &  &  &  \\
+         Lezgi & .5489 & \textbf{.6062} & .4993 & \textbf{.5371} &  & .7090 &  & .6888 \\
          % difference & \multicolumn{2}{c}{.0573} & \multicolumn{2}{c}{.0378} \\
          \hline
-         Manipuri & .4719 & \textbf{.5067} & .6401 & \textbf{.6675} &  &  &  &  \\
+         Manipuri & .4719 & \textbf{.5067} & .6401 & \textbf{.6675} &  & .8063 &  & .8191 \\
          % difference & \multicolumn{2}{c}{.0348} & \multicolumn{2}{c}{.0274} \\
          \hline
-         Natügu & \textbf{.5423} & .5263 & .6083 & \textbf{.6335 } &  &  &  &  \\
+         Natügu & \textbf{.5423} & .5263 & .6083 & \textbf{.6335 } &  & .8395 &  & .8398 \\
          % difference & \multicolumn{2}{c}{.0160} & \multicolumn{2}{c}{.0252} \\
          \hline
          Tsez & n/a & n/a &  &  & n/a & n/a & n/a & n/a \\
          \hline
          So. Sierra Miwok &  &  & n/a & n/a & n/a & n/a & n/a & n/a \\
          \hline
-         Upper Tanana &  &  &  &  &  &  &  &  \\
+         Upper Tanana &  &  &  &  &  & .7942 &  & .7970 \\
          \hline
          \hline
          % PUT THIS NEXT LINE IN JOINT VS. SEQUENTIAL RESULTS SECTION
@@ -332,30 +332,24 @@ Since less variation is expected from the CRF and because the models take signif
 \begin{table}
     \centering
     \begin{tabular}{l|cc|cc}
-          & \textbf{\multicolumn{2}{c|}{Surface}} & \textbf{\multicolumn{2}{c|}{Canonical}} \\
-          & \textbf{Joint} & \textbf{Seq} \\
-         \hline
-         Alas  &  &   \\
-         \hline
-         Lamkang  &   &   \\
-         \hline
-         Lezgi  &  &   \\
-         \hline
-         Manipuri  &  &    \\
-         \hline
-         Natügu  &  &   \\
-         \hline
-         Upper Tanana &  &  \\
+        & \textbf{\multicolumn{2}{c|}{Surface}} & \textbf{\multicolumn{2}{c}{Canonical}} \\
+        & \textbf{Joint} & \textbf{Seq} & \textbf{Joint} & \textbf{Seq} \\
+        \hline
+        Alas &  & .1754 &  & .1069 \\
+        \hline
+        Lamkang &  &  &  &  \\
+        \hline
+        Lezgi &  & .1028 &  & .1517 \\
+        \hline
+        Manipuri &  & .2996 &  & .1516 \\
+        \hline
+        Nat\"ugu &  & .3132 &  & .2063 \\
+        \hline
+        Upper Tanana &  &  &  &  \\
     \end{tabular}
-    \caption[F$_1$-score Differences between Deep Learning and Feature-based Models]{Average F$_1$ differences between surface and canonical segmentation strategies and Joint vs. Sequential approaches. Positive scores mean the Tranformer outperformed the Feature-based model.}
-    \label{tab:segdiffresults}
+    \caption[F$_1$-score Differences of Feature-based Models minus Deep Learning]{The differences between the CRF or CRF+SVM models and the Transformer. Positive scores means the feature-based model outperformed the Transformer.}
+    \label{tab:DLFtrResults}
 \end{table}
-
-%Downside to CRF - takes so long. LMK and ARP run for over 200 hours with finishing. Whatever advantage may come from feature-based models has to be weighed against difficulty of formatting data and feature engineering.
-
-%Lezgi and Lamkang took significantly longer to train on CRF. Because of Noise?
-
-
 
 
 \section{Error Analysis}
@@ -432,11 +426,11 @@ The small difference between surface and canonical segmentation for three of the
 However, larger differences on Lamkang and Manipuri corpora indicate that the reasons why segmentation strategies does sometimes differ in performance on the same corpsu should be explored more across other Tibeto-Burman languages. Testing the differences in related languages might indicate whether certain linguistics features influence the results of different segmentation strategy when integrating NLP systems. 
 %Performance on the same segmentation strategy by different machine learning systems might identify the factors that linguists should consider when choosing machine learning systems. 
 
-The consistent improvement of the sequential system over joint learning may be a reason to consider separating segmentation and glossing tasks in order to leverage the higher accuracy of segmentations , and a more completely segmented corpus, when glossing the corpus. 
+The consistent improvement of the sequential system over joint learning may be a reason to consider separating segmentation and glossing tasks in order to leverage the higher accuracy of segmentations, and a more completely segmented corpus, when glossing the corpus. 
 %, despite the received wisdom in NLP that joint models tend to outperform separate tasks. 
 %However, This may not be practical during the earliest stages of analysis. 
 %However, the focus of interlinearization changes once an initial analysis is settled upon; the primary goals become uncovering rare structures and increasing available resources. Machine learning is the best way to do both quickly. Also, 
-The strenght of the sequential system might be applied when a corpus cannot be completely segmented and glossed due to budget or time constraints. Instead, a strategy would be to prioritize segmenting and benefit from computational assistance when glossing. 
+The strength of the sequential system might be applied when a corpus cannot be completely segmented and glossed due to budget or time constraints. Instead, a strategy would be to prioritize segmenting and benefit from computational assistance when glossing. 
 %It also implies that other changes in traditional linguistics workflow may come once NLP models are integrated. 
 
 Finally, these studies could serve as a foundation towards more efficient use of computational methods in linguistic analysis and annotation. This paper shows, for example, that the glossing-only model performs well even on inaccurate segmentation predictions and can even ``correct'' manual segmentation errors. The study presented here assumes that the model's segmentation is not corrected by the language experts before training the glossing model. If a human-in-the-loop workflow was introduced to first correct segmentations, then the glossing-only model could improve even more. Such methodological considerations should be tested to see to what extent linguistic analysis and annotation of endangered language might benefit.
@@ -451,8 +445,11 @@ So what would happen if linguists emphasized quality over quantity? We can answe
 
 Interestingly, Alas showed the least marked preference between sequential and joint learning. This may indicate that higher consistency may eliminate the need to consider any change to segmentation/glossing workflow, but it should be investigated with further experiments focused on differences in annotation quality. Preferably these experiments would conducted on closely related languages to reduce effects due to different typology. 
 
+%A downside to CRF in particular is that it takes so long to train. LMK and ARP run for over 200 hours with finishing. Whatever advantage may come from feature-based models has to be weighed against difficulty of formatting data and feature engineering. Lezgi and Lamkang took significantly longer to train on CRF. Because of Noise?
+
+
 When considering low-resource settings, consistency for machine learning seems more important than data size, strategy, or workflow. Ruthless consistency is not something linguists have had reason to put high value on and it is not something to be expected by manual annotation, %although copying features and rule-based parsers in current software tools are helping.\mans{Copying? I don't follow this sentence.} 
-Consistency can be provided by machine learning integration, but ironically, supervised machine learning needs high consistency in annotated data before it can perform accurately enough to assist human annotators by increasing their speed or accuracy. Our best estimate of the accuracy threshold for practical integration of machine learning into annotation is 60\% \citep{felt_improving_2012}. This threshold on F$_1$-scores was soundly passed by Lamkang because it over 18k manually annotated tokens for training but it was barely reached by the corpora with 4.5k-5.5k tokens. However, the meticulously annotated Alas corpus came close to this threshold with only 1.5k training tokens. If linguists wish to successfully integrate machine learning into the documentation and description of underdocumented and endangered languages, then they must adopt from NLP an emphasis on highly consistent annotation.
+Consistency can be provided by machine learning integration, but ironically, supervised machine learning needs high consistency in annotated data before it can perform accurately enough to assist human annotators by increasing their speed or accuracy. Our best estimate of the accuracy threshold for practical integration of machine learning into annotation is 60\% \citep{felt_improving_2012}. This threshold on F$_1$-scores was soundly passed by Lamkang because it over 18k manually annotated tokens for training but it was barely reached by the corpora with 4.5k-5.5k tokens. However, the meticulously annotated Alas corpus came close to this threshold with only 1.5k training tokens. If linguists wish to successfully integrate machine learning into the documentation and description of under-documented and endangered languages, then they must adopt from NLP an emphasis on highly consistent annotation.
 
 %\section{Conclusion}
 
