@@ -14,30 +14,7 @@ The second study asks \textit{whether morpheme segmentation and glossing should 
 
 The third pair of differing expectations is not between linguistics and NLP but within NLP. The study looks at \textit{whether the Transformer model can outperform feature-based models.} Until recently, non-neural models regularly outperformed neural models in low-resource settings. For example, previous work on Lezgi \citep{moeller_automatic_2018} used the same corpus as the current work does and found the CRF outperformed the then state-of-the-art LSTM with reported F$_1$-scores of nearly .9.\footnote{A direct comparison cannot be made to this work because only affixes were glossed while the current work also glosses roots.} This expectation is becoming less sure as methods for deep learning models improve. It is still important to test the two types of models. Linguists may want to know what models to recommend when they approach computer scientists for collaborative work. Also, if feature-based models are consistently more accurate at the task, then both linguists and NLP scientists will want to know what features can be extracted for good results in any language. 
 
-This rest of this chapter describes experiments that test machine learning segmentation and glossing systems and then compare those results between a joint and sequential approach to segmentation and glossing and between a surface and canonical strategy to segmentation and between feature-based and deep learning models.  The experiments are described in \autoref{sec:methodology}. The results are presented in \autoref{sec:results}. Only five of the corpora presented in \autoref{chap:datamodels} could be used for all experiments because they were annotated in FLEx and so have both surface and and canonical morpheme segments, as shown in \autoref{tab:segglossdata}. These languages are shown in \autoref{tab:segglossdata} and only their results are considerd in the analysis and discussion in \autoref{sec:errors}.
-
-
-\begin{table}[tbh]
-    \centering
-    \begin{tabular}{l|r|rc}
-         \textbf{Language} & \textbf{Tokens} & \multicolumn{2}{c}{\textbf{Seg/Gloss}} \\
-         \hline
-         Alas & 4.5k & 3,775 & 85\%  \\
-         \hline
-         Lamkang & 101k & 49,699 & 49\% \\
-         \hline
-         Lezgi & 14k & 13,353  & 94\% \\
-         \hline
-         Manipuri & 12k & 11,907 & 98\% \\
-         \hline
-         Natügu & 16.5k & 12,435 & 75\%  \\
-         \hline
-         Upper Tanana & 17,5k & 11,867 & 67\% 
-    \end{tabular}
-    \caption[Data for Segmentation and Glossing]{The approximate total token considers multiple word expressions (when parsed as such) as single tokens. The percentage and total number of tokens that are both segmented (canonical and surface) and glossed are shown.}
-    \label{tab:segglossdata}
-\end{table}
-
+This rest of this chapter describes experiments that test machine learning segmentation and glossing systems and then compare those results between a joint and sequential approach to segmentation and glossing and between a surface and canonical strategy to segmentation and between feature-based and deep learning models.  The experiments are described in \autoref{sec:methodology}. The results are presented in \autoref{sec:results}. Only five of the corpora presented in \autoref{chap:datamodels} could be used for all experiments because they were annotated in FLEx and so have both surface and and canonical morpheme segments: Alas, Lamkang, Lezgi, Manipuri, Nat\"ugu, Upper Tanana. These languages are shown in \autoref{tab:segglossdata} and only their results are considerd in the analysis and discussion in \autoref{sec:errors}.
 
 
 \section{Experiments}
@@ -154,42 +131,19 @@ In the training data, each letter is associated with a Beginning-Inside-Outside 
 \a<a> {\bf INPUT:} \hspace{35 mm}  a \hspace{10 mm}  v \hspace{10 mm} a \hspace{10 mm} y \hspace{10 mm} d \hspace{10 mm} i
 \a<b> {\bf JOINT OUTPUT:} \hspace{1 mm} B-ava\#\textsc{be} & I-ava\#\textsc{be} & I-ava\#\textsc{be} & B-d\#\textsc{ptp} & B-i\#\textsc{sbst} & I-i\#\textsc{sbst}
 \label{ex:BIOlabelsjoint}
-\a<b> {\bf SEGMENTATION OUTPUT:} \hspace{1 mm} B-\textsc{be} & I-\textsc{be} & I-\textsc{be} & B-\textsc{ptp} & B-\textsc{sbst} & I-\textsc{sbst}
+\a<c> {\bf SEGMENTATION OUTPUT:} \hspace{1 mm} B-\textsc{be} & I-\textsc{be} & I-\textsc{be} & B-\textsc{ptp} & B-\textsc{sbst} & I-\textsc{sbst}
 \label{ex:BIOlabelssegonly}
 \xe
 
-BIO-labeling is not used for the glossing only task because each input instance is a single morpheme and the output is its morpheme's gloss, as shown in (\ref{ex:BIOlabelsglossing}).
-
-\pex   
-\label{ex:BIOlabelsglossing}
-\a<a> {\bf GLOSSING INPUT:} \hspace{8 mm}  a v a 
-%\a<a> {\bf GLOSSING INPUT:} \hspace{8 mm}  a v a \hspace{7 mm} y \hspace{9 mm} d i
-\a<b> {\bf GLOSSING OUTPUT:} \hspace{5 mm} \textsc{be}
-%\a<b> {\bf GLOSSING OUTPUT:} \hspace{1 mm} B-\textsc{be} & I-\textsc{be} & I-\textsc{be} & B-\textsc{ptp} & B-\textsc{sbst} & I-\textsc{sbst}
-\xe
+BIO-labeling is not used for the glossing only task because each input instance is a single morpheme and each output is a gloss. The input and output is similar to that shown in (\ref{ex:Pipe2InOut}). The difference is that for the CRF+SVM there is only one morpheme per input. This allows the model to train much faster than when having one word per line.
 
 \paragraph{Sequential Approach: CRF+SVM.}
 The sequential approach first segments and then glosses using separate models for each step. In feature-based models, this allows a richer set of contextual features for the each step. 
 The CRF is employed only for segmentation. After predicting BIO-labels for morpheme shapes, the predicted morpheme strings are used as input to the SVM that uses features of the segmented morphemes to train the glossing step. 
 
-The CRF input is actually a list of features. The features were chosen to be cross-linguistically applicable. They are:
+The CRF input is actually a list of features. The features were chosen to be cross-linguistically applicable. They are 1) the letter as represented in text, 2) the letter as lowercase, 3) the whole word, 4) the four preceding and subsequent letters, 5) position of letter in word counted from both last and first letter...
 
-\begin{itemize}
-    \item the letter as represented in text
-    \item the letter as lowercase
-    \item the whole word
-    \item the four preceding and subsequent letters
-    \item position of letter in word counted from both last and first letter
-\end{itemize}
-
-The input features to the SVM uses the above features plus morpheme-specific features. The features of each letter in the predicted morpheme shape are concatenated and then additional features are added:
-
-\begin{itemize}
-    \item surrounding morphemes shapes (but not subsequent glosses)
-    \item position of morpheme in the word as counted by morpheme from beginning of the word (i.e. un- in ``unlikely'' is the first morpheme)
-    
-\end{itemize}
-
+The input features to the SVM uses the above features plus morpheme-specific features. The features of each letter in the predicted morpheme shape are concatenated. Then additional features are added: 1) surrounding morphemes shapes (but not subsequent glosses), 2) position of morpheme in the word as counted by morpheme from beginning of the word (i.e. un- in ``unlikely'' is the first morpheme)...
 
 \section{Results}
 \label{sec:results}
@@ -200,7 +154,7 @@ The evaluation of deep learning and feature-based models differed slightly. The 
 For joint learning, the scores indicate morphemes that were correctly segmented and glossed. For the sequential system, the score is a weighted average of the scores from both the segmentation and glossing models. 
 %Variation of scores for all systems and strategies were very similar.
 
-\begin{table}[tbh]
+\begin{table}
     \centering
     \begin{tabular}{l|cc|cc|cc|cc}
           & \multicolumn{4}{c|}{\textbf{Transformer}} & \multicolumn{4}{c}{\textbf{CRF (and SVM)}} 
@@ -256,65 +210,29 @@ The differences in the results in both joint and sequential systems are shown in
           & \textbf{Joint} & \textbf{Seq} \\
          \hline
          Alas  & -.0886 &  -.0726  \\
-         %Alas all & -.0130 & n/a \\
+         Alas all & -.0130 & n/a \\
          \hline
          Lamkang  & .1677 & .1606  \\
-         %Lamkang all & .1300 & n/a \\
+         Lamkang all & .1300 & n/a \\
          \hline
          Lezgi  & .0496 & .0691  \\
-         %Lezgi all & .0099 & n/a \\
+         Lezgi all & .0099 & n/a \\
          \hline
          Manipuri  & -.1682 & -.1608   \\
-         %Manipuri all & -.0210 & n/a \\
+         Manipuri all & -.0210 & n/a \\
          \hline
          Natügu  & -.0660 & -.1072  \\
-         %Natügu all & -.0030 & n/a \\
+         Natügu all & -.0030 & n/a \\
          \hline
          Upper Tanana &  &  \\
+         Upper Tanana all &  &  \\
     \end{tabular}
-    \caption[F$_1$-score Differences between Surface and Canonical Segmentation]{Average F$_1$ differences between surface and canonical segmentation strategies. Positive scores mean surface segmentation outperformed canonical segmentation.}
+    \caption[F$_1$-score Differences between Surface and Canonical Segmentation]{Average F$_1$ differences between surface and canonical segmentation strategies. Positive numbers mean surface segmentation outperformed canonical segmentation.}
     \label{tab:segdiffresults}
 \end{table}
 
 
 The segmentation strategies were also compared using all available data in the joint system. Table \ref{tab:segsizeresults} shows the how doubling the training data affects the performance of the Transformer. Doubling the training data always improves F$_1$-scores by about .2 to .4 points. While the difference between the two strategies becomes less noticeable when the data is increased, canonical segmentation tends to outperform surface segmentation, but in all languages the difference between the strategies becomes almost negligible (less than .15 points). 
-
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{l|rr}
-          & \textbf{Surface} & \textbf{Canon} \\
-         \hline
-         Alas \textit{half} & .4280 & .5166  \\
-         Alas \textit{all} & .6771 & \textbf{.6902} \\
-         \hline
-         Arapaho \textit{half} &  & n/a \\
-         Arapaho \textit{all} &  & n/a \\
-         \hline
-         Lamkang \textit{half} & .7091 & .5414  \\
-         Lamkang \textit{all} & .8547 & \textbf{.8573} \\
-         \hline
-         Lezgi \textit{half} & .5489 & .4993  \\
-         Lezgi \textit{all} & \textbf{.7834} & .7735 \\
-         \hline
-         Manipuri \textit{half} & .4719 & .6401   \\
-         Manipuri \textit{all} & .8693 & \textbf{.8903} \\
-         \hline
-         Natügu \textit{half}  & .5423 & .6083  \\
-         Natügu \textit{all} & .8965 & \textbf{.8995} \\
-         \hline
-         Tsez \textit{half} & n/a &  \\
-         Tsez \textit{all} & n/a &  \\
-         \hline
-         So. Sierra Miwok \textit{half} &  & n/a \\
-         So. Sierra Miwok \textit{all} &  & n/a \\
-         \hline
-         Upper Tanana \textit{half} &  &  \\
-         Upper Tanana \textit{\textit{all}} &  &  \\
-    \end{tabular}
-    \caption[Results of Joint Segmentation and Glossing with Increased Data]{Results the Transformer joint model with surface and canonical segmentation strategies when using half the training data compared to all training data.}
-    \label{tab:segsizeresults}
-\end{table}
-
 
 \subsection{Joint vs Sequential Results}
 
@@ -347,7 +265,7 @@ Since less variation is expected from the CRF and because the models take signif
         \hline
         Upper Tanana &  &  &  &  \\
     \end{tabular}
-    \caption[F$_1$-score Differences of Feature-based Models minus Deep Learning]{The differences between the CRF or CRF+SVM models and the Transformer. Positive scores means the feature-based model outperformed the Transformer.}
+    \caption[F$_1$-score Differences of Feature-based Models minus Deep Learning]{The differences between the CRF or CRF+SVM models and the Transformer. Positive numbers means the feature-based model outperformed the Transformer.}
     \label{tab:DLFtrResults}
 \end{table}
 
