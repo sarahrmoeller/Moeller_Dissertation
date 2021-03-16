@@ -129,9 +129,9 @@ In the training data, each letter is associated with a Beginning-Inside-Outside 
 \pex   
 \label{ex:BIOlabels}
 \a<a> {\bf INPUT:} \hspace{35 mm}  a \hspace{10 mm}  v \hspace{10 mm} a \hspace{10 mm} y \hspace{10 mm} d \hspace{10 mm} i
-\a<b> {\bf JOINT OUTPUT:} \hspace{1 mm} B-ava\#\textsc{be} & I-ava\#\textsc{be} & I-ava\#\textsc{be} & B-d\#\textsc{ptp} & B-i\#\textsc{sbst} & I-i\#\textsc{sbst}
+\a<b> {\bf JOINT OUTPUT:} \hspace{1 mm} B-ava\#\textsc{be}  I-ava\#\textsc{be} I-ava\#\textsc{be} & B-d\#\textsc{ptp} B-i\#\textsc{sbst} I-i\#\textsc{sbst}
 \label{ex:BIOlabelsjoint}
-\a<c> {\bf SEGMENTATION OUTPUT:} \hspace{1 mm} B-\textsc{be} & I-\textsc{be} & I-\textsc{be} & B-\textsc{ptp} & B-\textsc{sbst} & I-\textsc{sbst}
+\a<c> {\bf SEGMENTATION OUTPUT:} \hspace{1 mm} B-\textsc{be} I-\textsc{be} I-\textsc{be} B-\textsc{ptp} B-\textsc{sbst} & I-\textsc{sbst}
 \label{ex:BIOlabelssegonly}
 \xe
 
@@ -154,7 +154,7 @@ The evaluation of deep learning and feature-based models differed slightly. The 
 For joint learning, the scores indicate morphemes that were correctly segmented and glossed. For the sequential system, the score is a weighted average of the scores from both the segmentation and glossing models. 
 %Variation of scores for all systems and strategies were very similar.
 
-\begin{table}
+\begin{table}[!tb]
     \centering
     \begin{tabular}{l|cc|cc|cc|cc}
           & \multicolumn{4}{c|}{\textbf{Transformer}} & \multicolumn{4}{c}{\textbf{CRF (and SVM)}} 
@@ -204,7 +204,7 @@ When half of the total data is used, the comparison of surface and canonical seg
 
 The differences in the results in both joint and sequential systems are shown in Table \ref{tab:segdiffresults}. The effect of the segmentation strategy is roughly the same in both systems. 
 
-\begin{table}
+\begin{table}[!tb]
     \centering
     \begin{tabular}{l|r|r}
           & \textbf{Joint} & \textbf{Seq} \\
@@ -232,7 +232,9 @@ The differences in the results in both joint and sequential systems are shown in
 \end{table}
 
 
-The segmentation strategies were also compared using all available data in the joint system. Table \ref{tab:segsizeresults} shows the how doubling the training data affects the performance of the Transformer. Doubling the training data always improves F$_1$-scores by about .2 to .4 points. While the difference between the two strategies becomes less noticeable when the data is increased, canonical segmentation tends to outperform surface segmentation, but in all languages the difference between the strategies becomes almost negligible (less than .15 points). 
+The segmentation strategies were also compared using all available data in the joint system. Table \ref{tab:segdiffresults} shows the how doubling the training data affects the relative performance of the joint and sequential approaches. 
+%Doubling the training data always improves F$_1$-scores by about .2 to .4 points. 
+While the difference between the two strategies becomes less noticeable when the data is increased, canonical segmentation tends to outperform surface segmentation more consistently. Nevertheless, in all languages the difference between the strategies becomes almost negligible (less than .15 points) with more data. 
 
 \subsection{Joint vs Sequential Results}
 
@@ -243,14 +245,14 @@ The performance on the Nat\"ugu data is the only case where the sequential syste
 When considering word-level accuracy, Nat\"ugu joint learning outperformed sequential learning on canonical segmentation. Interestingly, it also has the smallest change in the number of unique labels between surface and canonical segmentation (an increase of 14 labels, compared to next lowest of 46). With so few languages, it is difficult to say whether the relative number of unique labels affect the relative performance when trained on surface vs. canonical segmentation. More corpora should be included for this question to be explored further. %Overall, the differences are still so slight that it seems any system or strategy may perform equally well on Nat\"ugu. 
  
 
-\subsection{Feature-Based Models' Results}
+\subsection{Feature-Based Results}
 
 Since less variation is expected from the CRF and because the models take significantly longer to train, they were evaluated on a single run. 
 
 \begin{table}
     \centering
     \begin{tabular}{l|cc|cc}
-        & \textbf{\multicolumn{2}{c|}{Surface}} & \textbf{\multicolumn{2}{c}{Canonical}} \\
+        & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} \\
         & \textbf{Joint} & \textbf{Seq} & \textbf{Joint} & \textbf{Seq} \\
         \hline
         Alas &  & .1754 &  & .1069 \\
