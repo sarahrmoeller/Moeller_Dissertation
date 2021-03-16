@@ -2,7 +2,7 @@
 \label{chap:POS}
   
 
-\begin{figure}[htb]
+\begin{figure}[tb]
     \centering
     \includegraphics[height=5cm]{figs/POS-avgSegGlossCropped.jpg}
     \hspace{3cm}
@@ -10,7 +10,6 @@
     \caption[Comparison of Morphological Tasks with/out POS tags]{Average  F$_1$-scores (right) on joint segmentation and glossing on interlinear glossed texts from fieldwork in five languages found that POS-tags have little and irregular impact. Also, reinflection (left) on four interlinear field corpora and four ``cleaned" versions of those corpora who POS tags make make minimal significant or consistent difference in accuracy.}
     \label{fig:avgseggls}
 \end{figure}
-
 
 Parts of speech (POS), also known as word classes or lexical categories, communicate information about a word, its morphological structure and inflectional paradigm, and its potential grammatical role in a clause. 
 %POS tags have been used in NLP work with many languages and 
@@ -38,12 +37,13 @@ The impact of (not) having POS tags has perhaps not looked at closely in part be
 In fact, the lexical categories present in the language may not be described yet when data becomes available. In documentary and descriptive language, the description and tagging of lexical categories takes a relatively low priority compared to its place in NLP (cf. \citet{bird_machine_2012}'s workflow). Yet interlinear glossed texts (IGT) are sometimes the largest available, or only, annotated resource for a low-resource language. 
 %If POS tags are a necessary or important piece of information, then this common resource becomes less useful, but if POS tags do not have a significant effect, then effort could be shifted toward other, more fruitful research.
 
-This chapter describes experiments that were run on corpora differing only in the presence or absence of POS tags. The results, which are generalized in Figures \ref{fig:avgseggls} and \ref{fig:avgreinfl}, indicate that POS tags do not have significant impact on computational morphological analysis. 
-Section \ref{sec:related} presents related work in lexical cateogories, POS-tagging, segmentation and glossing, and (re)inflection. Sections \ref{sec:data} and \ref{sec:models} describe the corpora and the NLP architecture used. The segmentation and glossing task and results are presented in Section \ref{sec:seggls}. The reinflection task and results are presented in Section \ref{sec:inflection}. Implications of both experiments are discussed in Section \ref{sec:discussion}.
+This chapter describes experiments that were run on corpora differing only in the presence or absence of POS tags. The results, which are generalized in Figures \ref{fig:avgseggls}, indicate that POS tags do not have significant impact on computational morphological analysis. 
+%Section \ref{sec:related} presents related work in lexical cateogories, POS-tagging, segmentation and glossing, and (re)inflection. 
+Sections \ref{sec:posdata} describe the data that is used. The segmentation and glossing task and results are presented in Section \ref{sec:posseggls}. The reinflection task and results are presented in Section \ref{sec:posinflection}. Implications of both experiments are discussed in Section \ref{sec:posdiscussion}.
 
 
 \section{Data}
-\label{sec:data}
+\label{sec:posdata}
 
 The study described here uses published data in ten languages and unpublished data from five IGT corpora. The published and unpublished data is used for the morphological reinflection but only the unpublished data for segmentation and glossing.  
 
@@ -111,7 +111,7 @@ It is worth emphasizing that the Lamkang (used only for the segmentation and glo
 
 
 \section{POS for Segmentation and Glossing}
-\label{sec:seggls}
+\label{sec:posseggls}
 
 The first study asks whether POS tags makes a significant impact on automated morpheme segmenting and glossing. The experiment tests and compares two models on data that is identical expect for the the presence/lack of POS tags. Segmenting words into morphemes and glossing (strictly translating) those morphemes is usually the first task undertaken after new data is transcribed. Automatic systems could greatly benefit the analysis of endangered languages because current manual methods caused an ``annotation bottleneck'' \citep{simons_worlds_2013,holton_developing_2017,seifart_language_2018}. Tagging parts of speech would add to that bottleneck; however, if the tags have a significant and positive impact, then linguists may decide adjust their workflow to receive long-term benefits. Therefore, we explore possible implications of such adjustments by examining the impact of POS tags at very low-resource settings and examining the impact if a field project had time to tag some, but not all tokens. 
 
@@ -132,7 +132,7 @@ For simple comparisons, the Transformer was chosen for both tasks. Three Transfo
 
 All three models are trained on all the available training data. Models 1 and 2 are also trained on different proportions of training data in order to simulate very small corpora. These proportions of training data start at 1\% and are gradually increased to 40\% of available training data. 
 
-Even when POS tags are included in interlinear field data, it is rarely completed as Table \ref{tab:IGTdata} clearly indicates.%\footnote{This does not include two other large corpora which had no POS tags at all.}  
+Even when POS tags are included in interlinear field data, it is rarely completed as Table \ref{tab:dissdata} clearly indicates.%\footnote{This does not include two other large corpora which had no POS tags at all.}  
 %Even when documentary corpora have some POS tags, it is not unusual for less than 50\% of the tokens in our corpus to be POS-tagged. 
 In order to simulate this reality Model 3 was trained on all the available training data but the proportion of inputs with POS tags was gradually and randomly increased.
 %This means every minute spent adding POS tags reduces time for more basic tasks. Therefore, we should not just ask if POS tags are beneficial, but also how much POS tagging is beneficial and at what point in the process of interlinearization should it become a focus. 
@@ -220,7 +220,7 @@ The system either performs worse, or, in the case of Lezgi, makes very small imp
 
 
 \section{POS for Reinflection}
-\label{sec:inflection}
+\label{sec:posinflection}
 
 The second study asks whether POS tags make a significant impact on learning inflectional patterns. Analyzing a language's inflectional patterns is a recommended next step after morpheme segmentation and glossing \citep{bird_machine_2012}. The inflectional pattern of a lexeme or a lexical category is also known as a morphological paradigm. Learning morphological paradigms can be viewed in terms of filling in, or generating, the missing forms of a paradigm table by generalizing inflectional patterns in data. 
 
@@ -270,7 +270,7 @@ The average difference in accuracy on any data set is rarely more than 1 percent
 
 
 \section{Discussion}
-\label{sec:discussion}
+\label{sec:posdiscussion}
 
 The number of language we used is not large but a few general observations can be made. For both tasks the impact made by the presence or absence of POS tags is minimal. 
 Still best results with a small corpus are achieved when either all or no tokens are POS-tagged, at least for segmentation and glossing. This suggests that having a completely tagged corpus is better than an incompletely tagged corpus, so perhaps limited annotation time might be better spent on more segmentation and glossing. 

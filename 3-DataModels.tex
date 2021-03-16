@@ -10,7 +10,7 @@ The selected data corpora are representative of a range of typical documentary a
 
 \bgroup
 \def\arraystretch{1.25}
-\begin{table}[h!]
+\begin{table}[tb]
     \begin{center}
     \begin{tabular}{lllll} 
     \textbf{Language} & \textbf{ISO} & \textbf{Family} & \textbf{Morphology} & \textbf{Status} \\
@@ -72,7 +72,7 @@ is a member of the Utian (Miwok-Costanoan) family of central California (USA) \c
 \paragraph{Upper Tanana}
 (Nabesna) belongs to the Alaskan sub-group of the Northern Dene (Athabaskan) family. Although it is one of the official languages of Alaska and has been taught in a Canadian school, it is critically endangered, with barely 50 adult speakers in the eastern interior of Alaska (USA) and the Yukon Territory (Canada) \citep{lovick_grammar_2020}. Its complex morphology features non-continuous lexical, derivational, and inflectional prefixes on verbs. The corpus was collected in 2006-2019 in Alaska; most speakers represented the Tetlin and Northway dialects. 
 %Two annotators did most of the interlinearization with small contributions from 2 or 3 others. 
-The primary data (recordings, transcripts) is preserved at the Alaska Native Language Archive.\footnote{\url{https://www.uaf.edu/anla/}}
+The primary data (recordings, transcripts) is preserved at the Alaska Native Language Archive.\footnote{\url{https://www.uaf.edu/anla}}
 
 
 
@@ -88,7 +88,7 @@ Even though most of the corpora resulted from many years of work, they still sta
 Only the Arapaho and Tsez corpora can be considered completed (though missing annotations were found in both during preprocessing). 
 
 
-\begin{table*}
+\begin{table}[tb]
     \centering
     \begin{tabular}{l|r|r|rc|rc|rc}
          \textbf{Language} & \textbf{Tokens} & \textbf{Inflected} & \multicolumn{2}{c|}{\textbf{Segmented}} & \multicolumn{2}{c|}{\textbf{Glossed}} & \multicolumn{2}{c}{\textbf{POS-tagged}} \\
@@ -156,7 +156,7 @@ Only the Arapaho and Tsez corpora can be considered completed (though missing an
     \end{tabular}
     \caption[Data Statistics]{Tokens include multiple word expressions (when parsed as such) as single tokens and ignores tagged English words, proper nouns, digits, and punctuation. Inflected refers to the number of unique inflected forms that can be used to train the inflection task. The percentage and total number of tokens that are segmented or glossed are shown.  The segmentation and glossing task trains on both. The inflection task needs only glossed tokens.}
     \label{tab:dissdata}
-\end{table*}
+\end{table}
 
 %\begin{table}
 %    \centering
@@ -182,7 +182,7 @@ Only the Arapaho and Tsez corpora can be considered completed (though missing an
 Each corpus required preprocessing because of errors, typos, changing analyses, or variable formatting. Even projects that employed the same software tool had variable formatting. For example, both Natugu and Bahasa Alas have circumfixing, but in one corpus the prefixed part was labeled as a circumfix and the suffixed part as a suffix, while the other corpus took the opposite approach. 
 %Other issues arose from the variety of fonts for models that only accept ASCII characters. 
 
-Gold standard data for training and testing was produced by filtering incomplete annotations. Only tokens that were completely segmented and glossed, and only sentences that were translated are included in the gold standard for the relevant experiments. The resulting data sizes are given in Table \ref{tab:data}.
+Gold standard data for training and testing was produced by filtering incomplete annotations. Only tokens that were completely segmented and glossed, and only sentences that were translated are included in the gold standard for the relevant experiments. The resulting data sizes are given in Table \ref{tab:dissdata}.
 
 The projects that produced the corpora spent different amounts of time on interlinearization, had different short-term goals, and varied by team size, team members' education or linguistic training. For example, the Alas corpus was produced in a matter of months while the Arapaho and Natügu corpora were produced by projects that have extended over many years. These two corpora, as well as the Tsez corpus, were annotated by teams with multiple linguists and native speakers. In contrast, the projects that produced the Alas corpus and most of the Lezgi corpus had one linguist and one or two native speaker annotators. The smaller, shorter projects were usually not able to provide as much training to annotators. Most projects were undertaken with the primary goal of documenting and describing the language, but the shorter-term goal of the Alas project is to support literacy efforts while most of the work on the Lezgi corpus was done to support an MA thesis on verbs. These factors are reflected in the quality of the interlinearization. For example, in the Lezgi corpus only verbs were consistently annotated by a trained linguist. The rest was annotated by a native speaker with minimal linguistic training and, therefore, contains more errors and inconsistencies. 
 

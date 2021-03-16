@@ -14,9 +14,9 @@ we explore how to leverage interlinear glossed text (IGT) to generate unseen for
 
 
 % flowchart IGT to paradigm completion
-\begin{figure}
+\begin{figure}[!tb]
     \centering
-    \includegraphics[width=12cm]{figs/IGT-Paradigm-Workflow2.pdf}
+    \includegraphics[width=8cm]{figs/IGT-Paradigm-Workflow2.pdf}
     \caption[IGT2P Overview]{Inflected word forms attested in interlinear glossed texts (IGT) train transformer encoder-decoder to generalize morphological paradigmatic patterns and generate word forms when given known morphosyntatic features of missing paradigm cells. Noisy paradigms are automatically constructed from IGT and a language expert creates ``cleaned'' paradigms. Both sets are tested on the same missing word forms and the results are compared.}
     \label{fig:Workflow}
 \end{figure}
@@ -45,7 +45,7 @@ IGT2P is further similar to paradigm completion in that it aims at generating \t
 
 \section{Why IGT2P?}
 
-\begin{table}[]
+\begin{table}[tb]
     \centering
     \begin{tabular}{rlllll}
        \textbf{Text}  & Vecherom & ya & pobejala & v & magazin. \\
@@ -137,7 +137,7 @@ For the second preprocessing method, the automatically extracted paradigms were 
 \end{figure}
 
 \paragraph{Step 2: Preparing reinflection data.}
-The typical morphological reinflection data is in tuple format of \texttt{(source form, target form, target features)}. The paradigm data is converted into this format in preparation for reinflection. Table \ref{tab:datainfo} presents the data sizes.\footnote{Inflection data available at: \url{https://github.com/LINGuistLIU/IGT}} 
+The typical morphological reinflection data is in tuple format of \texttt{(source form, target form, target features)}. The paradigm data is converted into this format in preparation for reinflection. Table \ref{tab:IGT2Pdata} presents the data sizes.\footnote{Inflection data available at: \url{https://github.com/LINGuistLIU/IGT}} 
 
 For each language, the validation and test sets are prepared by using the the expert-cleaned data language in the following way: If the paradigm has more than one form, pick a random form as the source form and select the remaining forms in the paradigm with a probability of 0.3 to be ``unknown'', i.e. to be predicted from the first form. Half of the ``unknown'' data transformed in this way is used for validation and the other half for testing. The validation and test sets for each language is shared across all the experiments conducted for that language.
 
