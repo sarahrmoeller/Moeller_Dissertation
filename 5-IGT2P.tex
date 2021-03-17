@@ -81,7 +81,7 @@ Another issue is that IGT annotators do not usually differentiate between differ
 From the IGT corpora described in Chapter \ref{chap:datamodels} this study used Arapaho, Alas, Lezgi, Manipuri, Nat\"ugu, and Tsez.
 As a first step, partial inflectional paradigms were automatically extracted from the IGT. Words were organized into paradigms based on the gloss of the stem morpheme. Then, these stem glosses were removed, leaving only the affix glosses which serve as morphosyntactic feature tags. The data is summarized in Table \ref{tab:IGT2Pdata}.
 
-\begin{table}[htb]
+\begin{table}[!tb]
     \centering
     %\setlength{\tabcolsep}{5.pt}
     \begin{tabular}{l|ccccccc}
@@ -156,7 +156,7 @@ After paradigms are extracted and preprocessed, two experiments were conducted t
 All models and techniques were tested on the same held-out set chosen randomly from multi-entry paradigms in each language. Results were compared when trained on the noisy paradigms and on the expertly cleaned paradigms. It was found that the limited involvement of experts always improved results. It was also found the transformer outperformed the LSTM with hard monotonic attention on cleaned data in all instances and on noisy data overall. Comparing results from augmenting the data by artificial and uninflected/unannotated tokens gave varied results. 
 The results are displayed in Table \ref{tab:IGT2Presults}. 
 
-\begin{table}
+\begin{table}[!tb]
     \centering
     \setlength{\tabcolsep}{8.pt}
     \begin{tabular}{l|cccc|cccc}
