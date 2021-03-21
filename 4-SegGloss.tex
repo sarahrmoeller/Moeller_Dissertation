@@ -43,7 +43,7 @@ This rest of this chapter describes experiments that test machine learning segme
 \section{Experiments}
 \label{sec:sgmethodology}
 
-For the segmentation and glossing experiments, the data was arranged so as to accommodate both joint and sequential learning. That is, after withholding ten percent of the corpus as a test set, the remaining data was split into two equal training sets.  Ten percent of each part was used as a development set. For easier comparison, the joint model was trained on only one part, the same part used for training the segmentation step in the sequential system. One additional experiment was run with the joint model that trained on both parts together, minus the held-out data. For each experiment, a ten-fold cross validation was run. 
+For the segmentation and glossing experiments, the data was arranged so as to accommodate both joint and sequential learning. That is, after withholding ten percent of the corpus as a test set, the remaining data was split into two equal training sets.  Ten percent of each part was used as a development set. For easier comparison, the joint model was trained on only one part, the same part used for training the segmentation step in the sequential system. One additional experiment was run with the joint model that trained on both parts together, minus the held-out data. For each experiment with the Transformer model, a ten-fold cross validation was run. Since the CRF took significantly longer to train, the feature-based models were run only once.
 
 It was assumed that the documentary and descriptive field data had only been morpheme segmented and glossed. No other information was leveraged from the IGT or other resources. Gold standard data was created by filtering out tokens that were not completely segmented (both canonical and surface) or glossed, as far as could be determined. This was determined by assuring that the surface, canonical, and gloss lines aligned with each other. 
 Glosses were standardized by capitalizing affix glosses. When morphemes had multiple English words or symbols in their glosses, the words were joined by periods.
@@ -186,28 +186,37 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
           \\
           &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} \\
          \hline
-         Alas & .4280 & \textbf{.4565} & .5166 & \textbf{.5291} &  & .6319 &  & .6360 \\
+         Alas & .4280 & .4565 & .5166 & .5291 
+              & .5573 & .6319 & .5792 & \textbf{.6360} \\
           % difference & \multicolumn{2}{c}{.0285} & \multicolumn{2}{c}{.0125} \\
          \hline
-         Arapaho &  &  & n/a & n/a & n/a & n/a & n/a & n/a  \\
+         Arapaho &  &  & n/a & n/a 
+                 &  &  & n/a & n/a  \\
          \hline
-         Lamkang & .7091 & \textbf{.7391} & .5414 & \textbf{.5785} &  &  &  &  \\
+         Lamkang & .7091 & .7391 & .5414 & .5785 
+         &  & \textbf{.8376} &  & .8197 \\
          % difference & \multicolumn{2}{c}{.0300} & \multicolumn{2}{c}{.0371} \\
          \hline
-         Lezgi & .5489 & \textbf{.6062} & .4993 & \textbf{.5371} &  & .7090 &  & .6888 \\
+         Lezgi  & .5489 & .6062 & .4993 & .5371 
+                & .6696 & \textbf{.7090} & .6518 & .6888 \\
          % difference & \multicolumn{2}{c}{.0573} & \multicolumn{2}{c}{.0378} \\
          \hline
-         Manipuri & .4719 & \textbf{.5067} & .6401 & \textbf{.6675} &  & .8063 &  & .8191 \\
+         Manipuri & .4719 & .5067 & .6401 & .6675 
+                  & .7766 & .8063 & .7904 & \textbf{.8191} \\
          % difference & \multicolumn{2}{c}{.0348} & \multicolumn{2}{c}{.0274} \\
          \hline
-         Natügu & \textbf{.5423} & .5263 & .6083 & \textbf{.6335 } &  & .8395 &  & .8398 \\
+         Natügu & .5423 & .5263 & .6083 & .6335 
+                & .8388 & .8395 & .8349 & \textbf{.8398} \\
          % difference & \multicolumn{2}{c}{.0160} & \multicolumn{2}{c}{.0252} \\
          \hline
-         Tsez & n/a & n/a &  &  & n/a & n/a & n/a & n/a \\
+         Tsez & n/a & n/a &  &  
+              & n/a & n/a &  &  \\
          \hline
-         So. Sierra Miwok &  &  & n/a & n/a & n/a & n/a & n/a & n/a \\
+         So. Sierra Miwok &  &  & n/a & n/a 
+                          &  &  & n/a & n/a \\
          \hline
-         Upper Tanana &  &  &  &  &  & .7942 &  & .7970 \\
+         Upper Tanana &  &  &  &  
+                      & .7117 & .7942 & .7183 & .7970 \\
          \hline
          \hline
          % PUT THIS NEXT LINE IN JOINT VS. SEQUENTIAL RESULTS SECTION
