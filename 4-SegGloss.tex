@@ -190,7 +190,7 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
               & .5573 & .6319 & .5792 & \textbf{.6360} \\
           % difference & \multicolumn{2}{c}{.0285} & \multicolumn{2}{c}{.0125} \\
          \hline
-         Arapaho &  &  & n/a & n/a 
+         Arapaho & .7630 & .7780 & n/a & n/a 
                  &  &  & n/a & n/a  \\
          \hline
          Lamkang & .7091 & .7391 & .5414 & .5785 
@@ -209,13 +209,13 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
                 & .8388 & .8395 & .8349 & \textbf{.8398} \\
          % difference & \multicolumn{2}{c}{.0160} & \multicolumn{2}{c}{.0252} \\
          \hline
-         Tsez & n/a & n/a &  &  
+         Tsez & n/a & n/a & .8592 & .8997 
               & n/a & n/a &  &  \\
          \hline
-         So. Sierra Miwok &  &  & n/a & n/a 
+         So. Sierra Miwok & .6848 & .6982 & n/a & n/a 
                           &  &  & n/a & n/a \\
          \hline
-         Upper Tanana &  &  &  &  
+         Upper Tanana & .7240 & .7849 & .7459 & .7886
                       & .7117 & .7942 & .7183 & .7970 \\
          \hline
          \hline
@@ -266,10 +266,10 @@ The differences in the results in both joint and sequential systems are shown in
          %Natügu  & -.0660 & -.1072  \\
          %Natügu all & -.0030 & n/a \\
          \hline
-         Upper Tanana &  &  \\
-         Upper Tanana all &  &  \\
-         %Upper Tanana &  &  \\
-         %Upper Tanana all &  &  \\
+         Upper Tanana & -.02 & .00 \\
+         Upper Tanana all & -.02 & n/a \\
+         %Upper Tanana & -.0219 & -.0037 \\
+         %Upper Tanana all & -.0159 & n/a \\
     \end{tabular}
     \caption[F$_1$-score Differences between Surface and Canonical Segmentation]{Average F$_1$ differences between surface and canonical segmentation strategies. Positive numbers mean surface segmentation outperformed canonical segmentation.}
     \label{tab:segdiffresults}
@@ -291,7 +291,7 @@ When considering word-level accuracy, Nat\"ugu joint learning outperformed seque
 
 \subsection{Feature-Based Results}
 
-Since less variation is expected from the CRF and because the models take significantly longer to train, they were evaluated on a single run. 
+The results of the CRF and Transformer joint approach were compared as were the results of the CRF+SVM and Transformer+Transformer sequential approach. \autoref{tab:DLFtrResults} shows the difference after subtracting the Transformer results from the feature-based results. Since less variation is expected from the CRF and because the models take significantly longer to train, they were evaluated on a single run, whereas all Transformer results are reported on the average score from a 10-fold cross-validation. 
 
 \begin{table}
     \centering
@@ -299,27 +299,29 @@ Since less variation is expected from the CRF and because the models take signif
         & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} \\
         & \textbf{Joint} & \textbf{Seq} & \textbf{Joint} & \textbf{Seq} \\
         \hline
-        Alas &  & .18 &  & .11 \\
-        %Alas &  & .1754 &  & .1069 \\
+        Alas & .13 & .18 & .06 & .11 \\
+        %Alas & .1293 & .1754 & .0626 & .1069 \\
         \hline
-        Lamkang &  &  &  &  \\
-        %Lamkang &  &  &  &  \\
+        Lamkang &  & .10 &  & .24 \\
+        %Lamkang &  & .0985 &  & .2412 \\
         \hline
-        Lezgi &  & .10 &  & .15 \\
-        %Lezgi &  & .1028 &  & .1517 \\
+        Lezgi & .12 & .10 & .15 & .15 \\
+        %Lezgi & .1207 & .1028 & .1525 & .1517 \\
         \hline
-        Manipuri &  & .30 &  & .15 \\
-        %Manipuri &  & .2996 &  & .1516 \\
+        Manipuri & .30 & .30 & .15 & .15 \\
+        %Manipuri & .3047 & .2996 & .1503 & .1516 \\
         \hline
-        Nat\"ugu &  & .31 &  & .21 \\
-        %Nat\"ugu &  & .3132 &  & .2063 \\
+        Nat\"ugu & .30 & .31 & .23 & .21 \\
+        %Nat\"ugu & .2965 & .3132 & .2266 & .2063 \\
         \hline
-        Upper Tanana &  &  &  &  \\
-        %Upper Tanana &  &  &  &  \\
+        Upper Tanana & -.01 & .01 & -.03 & .01 \\
+        %Upper Tanana & -.0123 & .0093 & -.0276 & .0084 \\
     \end{tabular}
     \caption[F$_1$-score Differences of Feature-based Models minus Deep Learning]{The differences between the CRF or CRF+SVM models and the Transformer. Positive numbers means the feature-based model outperformed the Transformer.}
     \label{tab:DLFtrResults}
 \end{table}
+
+
 
 
 \section{Error Analysis}
