@@ -209,8 +209,8 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
                 & .8388 & .8395 & .8349 & \textbf{.8398} \\
          % difference & \multicolumn{2}{c}{.0160} & \multicolumn{2}{c}{.0252} \\
          \hline
-         Tsez & n/a & n/a & .8592 & .8997 
-              & n/a & n/a &  &  \\
+         Tsez & n/a & n/a & .8592 & \textbf{.8997} 
+              & n/a & n/a & n/a & n/a \\
          \hline
          So. Sierra Miwok & .6848 & .6982 & n/a & n/a 
                           &  &  & n/a & n/a \\
@@ -269,7 +269,7 @@ The differences in the results in both joint and sequential systems are shown in
          Upper Tanana & -.02 & .00 \\
          Upper Tanana all & -.02 & n/a \\
          %Upper Tanana & -.0219 & -.0037 \\
-         %Upper Tanana all & -.0159 & n/a \\
+         %Upper Tanana all & -.0159  & n/a \\
     \end{tabular}
     \caption[F$_1$-score Differences between Surface and Canonical Segmentation]{Average F$_1$ differences between surface and canonical segmentation strategies. Positive numbers mean surface segmentation outperformed canonical segmentation.}
     \label{tab:segdiffresults}
@@ -289,45 +289,10 @@ The performance on the Nat\"ugu data is the only case where the sequential syste
 When considering word-level accuracy, Nat\"ugu joint learning outperformed sequential learning on canonical segmentation. Interestingly, it also has the smallest change in the number of unique labels between surface and canonical segmentation (an increase of 14 labels, compared to next lowest of 46). With so few languages, it is difficult to say whether the relative number of unique labels affect the relative performance when trained on surface vs. canonical segmentation. More corpora should be included for this question to be explored further. %Overall, the differences are still so slight that it seems any system or strategy may perform equally well on Nat\"ugu. 
  
 
-\subsection{Feature-Based Results}
-
-The results of the CRF and Transformer joint approach were compared as were the results of the CRF+SVM and Transformer+Transformer sequential approach. \autoref{tab:DLFtrResults} shows the difference after subtracting the Transformer results from the feature-based results. Since less variation is expected from the CRF and because the models take significantly longer to train, they were evaluated on a single run, whereas all Transformer results are reported on the average score from a 10-fold cross-validation. 
-
-\begin{table}
-    \centering
-    \begin{tabular}{l|cc|cc}
-        & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} \\
-        & \textbf{Joint} & \textbf{Seq} & \textbf{Joint} & \textbf{Seq} \\
-        \hline
-        Alas & .13 & .18 & .06 & .11 \\
-        %Alas & .1293 & .1754 & .0626 & .1069 \\
-        \hline
-        Lamkang &  & .10 &  & .24 \\
-        %Lamkang &  & .0985 &  & .2412 \\
-        \hline
-        Lezgi & .12 & .10 & .15 & .15 \\
-        %Lezgi & .1207 & .1028 & .1525 & .1517 \\
-        \hline
-        Manipuri & .30 & .30 & .15 & .15 \\
-        %Manipuri & .3047 & .2996 & .1503 & .1516 \\
-        \hline
-        Nat\"ugu & .30 & .31 & .23 & .21 \\
-        %Nat\"ugu & .2965 & .3132 & .2266 & .2063 \\
-        \hline
-        Upper Tanana & -.01 & .01 & -.03 & .01 \\
-        %Upper Tanana & -.0123 & .0093 & -.0276 & .0084 \\
-    \end{tabular}
-    \caption[F$_1$-score Differences of Feature-based Models minus Deep Learning]{The differences between the CRF or CRF+SVM models and the Transformer. Positive numbers means the feature-based model outperformed the Transformer.}
-    \label{tab:DLFtrResults}
-\end{table}
-
-
-
-
-\section{Error Analysis}
+\section{Discussion of Deep Learning Results}
 \label{sec:sgerrors}
 
-A closer look at the results reveals interesting patterns. One significant factor in system performance is sparsity of data. Unsurprisingly, most errors occur on rarer forms. 
+A closer look at the results of the Transformer models reveals interesting patterns. One significant factor in system performance is sparsity of data. Unsurprisingly, most errors occur on rarer forms. 
 %The larger class of stems means these are more often incorrect than their affixes. %\foreignlanguage{russian}{гьакъикъет -е -ай кьисметда -е -ай, тан -зва -й -ди атун -зва -й -ди}
 Another factor is the amount of inconsistencies or errors in the manually annotated data. Annotation quality can amplify data sparsity. 
 
@@ -388,7 +353,48 @@ avaybur, avariydiz, avatna 2sg.erg - 2sg.abs - ERG.  Some clearly never or incon
 Word instances that had been incorrectly segmented by the human annotators were sometimes correctly segmented by the model, although again these examples were evaluated as incorrect because they did not match the gold standard data. For Lezgi, these examples of ``correction'' by the model were more frequent in the sequential system, and may explain why biggest improvement by the sequential system over the joint system is found in the Lezgi data, which we know had many incorrect or incomplete segmentations.  Again, due to the lack of language experts, we are unable to say whether this holds true for all corpora but this should be explored deeper in future research.
 
 
-\section{Discussion and Conclusions}
+\subsection{Feature-Based Results and Discussion}
+
+The results of the CRF and Transformer joint approach were compared as were the results of the CRF+SVM and Transformer+Transformer sequential approach. \autoref{tab:DLFtrResults} shows the difference after subtracting the Transformer results from the feature-based results. Since less variation is expected from the CRF and because the models take significantly longer to train, they were evaluated on a single run, whereas all Transformer results are reported on the average score from a 10-fold cross-validation. 
+
+\begin{table}
+    \centering
+    \begin{tabular}{l|cc|cc}
+        & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} \\
+        & \textbf{Joint} & \textbf{Seq} & \textbf{Joint} & \textbf{Seq} \\
+        \hline
+        Alas & .13 & .18 & .06 & .11 \\
+        %Alas & .1293 & .1754 & .0626 & .1069 \\
+        \hline
+        Lamkang &  & .10 &  & .24 \\
+        %Lamkang &  & .0985 &  & .2412 \\
+        \hline
+        Lezgi & .12 & .10 & .15 & .15 \\
+        %Lezgi & .1207 & .1028 & .1525 & .1517 \\
+        \hline
+        Manipuri & .30 & .30 & .15 & .15 \\
+        %Manipuri & .3047 & .2996 & .1503 & .1516 \\
+        \hline
+        Nat\"ugu & .30 & .31 & .23 & .21 \\
+        %Nat\"ugu & .2965 & .3132 & .2266 & .2063 \\
+        \hline
+        Upper Tanana & -.01 & .01 & -.03 & .01 \\
+        %Upper Tanana & -.0123 & .0093 & -.0276 & .0084 \\
+    \end{tabular}
+    \caption[F$_1$-score Differences of Feature-based Models minus Deep Learning]{The differences between the CRF or CRF+SVM models and the Transformer. Positive numbers means the feature-based model outperformed the Transformer.}
+    \label{tab:DLFtrResults}
+\end{table}
+
+- Difficulty of determining how to align biolabels to word letters in canonical only segmentation. Hence no Tsez feature-based results. Possible future work.
+
+- S only models: The morphs on the segmentation line are not always strictly surface segmented. Those cases were eliminated from the feature-based models since the CRF input and output sequences must be same length. Another thing to consider against deep learning models, which can process sequences of different lengths. Arp: 4163. SKD: 329. Roughly same amount as dev for Transformer training, so not significant in difference. 
+
+- Amount of time required for training CRF. Several days longer in some cases for one run.
+
+- Set up, determining features, writing code, is significantly more complicated with feature-based models. Includes need to workaround non ASCII characters. Better results should be balanced against ease of setting up a deep learning model like the Transformer. 
+
+
+\section{Conclusion}
 \label{sec:sgconclusion}
 
 This paper is aimed at smoothing the road to more interdisciplinary work with NLP and linguistics by articulating and examining the results of different research designs. Different research designs arise from different expectations or conventions in the two fields. Although they do not present barriers to mutually beneficial research, different expectations, such as in segmentation strategies, and different workflows, such as joint or separate segmentation/glossing, should not be dismissed when they arise. This paper tests the possible effects of these two differences.
@@ -405,7 +411,7 @@ The consistent improvement of the sequential system over joint learning may be a
 The strength of the sequential system might be applied when a corpus cannot be completely segmented and glossed due to budget or time constraints. Instead, a strategy would be to prioritize segmenting and benefit from computational assistance when glossing. 
 %It also implies that other changes in traditional linguistics workflow may come once NLP models are integrated. 
 
-Finally, these studies could serve as a foundation towards more efficient use of computational methods in linguistic analysis and annotation. This paper shows, for example, that the glossing-only model performs well even on inaccurate segmentation predictions and can even ``correct'' manual segmentation errors. The study presented here assumes that the model's segmentation is not corrected by the language experts before training the glossing model. If a human-in-the-loop workflow was introduced to first correct segmentations, then the glossing-only model could improve even more. Such methodological considerations should be tested to see to what extent linguistic analysis and annotation of endangered language might benefit.
+These studies could serve as a foundation towards more efficient use of computational methods in linguistic analysis and annotation. This paper shows, for example, that the glossing-only model performs well even on inaccurate segmentation predictions and can even ``correct'' manual segmentation errors. The study presented here assumes that the model's segmentation is not corrected by the language experts before training the glossing model. If a human-in-the-loop workflow was introduced to first correct segmentations, then the glossing-only model could improve even more. Such methodological considerations should be tested to see to what extent linguistic analysis and annotation of endangered language might benefit.
 
 %However, the differences between the joint and sequential systems are not great.
 %and other factors hint that linguists should adjust their approach to other things than workflows. 
