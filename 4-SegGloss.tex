@@ -164,16 +164,18 @@ BIO-labeling is not used for the glossing only task because each input instance 
 The sequential approach first segments and then glosses using separate models for each step. In feature-based models, this allows a richer set of contextual features for the each step. 
 The CRF is employed only for segmentation. After predicting BIO-labels for morpheme shapes, the predicted morpheme strings are used as input to the SVM that uses features of the segmented morphemes to train the glossing step. 
 
-The CRF input is actually a list of features. The features were chosen to be cross-linguistically applicable. They are 1) the letter as represented in text, 2) the letter as lowercase, 3) the whole word, 4) the four preceding and subsequent letters, 5) position of letter in word counted from both last and first letter...
+The CRF input is actually a list of features for each letter in a word. The features were chosen to be cross-linguistically applicable. Besides a bias feature, the features extracted are 1) the letter as represented in text, 2) the letter in lower case, 3) the whole word as represented in the text, 4) the whole word in lower case, 5) the length of the word as a number of characters, 6-7) position of letter in word counted from both last and first letter, 8-15) the 1-4 preceding and subsequent letters that surround the current letter.
 
-The input features to the SVM uses the above features plus morpheme-specific features. The features of each letter in the predicted morpheme shape are concatenated. Then additional features are added: 1) surrounding morphemes shapes (but not subsequent glosses), 2) position of morpheme in the word as counted by morpheme from beginning of the word (i.e. un- in ``unlikely'' is the first morpheme)...
+The input to the SVM is a list of features for each predicted morpheme segment. The first features are a concatenation of the above features for each letter in the predicted segment. Then morpheme-specific features are added. They are 1-2) surrounding morpheme, 3) the shape of the current morpheme. 
+
+These feature-based models require input and output sequences of equal lenght, so the number predicted morpheme segments and the number of gold glosses for training must match. The number is normalized by adding an `UNPREDICTED' gloss for every extra predicted segment or by adding a `NULL' feature for every morpheme segment that was not predicted as it should have been. 
 
 \section{Results}
 \label{sec:sgresults}
 
 The system predictions were automatically evaluated against the gold standard. Scores were calculated as a micro-average on all labels, independent of word accuracy. Since the system may predict more or fewer labels for a word, both precision and recall are calculated. 
 
-The evaluation of deep learning and feature-based models differed slightly. The feature-based models were evaluated on a single run without a development set. The performance of the Transformer on all tasks was all evaluated by a cross-validation on ten training and development sets that were randomly split from the half of the data used for each experiment. Table \ref{tab:allsgresults} compares the F$_1$-scores. Although only the corpora that were annotated in FLEx could be used for all studies, scores on the other three additional languages were added where available for comparison.
+The evaluation of deep learning and feature-based models differed slightly. The feature-based models were evaluated on a single run without a development set. The performance of the Transformer on all tasks was all evaluated by a cross-validation on ten training and development sets that were randomly split from the half of the data used for each experiment. Table \ref{tab:allsgresults} displays all F$_1$-scores. Although only the corpora that were annotated in FLEx could be used for all studies, scores on the three additional languages were added for comparison when available.
 For joint learning, the scores indicate morphemes that were correctly segmented and glossed. For the sequential system, the score is a weighted average of the scores from both the segmentation and glossing models. 
 %Variation of scores for all systems and strategies were very similar.
 
@@ -217,13 +219,8 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
          \hline
          Upper Tanana & .7240 & .7849 & .7459 & .7886
                       & .7117 & .7942 & .7183 & .7970 \\
-         \hline
-         \hline
-         % PUT THIS NEXT LINE IN JOINT VS. SEQUENTIAL RESULTS SECTION
-         Average &  &  &  &  &  &  &  &  \\
-         %Average (original 4 lgs) & .5400 & .5670 & .5011 & .5895 \\
     \end{tabular}
-    \caption[Results of Transformer on Joint and Sequential models]{F$_1$-scores of Transformer joint and sequential models on both segmentation strategies. Scores are an average across a 10-fold cross-validation. The bottom row shows the average score across all languages.}
+    \caption[Results of All Segmentation and Glossing Models]{F$_1$-scores of Transformer and CRF joint and Transformer+Transformer and CRF+SVM sequential models with both segmentation strategies. Transformer scores are an average across a 10-fold cross-validation. CRF and SVM are results of one run. The sequential approach (Seq) results are the average of the segmentation and glossing models' results.}
     \label{tab:allsgresults}
 \end{table}
 
@@ -271,7 +268,7 @@ The differences in the results in both joint and sequential systems are shown in
          %Upper Tanana & -.0219 & -.0037 \\
          %Upper Tanana all & -.0159  & n/a \\
     \end{tabular}
-    \caption[F$_1$-score Differences between Surface and Canonical Segmentation]{Average F$_1$ differences between surface and canonical segmentation strategies. Positive numbers mean surface segmentation outperformed canonical segmentation.}
+    \caption[F$_1$-score Differences between Surface and Canonical Segmentation]{The F$_1$ differences between the average results on surface and canonical segmentation strategies with the Transformer. Positive numbers mean surface segmentation outperformed canonical segmentation.}
     \label{tab:segdiffresults}
 \end{table}
 
@@ -282,7 +279,24 @@ While the difference between the two strategies becomes less noticeable when the
 
 \subsection{Joint vs Sequential Results}
 
-Overall, sequential learning does better than joint learning, but the differences are not great. The maximum improvement is less than 0.06 points on Lezgi [lez]. The best models achieved over 0.60 F$_1$ on all but the smallest corpus. Lamkang [lmk], which has the largest number of tokens by far, achieved over 0.70 average F$_1$ score. 
+Overall, sequential learning does better than joint learning, but the differences are not great. The maximum improvement is less than 0.06 points on Lezgi [lez]. On average all models achieved over 0.60 F$_1$. Only the smallest corpus, Alas [btz], did not achieve a score above that with both the Transformer and the feature-based models, although it did achieve it with the feature-based models on the sequential approach. Lamkang [lmk], which has the largest number of tokens by far, achieved over 0.70 average F$_1$ score with the Transformer and nearly 0.84 with the feature-based models. The feature-based models had scores that high Nat\"ugu but the Transformer results were lower.
+
+\begin{table}[!tb]
+    \centering
+    \begin{tabular}{l|cc|cc|cc|cc}
+          & \multicolumn{4}{c|}{\textbf{Transformer}} & \multicolumn{4}{c}{\textbf{CRF (and SVM)}} 
+          \\
+          & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c|}{\textbf{Canonical}}  & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} 
+          \\
+          &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} &  \textbf{Joint} & \textbf{Seq} \\
+         \hline
+         \textbf{Average} & .6090 & .6370 & .6301 & .6620 
+                 &  &  &  & .7667 \\
+         %Average (original 4 lgs) & .5400 & .5670 & .5011 & .5895 \\
+    \end{tabular}
+    \caption[Average Results of All Joint and Sequential models]{Average F$_1$-scores across all available languages on the Transformer and CRF joint and Transformer+Transformer and CRF+SVM sequential models with both segmentation strategies.}
+    \label{tab:allsgresults}
+\end{table}
 
 The performance on the Nat\"ugu data is the only case where the sequential system is not consistently an improvement over the joint system. 
 %With surface segmentation, joint learning on Nat\"ugu outperforms sequential learning. 

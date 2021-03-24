@@ -55,14 +55,14 @@ Though the line between language documentation and description may not be clear,
 
 A few software tools specially designed for linguistic annotation do provide limited automated assistance for language documentation and description. The two most popular are ELAN \citep{auer_elan_2010} and FLEx \citep{rogers_review_2010}. Examples of their interlinearization interfaces are shown in Figures \ref{fig:FLEX} and \ref{fig:ELAN}. These tools perform automatic morpheme segmentation and glossing by implementing morphological parsers. The parsers require morphological rules that are created by hand. Such parsers do not generalize to new data. In addition to a parser, FLEx has a feature that copies morpheme boundaries and glosses onto new words, but only if the words are identical to words that were previously annotated by hand. Neither tool incorporates machine learning. 
 
-\begin{figure}
+\begin{figure}[!tb]
     \centering
     \includegraphics[width=8cm]{figs/FLExIGT.png}
     \caption[FLEx]{User interface for interlinearization in Fieldworks Language Explorer (FLEx).}
     \label{fig:FLEX}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!tb]
     \centering
     \includegraphics[width=15cm]{figs/ELAN.png}
     \caption[ELAN]{User interface for interlinearization in ELAN.}
@@ -142,7 +142,7 @@ New methods are being developed that overcome neural models' dependence on large
 Another successful method is augmenting the training data. 
 Data augmentation can be done with artificial word forms \citep{liu_morphological_2018} or with information extracted from other resources such as grammars and dictionaries. Leveraging multiple resources to train machine learning models is not impractical if language documentation and description projects have been undertaken in the language. Traditionally, documentary and descriptive projects produce some form of the Boasian triad, illustrated in Figure \ref{fig:Triad}. 
 
-\begin{figure}[!ht]
+\begin{figure}[!tb]
 \begin{center}
 \includegraphics[width=8cm]{figs/Triad.PNG}
 \caption[The Boasian Triad]{The Boasian Triad is a grammatical description, a bilingual lexicon, and a corpus of IGT.}
