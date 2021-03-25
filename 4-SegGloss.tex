@@ -215,10 +215,10 @@ For joint learning, the scores indicate morphemes that were correctly segmented 
               & n/a & n/a & n/a & n/a \\
          \hline
          So. Sierra Miwok & .6848 & .6982 & n/a & n/a 
-                          &  &  & n/a & n/a \\
+                          & .6501 &  & n/a & n/a \\
          \hline
          Upper Tanana & .7240 & .7849 & .7459 & .7886
-                      & .7117 & .7942 & .7183 & .7970 \\
+                      & .7117 & .7942 & .7183 & \textbf{.7970} \\
     \end{tabular}
     \caption[Results of All Segmentation and Glossing Models]{F$_1$-scores of Transformer and CRF joint and Transformer+Transformer and CRF+SVM sequential models with both segmentation strategies. Transformer scores are an average across a 10-fold cross-validation. CRF and SVM are results of one run. The sequential approach (Seq) results are the average of the segmentation and glossing models' results.}
     \label{tab:allsgresults}
@@ -279,7 +279,11 @@ While the difference between the two strategies becomes less noticeable when the
 
 \subsection{Joint vs Sequential Results}
 
-Overall, sequential learning does better than joint learning, but the differences are not great. The maximum improvement is less than 0.06 points on Lezgi [lez]. On average all models achieved over 0.60 F$_1$. Only the smallest corpus, Alas [btz], did not achieve a score above that with both the Transformer and the feature-based models, although it did achieve it with the feature-based models on the sequential approach. Lamkang [lmk], which has the largest number of tokens by far, achieved over 0.70 average F$_1$ score with the Transformer and nearly 0.84 with the feature-based models. The feature-based models had scores that high Nat\"ugu but the Transformer results were lower.
+Overall, sequential learning does better than joint learning, but the differences are not great. The maximum improvement with the Transformer is slightly over .06 points on Upper Tanana.
+%less than 0.06 points on Lezgi [lez]. 
+The maximum improvement with the feature-based models is XXXX ....
+
+On average all models achieved over 0.60 F$_1$. Only the smallest corpus, Alas [btz], did not achieve a score above that with both the Transformer and the feature-based models, although it did achieve it with the feature-based models on the sequential approach. Lamkang [lmk], which has the largest number of tokens by far, achieved over 0.70 average F$_1$ score with the Transformer and nearly 0.84 with the feature-based models. The feature-based models had scores just as high Nat\"ugu although its Transformer results were lower.
 
 \begin{table}[!tb]
     \centering
