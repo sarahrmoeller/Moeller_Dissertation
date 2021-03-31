@@ -62,12 +62,16 @@
 
 \abstract{  \OnePageChapter	% because it is very short
 
-At least 40\% of the world's 7000+ languages are believed to be in danger of disappearing from human use by the end of this century \citep{eberhard_ethnologue:2020}. Many languages will disappear with almost no record of their existence because efforts to document and describe these languages are encountering an ``annotation bottleneck'' at early stages of analysis and annotation. Current annotation methods are too slow and expensive to counteract the pace of language endangerment and loss. Annotation could be sped and improved by machine learning. However, state-of-the-art supervised machine learning depends heavily on large amounts of annotated data. This dissertation examines methods for training machine learning systems on limited data and integrating those systems into the documentation and description of endangered languages, with a specific focus on morphological analysis. Unlike previous studies, this study applies machine learning models to nine typologically diverse languages. 
+At least 40\% of the world's 7000+ languages are believed to be in danger of disappearing from human use by the end of this century \citep{eberhard_ethnologue:2020}. Many languages will disappear with almost no record of their existence because efforts to document and describe these languages are encountering an ``annotation bottleneck'' at early stages of analysis and annotation. Current annotation methods are too slow and expensive to counteract the pace of language endangerment and loss. Annotation could be sped and improved by machine learning. However, state-of-the-art supervised machine learning depends heavily on large amounts of annotated data. 
 
-New methods for three tasks are explored. First, various methods are compared for automating morpheme segmentation and glossing.
-Second, a new task is presented for learning morphological paradigms and automatically generating new morphological resources: IGT-to-paradigms (IGT2P). IGT2P demonstrates how existing human resources and computational methods can be exploited to solve the task with $21\%$ to $64\%$ accuracy. Third, the impact of POS tags on segmentation, glossing, and paradigm induction is examined, showing the presence or absence of POS tags does not have a significant bearing on the performance of machine learning systems. 
+This dissertation explores how to train supervised machine learning systems for morphological analysis on limited data and how these systems might be integrated into the documentation and description of endangered languages. Unlike previous studies which have mostly experimented with one or two languages, this study applies machine learning models to nine languages. 
+
+New methods for tasks in morphological analysis are explored. First, various approaches to automating morpheme segmentation and glossing are compared.
+Second, a new task is presented for learning morphological paradigms and automatically generating new morphological resources: IGT-to-paradigms (IGT2P). 
+%IGT2P demonstrates how existing human resources and computational methods can be exploited to solve the task with $21\%$ to $64\%$ accuracy. 
+Third, the impact of POS tags on segmentation, glossing, and paradigm induction is examined, showing that the presence or absence of POS tags does not have a significant bearing on the performance of machine learning systems. 
 %The largest average difference is an .09 improvement in F$_1$-scores by removing POS tags. 
-These results are indicators that NLP may benefit from documentary linguistic data even when only limited annotated data exists for a language.
+These results are indicators that Natural Language Processing (NLP) systems could be successfully integrated into the documentary and descriptive workflow and that NLP may benefit from documentary linguistic data even when only limited annotated data exists for a language.
   
 }
 

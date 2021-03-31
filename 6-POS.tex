@@ -188,14 +188,8 @@ POS tags have no consistent positive or negative effect on automated segmentatio
 
 A few interesting observations can be made that should be explored with more languages. Manipuri shows the smallest differences overall; it also has the fewest POS-tagged words and the smallest tag set. The largest differences are seen in the Alas and Lamkang corpora. Alas also a relatively small amount of POS-tagged words, but it has quite a large tag set. As the size of the Alas training data increases, the impact of POS tags becomes more pronounced, suggesting that perhaps a relatively large POS tag set may have a greater effect on results in medium settings. Lamkang has the most POS-tagged words, but a significant number were tagged as \textsc{unk}. It is not clear whether the \textsc{unk} tag is limited to categories that have not been fully analyzed or if it is a default tag that covers a diverse set of words. The difference made by adding POS tags all but disappears when all the Lamkang data is trained, suggesting that a smaller data set is more impacted by a large tag ste or inconsistent annotations.
 
-Overall, increasing the number of POS tags in the training data has minimal impact. Table \ref{tab:POSSGpsp} shows the F$_1$-scores when the amount of POS tags in the data is gradually increased. For example, at 30\%, one of three random training instances have a POS tag. In most cases, having incomplete POS-tagged data hurts performance compared to have POS tags on all words or none at all. 
-%A small improvement (.0063 points) is made in Lezgi when 1 in ten words have POS tags.
-%The greatest improvement that can be made by adding any amount of POS tags is .0072 in F$_1$-scores (Lamkang).  
-The system either performs worse, or, in the case of Lezgi, makes very small improvement (.0063 points). Except for Lezgi, as more POS tags are added, the system tends to improves slightly but never matches the best scores. 
-%It is not clear why Lezgi differs from the other data sets, but it is known that this data was POS-tagged by multiple people who may have applied different analyses when identifying lexical categories.
 
-
-\begin{table}[htb]
+\begin{table}[!b]
     \centering
     \begin{tabular}{l|ccccccccc}
        %\textbf{Language} & 
@@ -217,6 +211,12 @@ The system either performs worse, or, in the case of Lezgi, makes very small imp
     \label{tab:POSSGpsp}
 \end{table}
 
+
+Overall, increasing the number of POS tags in the training data has minimal impact. Table \ref{tab:POSSGpsp} shows the F$_1$-scores when the amount of POS tags in the data is gradually increased. For example, at 30\%, one of three random training instances have a POS tag. In most cases, having incomplete POS-tagged data hurts performance compared to have POS tags on all words or none at all. 
+%A small improvement (.0063 points) is made in Lezgi when 1 in ten words have POS tags.
+%The greatest improvement that can be made by adding any amount of POS tags is .0072 in F$_1$-scores (Lamkang).  
+The system either performs worse, or, in the case of Lezgi, makes very small improvement (.0063 points). Except for Lezgi, as more POS tags are added, the system tends to improves slightly but never matches the best scores. 
+%It is not clear why Lezgi differs from the other data sets, but it is known that this data was POS-tagged by multiple people who may have applied different analyses when identifying lexical categories.
 
 
 \section{POS for Reinflection}
@@ -243,14 +243,14 @@ For the Unimorph data, the original SIGMORPHON training/validation/test splits w
 \subsection{Reinflection Results}
 \label{sec:inflectionresults}
 
-\begin{figure}[htb]
+\begin{figure}[!tb]
     \centering
     \includegraphics[width=34em]{figs/pos_2018data.pdf}
     \caption[SIGMORPHON Reinflection with/out POS Tags]{The difference in accuracy with/out POS on the reinflection task with SIGMORPHON languages. Negative scores indicates that adding POS tags improves results. The bar shows the mean of the differences and lines indicate the range of the mean plus or minus the standard deviation.}
     \label{fig:sigreinfl}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[!tb]
     \centering
     \includegraphics[width=41em]{figs/pos_igtdata.pdf}
     \caption[IGT Reinflection with/out POS Tags]{The difference in accuracy with/out POS on the reinflection task with cleaned and noisy field data. Negative scores indicates that adding POS tags improve results. The bar shows the mean of the differences and line indicates the range of the mean plus or minus the standard deviation.}

@@ -93,9 +93,9 @@ As a first step, partial inflectional paradigms were automatically extracted fro
        % unannotated to total words proportion: .121
        %& 14,151  \\
        \hline
-       %btz clean & 247 & 172 & 386 & 354 & \multirow{2}{*}{52}  & \multirow{2}{*}{52} & \multirow{2}{*}{1,106} \\
-       %btz noisy & 235 & 150 & 412 & 575 & & & \\
-       %\hline
+       btz clean & 247 & 172 & 386 & 354 & \multirow{2}{*}{52}  & \multirow{2}{*}{52} & \multirow{2}{*}{1,106} \\
+       btz noisy & 235 & 150 & 412 & 575 & & & \\
+       \hline
        ddo clean & 982 & 330 & 7,221 & 35,773 & \multirow{2}{*}{2,173} & \multirow{2}{*}{2,172} & \multirow{2}{*}{9,408} \\
        ddo noisy & 945 & 295 & 7,315 & 36,875 & & &  \\
        % single to multi entry proportion: .305
@@ -131,7 +131,7 @@ For the second preprocessing method, the automatically extracted paradigms were 
 
 \begin{figure}[!tb]
     \centering
-    \includegraphics[width=12cm]{figs/LezgiParadigms.pdf}
+    \includegraphics[width=15cm]{figs/LezgiParadigms.pdf}
     \caption[Noisy to Clean Paradigms]{Lezgi paradigms were automatically constructed from IGT (left column) which have typos, incorrect glosses, and wrongly clustered paradigms. Domain experts ``cleaned'' the automatically extracted paradigms (middle column). These can be compared with the published description (right column) which includes several forms that are rarely used in modern spoken Lezgi.}
     \label{fig:cleaning}
 \end{figure}
@@ -153,9 +153,8 @@ After paradigms are extracted and preprocessed, two experiments were conducted t
 \section{Results}
 \label{sec:IGT2Presults}
 
-All models and techniques were tested on the same held-out set chosen randomly from multi-entry paradigms in each language. Results were compared when trained on the noisy paradigms and on the expertly cleaned paradigms. The results are displayed in Table \ref{tab:IGT2Presults}. It shows that the limited involvement of experts cleaning the data always improved results over training on the noisy data. Also the transformer outperformed the LSTM with hard monotonic attention on all instances. 
-%except the smallest Alas [btz] corpus. 
-Comparing results from augmenting the data by artificial and uninflected/unannotated tokens gave varied results. 
+All models and techniques were tested on the same held-out set chosen randomly from multi-entry paradigms in each language. Results were compared when trained on the noisy paradigms and on the expertly cleaned paradigms. The results are displayed in Table \ref{tab:IGT2Presults}. It shows that the limited involvement of experts cleaning the data always improved results over training on the noisy data. Also the transformer outperformed the LSTM with hard monotonic attention on all instances, The exception to both these statements is Alas [btz]. This perhaps because it is the smallest corpus, roughly half or two-third the size of the next largest corpus (Lezgi). Alas also has the poorest results by far of all the languages.
+Comparing results from augmenting the data by artificial and uninflected/unannotated tokens gave varied results. Th factors affecting these varied results are unclear although the consistency of the noisy and the extent of cleaning may be factors. 
 
 
 \begin{table}[!tb]
@@ -171,10 +170,10 @@ Comparing results from augmenting the data by artificial and uninflected/unannot
       % diff:   & 4.31           & 3.75  & 3.54           & 3.27 
       % Relatively small differences. This and ddo were probably most complete and polished data. In fact, can hardly be called field data. Also, the largest ones. The bigger differences in the other datasets show how important this technique is when working with actual field data. It may indicate a point of reduced returns on cleaning time.  
       \hline
-      %btz clean & 7.69 & 3.85 & 1.92 & 1.92 & 1.92 & 5.77 & 1.92 & 1.92  \\
-      %btz noisy & 9.62 & 9.62 & 13.46 & 3.85 & 5.77 & 13.46 & 1.92 & \textbf{\textit{17.31}}  \\
+      btz clean & 7.69 & 3.85 & 1.92 & 1.92 & 1.92 & 5.77 & 1.92 & 1.92  \\
+      btz noisy & 9.62 & 9.62 & 13.46 & 3.85 & 5.77 & 13.46 & 1.92 & \textbf{17.31}  \\
       % Measured by paradigms roughly same amount of data as Lezgi, but significantly less total tokens. Train data has almost half in clean data and roughly 1/4 of the Lezgi data. Higher proportion of single-entry forms (to tokens - btz clean: 45%, btz noisy: 36%; lez clean: 37%, lez noisy: 32%. to train - 49%, 26; 37%, 15%). More unannotated tokens in comparison to noisy train data. Combined with less data period. So could this mean less repeated roots in paradigms, fewer repeated inflected forms. But probably mostly due to difference in language structure. It is not clear what. Presumably, there are more inflected POS in BTZ and therefore more variability in training data.
-      %\hline
+      \hline
       ddo clean & 65.38 & \textbf{66.53} & 65.19 & 65.42          & 59.9 & 60.87 & 59.53 & 60.64  \\
       ddo noisy & 63.54 & 63.95          & 62.89 & \textit{64.04} & 59.12 & 58.66 & 57.87 & 57.97 \\
       %diff:    & 1.84  & 2.58           & 2.30  & 1.48       
