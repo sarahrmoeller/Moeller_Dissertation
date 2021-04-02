@@ -4,7 +4,7 @@
 
 \begin{figure}[tb]
     \centering
-    \includegraphics[height=5cm]{figs/POS-avgSegGlossCropped.jpg}
+    \includegraphics[height=5cm]{figs/POSavgSegGlossCropped.jpg}
     \hspace{3cm}
     \includegraphics[height=5cm]{figs/POS-avgReinfl.jpg}
     \caption[Comparison of Morphological Tasks with/out POS tags]{Average  F$_1$-scores (right) on joint segmentation and glossing on interlinear glossed texts from fieldwork in five languages found that POS-tags have little and irregular impact. Also, reinflection (left) on four interlinear field corpora and four ``cleaned" versions of those corpora who POS tags make make minimal significant or consistent difference in accuracy.}
@@ -176,8 +176,8 @@ The training/development/test split is 8/1/1. All models are trained and evaluat
        %Nat\"ugu delta & .0053 & .0324 & .0249 & .0284 & .0209 & .0417 & .0377 & -.0011 \\
        Nat\"ugu & .01 & .03 & .02 & .03 & .02 & .03 & .04 & .00 \\
        \hline
-       Upper Tanana & -.05 & .07 & -.01 & -.02 &  & .00 & .00 &  \\
-       %Upper Tanana & -.0466 & .0744 & -.0136 & -.0206 &  & -.0036 & -.0011 &  \\
+       Upper Tanana & -.05 & .07 & -.01 & -.02 & .00 & .00 & .00 & .00 \\
+       %Upper Tanana & -.0466 & .0744 & -.0136 & -.0206 & -.0034 & -.0036 & -.0011 & -.0047 \\
     \end{tabular}
     \caption[Segmenting and Glossing with/out POS tags]{The difference in F$_1$ scores with/out POS tags when training segmentation and glossing on increasing amounts of annotated data, as percentages of total available training data. Negative scores indicates that adding POS tags improve results.
     %(pos) and morpheme-level ``POS'' tags (mpos).
@@ -206,7 +206,7 @@ A few interesting observations can be made that should be explored with more lan
        \hline
        Nat\"ugu     & .8995 & .8748          & .8782 & .8864 & .8855 & .8932 & .8999 & .8965 & \textbf{.9006} \\
        \hline
-       Upper Tanana & .8073 & .8112          & .8086 & .8098 & .8094 & .8073 & .8080 & .8077 &  \\
+       Upper Tanana & .8073 & .8112          & .8086 & .8098 & .8094 & .8073 & .8080 & .8077 & \textbf{.8120} \\
     \end{tabular}
     \caption[Results with More POS Tags]{F$_1$ scores on segmenting and glossing when trained on all data with increasing percentages of words with POS tags.}
     \label{tab:POSSGpsp}
@@ -259,11 +259,9 @@ For the Unimorph data, the original SIGMORPHON training/validation/test splits w
 \end{figure}
 
 
-Five reinflection models with random seeds were trained on each data set. All models were trained twice, once with and once without POS tags on the input. Crosswise pairs were compared by subtracting the results with POS tags from the results without POS, giving 25 accuracy scores per language. Figures \ref{fig:sigreinfl} and \ref{fig:igtreinfl} show the average and range of differences between the two.  
+Five reinflection models with random seeds were trained on each data set. All models were trained twice, once with and once without POS tags on the input. Crosswise pairs were compared by subtracting the results with POS tags from the results without POS, giving 25 accuracy scores per language. 
 
-The range of differences shows that POS tags do not have a consistently positive or negative impact. Only two languages show a clear tendency to be impact in one way. In Nat\"ugu, POS tags improve accuracy while in Adyghe, they decreases accuracy. 
-
-The average difference in accuracy on any data set is rarely more than 1 percentage point. As the data becomes less polished, the impact of POS tags increases slightly and the range of differences grows noticeably. The largest average difference (~5 percentage points) seen in the noisy data from field IGT. This indicates that time invested in polishing existing IGT data may give a better return than time spent on POS-tagging. For the SIGMORPHON languages, the largest mean difference is barely over 2 points and for the clean IGT-extracted data the largest mean difference is about 3 points. 
+The range of differences shows that POS tags do not have a consistently positive or negative impact. Only two languages show a clear tendency to be impact in one way. In Nat\"ugu, POS tags improve accuracy while in Adyghe, they decreases accuracy. Figures \ref{fig:sigreinfl} and \ref{fig:igtreinfl} show the average and range of differences between the two. The average difference in accuracy on any data set is rarely more than 1 percentage point. As the data becomes less polished, the impact of POS tags increases slightly and the range of differences grows noticeably. The largest average difference (~5 percentage points) seen in the noisy data from field IGT. This indicates that time invested in polishing existing IGT data may give a better return than time spent on POS-tagging. For the SIGMORPHON languages, the largest mean difference is barely over 2 points and for the clean IGT-extracted data the largest mean difference is about 3 points. 
 %of higher accuracy \textit{without} POS tags. 
 
 %The Lezgi data presents an anomaly among the field data sets because it is the only where accuracy reduces on the clean data. There was significant variation in accuracy across the five models of the Lezgi clean data without POS tags. This may indicate that POS tags might sometimes be helpful for this heavily agglutinative language, but the difference is not large enough to say this with certainty and the test should be repeated on related Nakh-Daghestanian languages.
