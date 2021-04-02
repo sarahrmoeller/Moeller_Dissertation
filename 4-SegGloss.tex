@@ -160,7 +160,6 @@ These feature-based models require the input and output sequences be of equal le
 
 The system predictions were automatically evaluated against the gold standard test set that withheld from the corpus. Only the five corpora that were annotated in FLEx could be used for all experiments but scores from the three other languages are included for comparison when available.\footnote{\textit{Because of a server crash, the Lamkang CRF model is still training. It will take about a week but should be completed before the April 13 deadline to submit the dissertation to the CU Graduate School. The joint and sequential Arapaho the sequential Southern Sierra Miwok results may or may not be completed by then.}} F$_1$-scores were calculated as a micro-average on all labels, rather than of each word. F$_1$-scores are used because they a better measure of success than mere accuracy when data is as imbalanced as segments and glosses are. The F$_1$-score provides a harmonic mean of precision (proportion of segments/glosses identified as $x$ that were correctly identified) and recall (proportion of segments/glosses that were correctly identified as $x$ out of those that should have been identified as $x$). 
 
-\autoref{tab:allsgresults} displays all F$_1$-scores. On average all models achieved over 0.60 F$_1$-score. Only the smallest corpus, Alas [btz], barely scored above that; it only scored higher on the sequential approach with the feature-based models. The larger corpora (Lamkang and Manipuri) scored over 0.70 average F$_1$ score with the Transformer and over 0.84 with the feature-based models. The feature-based models gave scores just as high with Nat\"ugu but the Transformer results were noticeably lower.
 
 \begin{table}[!tb]
     \centering
@@ -198,7 +197,9 @@ The system predictions were automatically evaluated against the gold standard te
               & - & - & - & - \\
          \hline
          So. Sierra Miwok & .6848 & \textbf{.6982} & - & - 
-                          & .6501 & - & - & - \\
+                          & - & - & - & - \\
+        % So. Sierra Miwok & .6848 & \textbf{.6982} & - & - 
+                          %& .6501 & - & - & - \\
          \hline
          Upper Tanana & .7240 & .7849 & .7459 & .7886
                       & .7117 & .7942 & .7183 & \textbf{.7970} \\
@@ -206,6 +207,9 @@ The system predictions were automatically evaluated against the gold standard te
     \caption[Results of All Segmentation and Glossing Models]{F$_1$-scores of Transformer and CRF joint and Transformer+Transformer and CRF+SVM sequential models with both segmentation strategies. Transformer scores are an average across a 10-fold cross-validation. CRF and SVM are results of one run. The sequential approach (Seq) results are the average of the segmentation and glossing models' results. Best overall score for each language is bolded.}
     \label{tab:allsgresults}
 \end{table}
+
+
+\autoref{tab:allsgresults} displays all F$_1$-scores. On average all models achieved over 0.60 F$_1$-score. Only the smallest corpus, Alas [btz], barely scored above that; it only scored higher on the sequential approach with the feature-based models. The larger corpora (Lamkang and Manipuri) scored over 0.70 average F$_1$ score with the Transformer and over 0.84 with the feature-based models. The feature-based models gave scores just as high with Nat\"ugu but the Transformer results were noticeably lower.
 
 The evaluation of the various tasks differed slightly. For the joint task, the scores indicate morphemes that were correctly segmented and glossed. For the sequential systems, the scores are an average of the scores from the segmentation and glossing models. The performance of the Transformer was evaluated by a cross-validation on ten random training/development sets with a 9/1 split from each half of the data used for the given experiment. The feature-based models were evaluated on a single run without a development set. 
 
@@ -326,9 +330,10 @@ The results of the deep learning and the feature-based models were compared. The
 
 In all cases, except for Upper Tanana, the feature-based models outperformed the Transformer by as much as .31 F$_1$-score and as little at .01. On average, the feature-based models boost performance by about .2 points. If only these numbers are considered, the feature-based model would be clearly a better choice for integrating into language documentation and description. 
 
-However, other factors need to be considered. Although feature-based models can still outperform a state-of-the-art deep learning model in low-resource settings, they are not necessarily always a better choice because they are more complicated to use and the models take longer to train. For example, training and testing the Transformer 10 times on the larger corpora took about 2-3 days but the CRF needed about a week to run once. 
+However, other factors need to be considered. Although feature-based models can still outperform a state-of-the-art deep learning model in low-resource settings, they are not necessarily always a better choice because they are more complicated to use. The set-up, feature extraction, and data formatting for feature-base models is significantly more difficult and time-consuming than for deep learning models. The deep learning models are more flexible. The features have to be determined and extracted. This time-consuming because of the extra coding and because different set of features should be tested for best results. 
 
-The set-up, feature extraction, and data formatting for feature-base models is significantly more difficult and time-consuming than for deep learning models. The deep learning models are more flexible. For example, the CRF required the data be converted to and from ordinal numbers because it would not accept non-ASCII characters such as the Cyrillic font of Lezgi. The features had to be determined which is time-consuming since each set of features needed to be tested. 
+%For example, some implementations of CRF require non-ASCII data be converted to ordinal numbers because it would not accept non-ASCII characters such as the Cyrillic font of Lezgi. 
+%and the models take longer to train. For example, training and testing the Transformer 10 times on the larger corpora took about 2-3 days but the CRF needed about a week to run once. 
 
 The complications are increased when dealing with the different segmentation strategies. For corpus with only canonical segmentation, the corpus does not already have surface segments by which morph breaks between letters can be located. This makes it extremely difficult to determine how to align the BIO-labels of each morpheme to input sequence of letters. This is another reason there are no Tsez results from the feature-based models. This alignment issue would be a problem for future work. 
 
