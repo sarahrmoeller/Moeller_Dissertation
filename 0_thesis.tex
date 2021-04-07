@@ -62,16 +62,16 @@
 
 \abstract{  \OnePageChapter	% because it is very short
 
-At least 40\% of the world's 7000+ languages are believed to be in danger of disappearing from human use by the end of this century \citep{eberhard_ethnologue:2020}. Many languages will disappear with almost no record of their existence because efforts to document and describe these languages are encountering an ``annotation bottleneck'' at early stages of analysis and annotation. Current annotation methods are too slow and expensive to counteract the pace of language endangerment and loss. Annotation could be sped and improved by machine learning. However, state-of-the-art supervised machine learning depends heavily on large amounts of annotated data. 
+At least 40\% of the world's 7000+ languages are believed to be in danger of disappearing from human use by the end of this century. Many languages will disappear with almost no record of their existence because efforts to document and describe these languages are encountering an ``annotation bottleneck'' at early stages of analysis and annotation. Current annotation methods are too slow and expensive to counteract the pace of language endangerment and loss. Annotation could be sped and improved by machine learning. However, state-of-the-art supervised machine learning depends heavily on large amounts of annotated data. 
 
-This dissertation explores how to train supervised machine learning systems for morphological analysis on limited data and how these systems might be integrated into the documentation and description of endangered languages. Unlike previous studies which have mostly experimented with one or two languages, this study applies machine learning models to nine languages. 
+This dissertation explores how to train supervised machine learning systems for morphological analysis during language documentation and description. The systems are applied to nine languages. The research investigates ways that linguists and NLP scientists may want to adjust their expectations and workflows so that both can achieve optimal results with endangered data. 
 
 New methods for tasks in morphological analysis are explored. First, various approaches to automating morpheme segmentation and glossing are compared.
 Second, a new task is presented for learning morphological paradigms and automatically generating new morphological resources: IGT-to-paradigms (IGT2P). 
 %IGT2P demonstrates how existing human resources and computational methods can be exploited to solve the task with $21\%$ to $64\%$ accuracy. 
 Third, the impact of POS tags on segmentation, glossing, and paradigm induction is examined, showing that the presence or absence of POS tags does not have a significant bearing on the performance of machine learning systems. 
 %The largest average difference is an .09 improvement in F$_1$-scores by removing POS tags. 
-These results are indicators that Natural Language Processing (NLP) systems could be successfully integrated into the documentary and descriptive workflow and that NLP may benefit from documentary linguistic data even when only limited annotated data exists for a language.
+These results are indicators that Natural Language Processing (NLP) systems could be successfully integrated into the documentary and descriptive workflow. At the same time, the relatively high accuracy achieved from noisy field data with little or not additional human annotation hints that NLP may benefit from limited documentary linguistic data which may be the only or largest linguistically annotated resource available for some languages.
   
 }
 
@@ -81,13 +81,13 @@ These results are indicators that Natural Language Processing (NLP) systems coul
 
 \acknowledgements{	%\OnePageChapter	% *MUST* BE ONLY ONE PAGE!
     
-    This dissertation was supported by generous grants from the Institute of Cognitive Science (ICS), the Center for the Advancement of Teaching in Social Sciences (CARTSS), the Departmet of Linguistics at the University of Colorado Boulder, and by International Language and Development (ILAD). I am very grateful to Daniel Wilson who connected me with ILAD--an innovative organization with a meaningful goal.
+    This dissertation was supported by generous grants from the Institute of Cognitive Science (ICS), the Center for the Advancement of Teaching in Social Sciences (CARTSS), the Department of Linguistics at the University of Colorado Boulder, and by International Language and Development (ILAD). I am very grateful to Daniel Wilson who connected me with ILAD--an innovative organization with a meaningful goal.
     
     I could not have done this without the valuable guidance, consistent support, and encouragement of my advisor Mans Hulden. Despite his workload, he never hurries through our meetings and he contributed to my success even beyond the helpful discussions about research. As an advisor he gave an ideal balance of expectations and independence. 
     
     My committee members all contributed more to this completed manuscript than just comments and suggestions. Martha Palmer 
     %provided several semesters of fellowships, insights from her broad experience, and down-to-earth encouragement. She
-    gave simple, practical advice that, especially during my first year, made this journey easier. Andy's keen interest in computational methods for minority languages has been a great example of cross-disciplinary research and lifelong learning. Alexis has shown the spirit of a true teacher and mentor since we first crossed paths in Portugal and has been generous with her time and with my odd question about careers in academia. Without Katharina's insightful questions and pursuit of excellence, I'm not sure the IGT2P and POS chapters would have come to existence. 
+    gave simple, practical advice that, especially during my first year, made this journey easier. Andy's keen interest in computational methods for minority languages has been a great example of cross-disciplinary research and lifelong learning. Alexis has shown the spirit of a true teacher and mentor since we first crossed paths in Portugal and has been generous with her time and with my odd question about careers in academia. Without Katharina's insightful questions and pursuit of excellence, I'm not sure \autoref{chap:IGT2P} and \autoref{chap:POS} would have come into existence. 
 		
     The quality of this work owes much to the other co-authors of the published versions of Chapters \ref{chap:IGT2P} and \ref{chap:POS}. Ling Liu was ready to listen to the vague idea and take on another project in the middle of her own PhD progress. I'm so glad Changbing Yang asked for more opportunities and I wish her the best as she starts her PhD. 
     
