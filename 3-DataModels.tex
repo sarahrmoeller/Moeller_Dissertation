@@ -157,7 +157,7 @@ Only the Arapaho and Tsez corpora can be considered completed (though missing an
          \hline
          Upper Tanana & 17.5k & n/a & 11,930 & 68\% & 11,867 & 67\% & 11,198 & 64\% 
     \end{tabular}
-    \caption[Data Statistics]{Tokens include multiple word expressions (when parsed as such) as single tokens and but do not include English words, proper nouns, digits, and punctuation when they are tagged as such. Inflected words include the number of unique inflected forms which are used to train the inflection task in Chapter \ref{chap:IGT2P}. The percentage and total number of tokens that are segmented or glossed are shown in the next two columns. The segmentation and glossing task in Chapter \ref{chap:seggloss} trains on both. The experiments with POS tags in Chapter \ref{chap:POS} used all the tokens that are POS-tagged.}
+    \caption[Data Statistics]{Tokens include multiple word expressions (when parsed as such) as single tokens and but do not include English words, proper nouns, digits, and punctuation when they are tagged as such. "Inflected" includes the number of unique inflected forms which are used to train the inflection task in Chapter \ref{chap:IGT2P}. The percentage and total number of tokens that are segmented or glossed are shown in the next two columns. The segmentation and glossing task in Chapter \ref{chap:seggloss} trains on both. The experiments with POS tags in Chapter \ref{chap:POS} used all the tokens that are POS-tagged.}
     \label{tab:dissdata}
 \end{table}
 
@@ -198,7 +198,7 @@ The less significant factors, such as typos in glosses and inconsistent morpheme
 \section{Models}
 \label{sec:models}
 
-The experiments use supervised machine learning systems. All implemented models have achieved state-of-the-art NLP results in low-resource settings. They include the feature-based Conditional Random Fields and Support Vector Machine, and the neural LSTM-based encoder-decoder and Transformer. All models have been trained on an NVIDIA GP102 [TITAN Xp] GPU unless otherwise mentioned.
+The experiments use supervised machine learning systems. All implemented models have achieved state-of-the-art NLP results in low-resource settings. They include the feature-based Conditional Random Fields and Support Vector Machine, and the neural LSTM-based encoder-decoder and Transformer. All neural models have been trained on an NVIDIA GP102 [TITAN Xp] GPU unless otherwise mentioned.
 % Some of Ling's stuff was trained on the the research computing infrastructure.
 %The models will be trained for three tasks: 1) morpheme segmentation and glossing, 2) translation, and 3) inflectional paradigm induction.
 
@@ -235,7 +235,7 @@ p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_
 
 \noindent Here, $Z$ is the ``partition function'' which normalizes the expression to a proper distribution over all possible taggings given an input. 
 
-\paragraph{Support Vector Machine (SVM).} The experiments in Chapter \ref{chap:seggloss} with segmentation and glossing compare sequential and joint methods. When feature-based models are used for the sequential method, the words are first segmented morphemes with the CRF and then glossed with a Support Vector Machine (SVM) \citep{svm_cortes}. The SVM labels only after segmenting is done by the CRF, using its own feature scheme. The SVM is implemented as a multi-class linear SVM using the LIBLINEAR package \citep{fan2008}. It creates hyperplanes to separate the data into classes. The optimal hyperplane is found by maximizing the margin between the closest data points in each class, as illustrated in Figure \ref{fig:SVM}. These data points are the support vectors. Like CRF, the SVM learns from extracted features.
+\paragraph{Support Vector Machine (SVM).} The experiments in Chapter \ref{chap:seggloss} with segmentation and glossing compare sequential and joint approaches. When feature-based models are used for the sequential approach, words are first segmented into morphemes with the CRF and then glossed with a Support Vector Machine (SVM) \citep{svm_cortes}. The SVM labels only after segmenting is done by the CRF, using its own feature scheme. The SVM is implemented as a multi-class linear SVM using the LIBLINEAR package \citep{fan2008}. It creates hyperplanes to separate the data into classes. The optimal hyperplane is found by maximizing the margin between the closest data points in each class, as illustrated in Figure \ref{fig:SVM}. These data points are the support vectors. Like CRF, the SVM learns from extracted features.
 
 %\Mans{You should make clear that we used an SVM as a labeler after the segmentation was done, using some feature scheme. Otherwise a reader will be confused as to how you an SVM as a sequence labeler (possible, but not normally done) vs. a CRF which is inherently a sequence labeler.}
 
@@ -247,8 +247,8 @@ p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_
 \end{figure}
 
 \paragraph{Transformer.} 
-The primary model used in this work is the neural transformer model \citep{vaswani_attention_2017} in all three studies. The Transformer is a state-of-the-art neural model architecture for morphological tasks \citep{vylomova2020sigmorphon} that has achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 
-%Like most neural models, the transformer’s main drawback in low-resource settings is its sensitivity to hyper-parameters.
+The primary model used in this work is the neural Transformer model \citep{vaswani_attention_2017} in all three studies. The Transformer is a state-of-the-art neural model architecture for morphological tasks \citep{vylomova2020sigmorphon} that has achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 
+%Like most neural models, the Transformer’s main drawback in low-resource settings is its sensitivity to hyper-parameters.
 It is a encoder-decoder model that uses self-attention to boost speed and performance, as shown in Figure \ref{fig:transformer}. Attention allows the model to look at different elements in the sequence to help it encode/decode a given element before feeding it to the next encoder. The decoder has an additional attention layer that allows it to focus not only on the input sentence but also on the output sequence up to the element it is decoding. The order of elements in the sequence is represented as an embedding which is input to the encoder/decoder. 
 %The standard Transformer encoder consists of identical layers, each of which has a multi-headed self-attention layer, and  one feed-forward layer. A residual connection is around two sub-layers, followed by layer normalization.
 
@@ -260,7 +260,7 @@ It is a encoder-decoder model that uses self-attention to boost speed and perfor
 \end{figure}
 
 In all cases, the model is implemented with the Fairseq\footnote{\url{https://fairseq.readthedocs.io/en/latest/}} toolkit \citep{ott2019fairseq} with modifications and code \citep{wu2020applying} that have been successful with character-level transduction for morphology learning in low-resource settings.\footnote{4 encoder-decoder layers, 4 self-attention heads, 256 embedding size, 1024 hidden size of feed-forward layer, layer normalization before self-attention, decoding left-to-right in a greedy fashion, early stopping after no improvement on the development for 4 epochs} 
-The parameters employed were $N=4$ layers for the encoder and the decoder, each with 4 self-attention heads. The embedding size for the encoder and decoder is 256, and the hidden layer size is 1024. A dropout rate of 0.3 for encoding and beam search with a width of 5 at decoding time was used. The adam algorithm \citep{kingma2014adam} ($\beta_1 = 0.9$, $\beta_2 = 0.98$) was used to optimize the cross entropy loss with label smoothing \citep{szegedy2016rethinking} of 0.1. 
+The parameters employed were $N=4$ layers for the encoder and the decoder, each with 4 self-attention heads. The embedding size for the encoder and decoder is 256, and the hidden layer size is 1024. A dropout rate of 0.3 for encoding and beam search with a width of 5 at decoding time was used. The Adam algorithm \citep{kingma2014adam} ($\beta_1 = 0.9$, $\beta_2 = 0.98$) was used to optimize the cross entropy loss with label smoothing \citep{szegedy2016rethinking} of 0.1. 
 
 
 \paragraph{LSTM encoder-decoder.} In Chapter \ref{chap:IGT2P} a LSTM with exact hard monotonic attention for character-level transduction \citep{wu-cotterell-2019-exact} serves as a baseline for the Transformer. 
