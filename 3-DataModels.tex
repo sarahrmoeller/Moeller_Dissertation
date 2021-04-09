@@ -91,7 +91,7 @@ Even though most of the corpora resulted from many years of work, they still sta
 Only the Arapaho and Tsez corpora can be considered completed (though missing annotations were found in both during preprocessing). 
 
 
-\begin{table}[tb]
+\begin{table}[!tb]
     \centering
     \begin{tabular}{l|r|r|rc|rc|rc}
          \textbf{Language} & \textbf{Tokens} & \textbf{Inflected} & \multicolumn{2}{c|}{\textbf{Segmented}} & \multicolumn{2}{c|}{\textbf{Glossed}} & \multicolumn{2}{c}{\textbf{POS-tagged}} \\
@@ -184,15 +184,18 @@ The experiments use supervised machine learning systems. All implemented models 
 \paragraph{Conditional Random Fields (CRF).} The best performing non-neural model for sequence prediction such as morpheme segmentation and glossing is Conditional Random Fields (CRF) \citep{lafferty_conditional_2001,muller_efficient_2013,ruokolainen_comparative_2016}. The CRF is a sequence classifier that considers the whole input sequence of symbols (words, letters, glosses, etc.) when making an individual prediction of one output symbol, rather than only consider one input symbol at time. It tries to optimize the probability of a complete sequence of labels, where each individual label is given a conditional probability based on the previous label and an arbitrary number of surrounding inputs. %\mans{This is tricky to word correctly. A CRF tries to optimize the probability of a complete sequence labeling, where each individual label gets a conditional probability based on the previous label and arbitrary surrounding inputs. Let's make sure to revisit this at some point.} 
 The CRF has performed well on boundary detection (segmentation) and labeling (glossing). 
 
-This work implements a linear-chain CRF \citep{lafferty_conditional_2001} with \textit{CRFsuite} \citep{okazaki2007} and its Python API.\footnote{\url{https://python-crfsuite.readthedocs.io/en/latest/}} The training parameters use L-BFGS optimization \citep{liu1989} and Elastic Net regularization, i.e., a linear combination of $L_1$ and $L_2$ penalties. Maximum iterations for early stopping are set at 50.
 
-
-\begin{figure}
+\begin{figure}[!tb]
     \centering
     \includegraphics[width=6cm]{figs/CRF.jpg}
     \caption[Conditional Random Fields]{Conditional Random Fields sequence classifier.\footnote{source: www.slideplayer.com/slide/9361527}}
     \label{fig:CRF}
 \end{figure}
+
+
+This work implements a linear-chain CRF \citep{lafferty_conditional_2001} with \textit{CRFsuite} \citep{okazaki2007} and its Python API.\footnote{\url{https://python-crfsuite.readthedocs.io/en/latest/}} The training parameters use L-BFGS optimization \citep{liu1989} and Elastic Net regularization, i.e., a linear combination of $L_1$ and $L_2$ penalties. Maximum iterations for early stopping are set at 50.
+
+
 
 
 %CRF learn to predict sequences with the help of pre-chosen features extracted from the data. Logistic regression allows the predictions to be generalized from arbitrary and possibly dependent features \citep{ruokolainen_supervised_2013}.  
@@ -214,16 +217,20 @@ p(\vect{y}|\vect{x}) = \frac{1}{Z} \textrm{exp}\Big(\sum_{i=1}^n\phi(y_{i-1}, y_
 
 \noindent Here, $Z$ is the ``partition function'' which normalizes the expression to a proper distribution over all possible tagging sequences given an input. 
 
-\paragraph{Support Vector Machine (SVM).} The experiments in Chapter \ref{chap:seggloss} with segmentation and glossing compare sequential and joint approaches. When feature-based models are used for the sequential approach, words are first segmented into morphemes with the CRF and then glossed with a Support Vector Machine (SVM) \citep{svm_cortes}. The SVM labels only after segmenting is done by the CRF, using its own feature scheme. The SVM is implemented as a multi-class linear SVM using the LIBLINEAR package \citep{fan2008}. It creates hyperplanes to separate the data into classes. The optimal hyperplane is found by maximizing the margin between the closest data points in each class, as illustrated in Figure \ref{fig:SVM}. These data points are the support vectors. Like CRF, the SVM learns from extracted features.
 
-%\Mans{You should make clear that we used an SVM as a labeler after the segmentation was done, using some feature scheme. Otherwise, a reader will be confused as to how you an SVM as a sequence labeler (possible, but not normally done) vs. a CRF which is inherently a sequence labeler.}
-
-\begin{figure}[b]
+\begin{figure}[!tb]
     \centering
     \includegraphics[width=5cm]{figs/SVM1.jpg}
     \caption[Support Vector Machine]{A Support Vector Machine (SVM).\footnote{source: www.aitrends.com/ai-insider/support-vector-machines-svm-ai-self-driving-cars/}}
     \label{fig:SVM}
 \end{figure}
+
+
+\paragraph{Support Vector Machine (SVM).} The experiments in Chapter \ref{chap:seggloss} with segmentation and glossing compare sequential and joint approaches. When feature-based models are used for the sequential approach, words are first segmented into morphemes with the CRF and then glossed with a Support Vector Machine (SVM) \citep{svm_cortes}. The SVM labels only after segmenting is done by the CRF, using its own feature scheme. The SVM is implemented as a multi-class linear SVM using the LIBLINEAR package \citep{fan2008}. It creates hyperplanes to separate the data into classes. The optimal hyperplane is found by maximizing the margin between the closest data points in each class, as illustrated in Figure \ref{fig:SVM}. These data points are the support vectors. Like CRF, the SVM learns from extracted features.
+
+
+%\Mans{You should make clear that we used an SVM as a labeler after the segmentation was done, using some feature scheme. Otherwise, a reader will be confused as to how you an SVM as a sequence labeler (possible, but not normally done) vs. a CRF which is inherently a sequence labeler.}
+
 
 \paragraph{Transformer.} 
 The primary model used in this work is the neural Transformer model \citep{vaswani_attention_2017} in all three studies. The Transformer is a state-of-the-art neural model architecture for morphological tasks \citep{vylomova2020sigmorphon} that has achieved promising results for NLP in low-resource languages \citep{abbott_towards_2018,Martinus2019AFO}. 

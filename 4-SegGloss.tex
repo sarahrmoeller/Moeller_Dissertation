@@ -80,9 +80,9 @@ The difference between the two machine learning models is their outputs.  An Eng
 \label{ex:CanInOut}
 \a<a> \textbf{SEGMENTATION INPUT:} \hspace{2 mm} t \hspace{2 mm} a \hspace{2 mm} x \hspace{2 mm} e \hspace{2 mm} s
 \label{ex:surfin}
-\a<b> \textbf{SURFACE OUTPUT:} \hspace{14 mm} tax\#levy \hspace{3 mm} -es\#\textsc{pl}
+\a<b> \textbf{SURFACE OUTPUT:} \hspace{9 mm} tax\#levy \hspace{3 mm} -es\#\textsc{pl}
 \label{ex:surfout}
-\a<c> \textbf{CANONICAL OUTPUT:} \hspace{7 mm} tax\#levy \hspace{3 mm} -s\#\textsc{pl} 
+\a<c> \textbf{CANONICAL OUTPUT:} \hspace{2 mm} tax\#levy \hspace{3 mm} -s\#\textsc{pl} 
 \label{ex:CanOut}
 \xe
 
@@ -233,13 +233,13 @@ The differences between surface and canonical segmentation in both the joint and
          %Alas  & -.0886 &  -.0726 & -.0214 & -.0041\\
          %Alas all & -.0130 & n/a \\
          \hline
-         Lamkang  & +.17 & +.16 & n/a & +.02 \\
-         Lamkang doubled & +.13 & n/a & n/a & n/a \\
+         Lamkang  & $+$.17 & $+$.16 & n/a & $+$.02 \\
+         Lamkang doubled & $+$.13 & n/a & n/a & n/a \\
          %Lamkang  & +.1677 & +.1606 &  & .0179  \\
          %Lamkang all & +.1300 & n/a \\
          \hline
-         Lezgi  & +.05 & +.07 & +.02 & +.02 \\
-         Lezgi doubled & +.01 & n/a & n/a & n/a \\
+         Lezgi  & $+$.05 & $+$.07 & $+$.02 & $+$.02 \\
+         Lezgi doubled & $+$.01 & n/a & n/a & n/a \\
          %Lezgi  & +.0496 & +.0691 & +.0178 & +.0202 \\
          %Lezgi all & +.0099 & n/a \\
          \hline
@@ -305,26 +305,26 @@ The results of the deep learning and the feature-based models were compared. The
         & \multicolumn{2}{c|}{\textbf{Surface}} & \multicolumn{2}{c}{\textbf{Canonical}} \\
         & \textbf{Joint} & \textbf{Seq} & \textbf{Joint} & \textbf{Seq} \\
         \hline
-        Alas & +.13 & +.18 & +.06 & +.11 \\
+        Alas & $+$.13 & $+$.18 & $+$.06 & $+$.11 \\
         %Alas & +.1293 & +.1754 & +.0626 & +.1069 \\
         \hline
-        Lamkang &  & +.10 &  & +.24 \\
+        Lamkang & n/a & $+$.10 & n/a & $+$.24 \\
         %Lamkang &  & +.0985 &  & +.2412 \\
         \hline
-        Lezgi & +.12 & +.10 & +.15 & +.15 \\
+        Lezgi & $+$.12 & $+$.10 & $+$.15 & $+$.15 \\
         %Lezgi & +.1207 & +.1028 & +.1525 & +.1517 \\
         \hline
-        Manipuri & +.30 & +.30 & +.15 & +.15 \\
+        Manipuri & $+$.30 & $+$.30 & $+$.15 & $+$.15 \\
         %Manipuri & +.3047 & +.2996 & +.1503 & +.1516 \\
         \hline
-        Nat\"ugu & +.30 & +.31 & +.23 & +.21 \\
+        Nat\"ugu & $+$.30 & $+$.31 & $+$.23 & $+$.21 \\
         %Nat\"ugu & +.2965 & +.3132 & +.2266 & +.2063 \\
         \hline
-        Upper Tanana & -.01 & +.01 & -.03 & +.01 \\
+        Upper Tanana & -.01 & $+$.01 & -.03 & $+$.01 \\
         %Upper Tanana & -.0123 & +.0093 & -.0276 & +.0084 \\
         \hline
         \hline
-        Average & +.21 & +.20 & +.28 & +.17 \\
+        Average & $+$.21 & $+$.20 & $+$.28 & $+$.17 \\
         %Average & +.209725 & +.19976 & +.28195 & +.17322 \\
     \end{tabular}
     \caption[F$_1$-score Differences of Feature-based Models minus Deep Learning]{The differences between the CRF or CRF+SVM models and the Transformer. Positive numbers mean the feature-based model outperformed the Transformer.}
