@@ -33,8 +33,7 @@ The first question is answered using existing morphological reinflection models 
 
 \section{IGT-to-Paradigms (IGT2P)}
 
-The task presented here, IGT-to-paradigms (IGT2P), can be described formally as the paradigm completion problem described in Chapter \ref{chap:litreview}, with an additional step of inference regarding which of the attested forms is associated with which lemma. 
-
+The task presented here, IGT-to-paradigms (IGT2P), can be described formally as the paradigm completion problem described in Chapter \ref{chap:litreview}, with an additional step of inference regarding which of the attested forms is associated with which lemma.  
 Formally, during training the systems are given a list of input words with -- potentially empty -- morphological feature vectors $\mathcal{D}=(w_1,\vec{t}_1) \dots, (w_{|\mathcal{D}|}, \vec{t}_{|\mathcal{D}|})$ and a list $\mathcal{U} = \{u_j\}$ of $|\mathcal{U}|$~inflected words, $u_j = f(\ell_j, \vec{t}_{\gamma_j})$. The goal of IGT2P is to generate the paradigms 
 $\{\pi(\ell_j)\}_{f(\ell_j, \vec{t}_{\gamma_j})\in\mathcal{U}}$ from the information available in IGT. This method is illustrated in \autoref{fig:IGT2P}.
 
@@ -42,7 +41,7 @@ $\{\pi(\ell_j)\}_{f(\ell_j, \vec{t}_{\gamma_j})\in\mathcal{U}}$ from the informa
     \centering
     \includegraphics[width=16cm]{figs/IGT2P.jpg}
     \caption[IGT2P]{IGT2P learns inflectional paradigms by filling paradigm table cells with inflected forms attested in IGT data such as this mini-Spanish corpus gathered from fluent speakers. The grayed cells represent forms that are not attested in the mini IGT corpus and can only be hypothesized to exist in the language. The orange cells also represent forms not attested in the data, but they are known to exist because of the morphosyntactic features of the cell are attested by other lemmas (i.e., \textit{como} `I eat'). A machine learning model predicts the missing forms (i.e., \textit{amo} `I love' and \textit{comen} `they eat') of the orange cells. In documentary and descriptive fieldwork, the predicted forms can serve as a hypothesis that linguists can use to help elicit further information about the language's inflectional patterns.}
-    \label{fig:my_label}
+    \label{fig:IGT2P}
 \end{figure}
 
 Like unsupervised paradigm completion, IGT2P does not assume information about the lemma to be explicit. Like morphological reinflection, the input includes word forms with features, and a system must learn to generate inflections from other word forms and morphological feature vectors. 
