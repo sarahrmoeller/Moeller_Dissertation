@@ -25,7 +25,7 @@ The nature of lexical categories \citep{rauh_syntactic_2010}, the criteria for i
 %For example, can words such as ``quick'', ``walk'', ``sleep'' in English be truly categorized as one particular category when they can function, without morphological change, as different categories within a sentence? And if lexical categories can only be determined in context,
 If the morphological structure of unseen words can be analyzed and generated without reference to lexical categories, then perhaps such categories should not be considered an inherent property of the lexicon \citep{rauh_linguistic_2016}.
 
-This paper examines the impact of POS tags on morphological analysis, an important area for low-resource languages, many of which are more morphologically complex than English, Mandarin, or other large-resource languages. Morphological analysis also holds high priority in documentary and descriptive linguistics as a necessary foundation for further descriptive work. We focus on two related tasks that both involve morphological analysis. Joint segmentation and glossing segments a word into its component morphemes with their glosses. Reinflection learns a language's inflectional patterns and generates inflected word forms from morphological features. Since lexical categories are identified in great part through morphological structure, it seems reasonable to assume that knowing a word's part of speech would make it easier to analyze its morphological structure. For example, knowing that a word is a noun makes it extremely unlikely that a final substring \textit{(e)n} could be a participial affix (e.g. \textit{oven} - noun vs. \textit{driven} - verb). On the other hand, POS tags may be providing redundant information when, for example, an affix marking a given inflected feature is identical across all categories whenever that feature appears (e.g. the Russian morpheme \textit{-i} `\textsc{pl}' is identical for plural nouns and plural verb agreement). However, we must test either hypothesis before claiming it.
+This paper examines the impact of POS tags on morphological analysis, an important area for low-resource languages, many of which are more morphologically complex than English, Mandarin, or other large-resource languages. Morphological analysis also holds high priority in documentary and descriptive linguistics as a necessary foundation for further descriptive work. We focus on two related tasks that both involve morphological analysis: joint segmentation and glossing (segmenting a word into its component morphemes with their glosses) and re-inflection (learning a language's inflectional patterns well enough to generate inflected word forms from morphological features). Since lexical categories are identified in great part through morphological structure, it seems reasonable to assume that knowing a word's part of speech would make it easier to analyze its morphological structure. For example, knowing that a word is a noun makes it extremely unlikely that a final substring \textit{(e)n} could be a participial affix (e.g. \textit{oven} - noun vs. \textit{driven} - verb). On the other hand, POS tags may be providing redundant information when, for example, an affix marking a given inflected feature is identical across all categories whenever that feature appears (e.g. the Russian morpheme \textit{-i} `\textsc{pl}' is identical for plural nouns and plural verb agreement). However, we must test either hypothesis before claiming it.
 
 %It is reasonable to expect that both tasks would benefit from POS tags, perhaps more than in other tasks, because of the morphosyntactic information conveyed by POS tags. 
 %POS tags might help segmentation algorithms distinguish affixes and glosses.
@@ -47,31 +47,30 @@ Section \ref{sec:posdata} describes the data that is used. The segmentation and 
 
 The study described here uses published data in ten languages and unpublished data from five IGT corpora. The published and unpublished data is used for morphological reinflection but only the unpublished data for segmentation and glossing.  
 
-
-\begin{table}[tb]
-    \centering
-    \begin{tabular}{lc}
-        \textbf{Language} & \textbf{POS} \\
-        \hline
-        Adyghe  & \textsc{n}, \textsc{adj} \\
-        Arabic & \textsc{n}, \textsc{v}, \textsc{adj} \\
-        Basque & \textsc{v} \\
-        Finnish & \textsc{n}, \textsc{v}, \textsc{adj} \\
-        German & \textsc{n}, \textsc{adj} \\
-        Persian & \textsc{v} \\
-        Russian & \textsc{n}, \textsc{v}, \textsc{adj} \\
-        Spanish & \textsc{n}, \textsc{v} \\
-        Swahili & \textsc{n}, \textsc{v}, \textsc{adj} \\
-        Turkish & \textsc{n}, \textsc{v}, \textsc{adj} \\
-    \end{tabular}
-    \caption[SIGMORPHON/Unimorph Data]{SIGMORPHON/Unimorph languages and the lexical categories available in the data.}
-    \label{tab:SIGPOSdata}
-\end{table}
-
 \paragraph{SIGMORPHON/Unimorph Data.}
-As a baseline for the impact of POS tags on the morphological reinflection task the experiment was run on data released for the CoNLL-SIGMORPHON 2018 shared task 1 \citep{cotterell_conllsigmorphon_2018}. Ten languages were selected that belong to different families and are typologically diverse with regards to morphology. The languages and the inflected lexical categories available for the shared task are listed in Table \ref{tab:SIGPOSdata}. The language family and morphological typology for each language is available on the UniMorph official website.\footnote{\url{https://unimorph.github.io}}  
+As a baseline for the impact of POS tags on the morphological reinflection task the experiment was run on data released for the CoNLL-SIGMORPHON 2018 shared task 1 \citep{cotterell_conllsigmorphon_2018}. Ten languages were selected that belong to different families and are typologically diverse with regards to morphology. The languages, their families, morphology type, and the inflected lexical categories available for the shared task are listed in Table \ref{tab:SIGPOSdata}. The language family and morphological typology for each family are also available on the UniMorph official website.\footnote{\url{https://unimorph.github.io}}  
 %They serve as a baseline for the reinflection task.
 
+
+\begin{table}[!tb]
+    \centering
+    \begin{tabular}{lllc}
+        \textbf{Language} & \textbf{Family} & \textbf{Morphology} & \textbf{POS} \\
+        \hline
+        Adyghe  & Northeast Caucasian & agglutinative & \textsc{n}, \textsc{adj} \\
+        Arabic & Semitic & templatic & \textsc{n}, \textsc{v}, \textsc{adj} \\
+        Basque & isolate & agglutinative & \textsc{v} \\
+        Finnish & Uralic & agglutinative & \textsc{n}, \textsc{v}, \textsc{adj} \\
+        German & Indo-European & fusional & \textsc{n}, \textsc{adj} \\
+        Persian & Indo-European & fusional & \textsc{v} \\
+        Russian & Indo-European & fusional & \textsc{n}, \textsc{v}, \textsc{adj} \\
+        Spanish & Indo-European & fusional & \textsc{n}, \textsc{v} \\
+        Swahili & Niger-Congo & fusional & \textsc{n}, \textsc{v}, \textsc{adj} \\
+        Turkish & Turkic & agglutinative & \textsc{n}, \textsc{v}, \textsc{adj} \\
+    \end{tabular}
+    \caption[SIGMORPHON/Unimorph Data]{SIGMORPHON/Unimorph languages, families, morphological types, and the lexical categories available in the data.}
+    \label{tab:SIGPOSdata}
+\end{table}
 
 
 \paragraph{IGT Data.}
@@ -85,7 +84,7 @@ Table \ref{tab:IGTPOSdata} describes the IGT corpora that were selected for this
          Alas & 3,845 & 412 & \textsc{\textbf{adj}, \textbf{adv}, aux, cardnum, clf, \textbf{conj}, cop, dem, distrnum, existmrkr, interj,
         \textbf{n}, nprop, ordnum, \textbf{prep}, \textbf{pro}, prt, quant, refl, relpro, \textbf{v}, vd, \textbf{vi}, \textbf{vt}} \\
          \hline
-         Lamkang  & 46,557  & n/a & \textsc{adn, advl, dem, conn, coordconn, cop, interj, n, npr, num, ordnum, postp, pron, ptc, quant, subo, unk, v, vc, vi, vt} \\
+         Lamkang*  & 46,557  & n/a & \textsc{adn, advl, dem, conn, coordconn, cop, interj, n, npr, num, ordnum, postp, pron, ptc, quant, subo, unk, v, vc, vi, vt} \\
          \hline
          Lezgi  & 13,636  & 588 & \textsc{\textbf{adj}, \textbf{adv}, cardnum, conn, coordconn, \textbf{dem}, det, indfpro, interj, interrog, msd, multipnum, \textbf{n}, \textbf{nprop}, \textbf{num}, ordnum, \textbf{pers}, \textbf{poss}, post, prep, \textbf{pro}, proform, prt, ptcp, \textbf{recp}, subordconn, \textbf{v}, \textbf{verbprt}, \textbf{vf}, \textbf{vnf}, voc} \\
          \hline
@@ -93,9 +92,9 @@ Table \ref{tab:IGTPOSdata} describes the IGT corpora that were selected for this
          \hline
          Natügu  & 10,994  & 1,954 & \textsc{\textbf{a-d-p2}, \textbf{adj}, \textbf{adv}, clause, \textbf{conj}, \textbf{dem}, \textbf{det}, \textbf{gen}, \textbf{gerund}, interrog, intj, \textbf{n}, \textbf{n.(kx.cl)}, ncomp, \textbf{neg}, \textbf{nom1}, np, np(comp), nprop, \textbf{num}, \textbf{ord}, \textbf{particle}, \textbf{pclf}, \textbf{perspro}, \textbf{phrase}, \textbf{pn}, \textbf{posspro}, \textbf{prep}, \textbf{pro}, \textbf{rprn}, \textbf{subr}, \textbf{unk}, \textbf{v}, \textbf{vi}, vp, \textbf{vt}, z-gerund} \\
          \hline
-         Upper Tanana & 11,198 & n/a & \textsc{adj, adv, advlizer, cardnum, coordconn, dem, dir, dm, inter, interj, imp, mod, n, nomprt, nprop, nvp, onom, post, pro, proform, quant, verbprt, v} \\
+         Upper Tanana* & 11,198 & n/a & \textsc{adj, adv, advlizer, cardnum, coordconn, dem, dir, dm, inter, interj, imp, mod, n, nomprt, nprop, nvp, onom, post, pro, proform, quant, verbprt, v} \\
     \end{tabular}
-    \caption[IGT POS Tags]{The number of segmented, glossed, and POS-tagged tokens. The number of unique inflected words. All POS tags were used for the segmentation and glossing task but tags in boldface were found on inflected words and therefore only used in the reinflection task.}
+    \caption[IGT POS Tags]{The number of segmented, glossed, and POS-tagged tokens. The number of unique inflected words. All POS tags were used for the segmentation and glossing task but tags in boldface were found on inflected words. Since only inflected words are used for the reinflection task, only the boldfaced tags are relevant for that task. * $=$ language were not used for reinflection task.}
     \label{tab:IGTPOSdata}
 \end{table}
 
@@ -223,15 +222,14 @@ The system either performs worse, or, in the case of Lezgi, makes very small imp
 \section{POS for Reinflection}
 \label{sec:posinflection}
 
-The second study asks whether POS tags make a significant impact on learning inflectional patterns. Analyzing a language's inflectional patterns is a recommended next step after morpheme segmentation and glossing \citep{bird_machine_2012}. The inflectional pattern of a lexeme or a lexical category is also known as a morphological paradigm. Learning morphological paradigms can be viewed in terms of filling in, or generating, the missing forms of a paradigm table by generalizing inflectional patterns in data. 
-
-Our study replicates the CoNLL-SIGMORPHON 2018 shared task 1 of reinflection. Reinflection consists of generating unknown an inflected form, given a related inflected form 
+The second study asks whether POS tags make a significant impact on learning inflectional patterns. %Analyzing a language's inflectional patterns is a recommended next step after morpheme segmentation and glossing \citep{bird_machine_2012}. %The inflectional pattern of a lexeme or a lexical category is also known as a morphological paradigm. Learning morphological paradigms can be viewed in terms of filling in, or generating, the missing forms of a paradigm table by generalizing inflectional patterns in data. 
+This study replicates the CoNLL-SIGMORPHON 2018 shared task 1 of reinflection. Reinflection consists of generating unknown an inflected form, given a related inflected form 
 $f(\ell, \vec{t}_{\gamma_1})$ and a target morphological feature vector $\vec{t}_{\gamma_2}$. Thus, it corresponds to learning the mapping $f : \Sigma^* \times \mathcal{T} \to \Sigma^*$. The goal is then to produce the inflected form $f(\ell, \vec{t}_{\gamma_2})$. 
 An inflected form is generated when the model is given a related inflected forms and the morphological features (which are essentially glosses of affixes) of the inflected form to be generated. 
 In previous work, POS tags have been included by default as part of the morphological features. That is, they have been assumed to be helpful and to be available.
 
 
-\subsection{Experimental Setup}
+\subsection{Experiment}
 \label{sec:inflectionsetup}
 
 Transformer models were trained on individual languages in three different data sets. The first is published Unimorph inflectional data in ten languages. The second data set is inflected word forms extracted from unpublished IGT in four languages; the third is the clean, or corrected, versions of the second data set. 
@@ -287,9 +285,9 @@ Finally, although a consistent impact by POS tags cannot be seen on morphologica
 
 \section{Conclusion}
 
-We conclude that the presence or absence of POS tags does not have a significant impact on two morphological analysis tasks: segmentation and glossing, or reinflection. There is no clear advantage from doing POS-tagging on low-resource data. In segmentation and glossing, the greatest average difference is a loss of .09 F$_1$-score when a large POS tag set is added to a small field corpus. In reinflection, the overall tendency, though slight, is that accuracy actually decreases when POS tags are added. The greatest average difference is 1.2 points of accuracy for published data, 2.2 points for unpublished ``clean'' data, and 5 points for unpublished noisy data.
+This chapter investigated the usefulness of POS tags for morphological reinflection because field data does not often include POS annotation but NLP traditionally places high priority on POS-tagging. Surprisingly, POS tags are not beneficial to recent state-of-the-art systems during morphological analysis. This is a useful discovery for researchers who wish to optimize their inflection systems. We conclude that the presence or absence of POS tags does not have a significant impact on two morphological analysis tasks: segmentation and glossing, or reinflection. For computation morphological analysis no clear advantage is gained by tagging low-resource data with POS labels. In segmentation and glossing, the greatest average difference is a loss of .09 F$_1$-score when a large POS tag set is added to a small field corpus. In reinflection, the overall tendency, though slight, is that accuracy actually decreases when POS tags are added. The greatest average difference is 1.2 points of accuracy for published data, 2.2 points for unpublished ``clean'' data, and 5 points for unpublished noisy data.
 
-We hypothesize that POS tags do not have a significant impact on these tasks because the information provided by POS tags is implicitly learned. These are not the tasks where POS tags could be leveraged for low-resource languages and these conclusions should not be taken as a definitive statement regarding the impact of POS tags in other NLP tasks with low-resource languages, particularly ones that are more syntactic or semantic in nature. However, it does bring into question whether the development of POS taggers and POS tagging should be given the priority they have assumed. This needs to be methodically tested. 
+We hypothesize that POS tags do not have a significant impact on these tasks because the information provided by POS tags is implicitly learned. These are not the only tasks where POS tags could be leveraged for low-resource languages and these conclusions should not be taken as a definitive statement regarding the impact of POS tags in other NLP tasks with low-resource languages, particularly ones that are more syntactic or semantic in nature. However, it does bring into question whether the development of POS taggers and POS tagging should be given the priority they have assumed. This needs to be methodically tested. 
 
 Future work should explore how other NLP tasks are impacted by POS tags. The results might influence workflow priorities for documentary and descriptive linguists who want to receive/give benefit from/to NLP. When a sophisticated POS tag set and POS taggers are available for a language, then leveraging POS tags is a trivial matter. However, as NLP expands into a broader range of languages, the usefulness of POS tags may become an important question because documentary and descriptive linguistics does not currently place a high priority on lexical categories. Discovering a language's lexical categories requires a detailed understanding of the language's syntax--something linguists do not always possess in the early stages of describing a new language. 
 
