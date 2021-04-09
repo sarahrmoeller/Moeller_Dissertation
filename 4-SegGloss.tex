@@ -219,7 +219,7 @@ The evaluation of the various tasks differed slightly. For the joint task, the s
 
 \subsection{Surface vs. Canonical Results}
 
-The differences between surface and canonical segmentation in both the joint and sequential approaches are shown in Table \ref{tab:segdiffresults}. The difference in performance between the segmentation strategies on the joint approach is roughly the same as the difference between the strategies on the sequential approaches. The results of each segmentation strategy is not increased or decreased more simply because a different approach to segmentation and glossing is taken. In other words, surface segmentation does not do noticeablly better or worse on the joint approach than it does on the sequential approach; the same is true for the canonical segmentation. The differences between the two strategies almost disappear with the feature-based models. Doubling the training data also makes the relative performance of the two strategies become nearly the same.
+The differences between surface and canonical segmentation in both the joint and sequential approaches are shown in Table \ref{tab:segdiffresults}. The difference in performance between the segmentation strategies on the joint approach is roughly the same as the difference between the strategies on the sequential approaches. The results of each segmentation strategy is not increased or decreased more simply because a different approach to segmentation and glossing is taken. In other words, surface segmentation does not do noticeably better or worse on the joint approach than it does on the sequential approach; the same is true for the canonical segmentation. The differences between the two strategies almost disappear with the feature-based models. Doubling the training data also makes the relative performance of the two strategies become nearly the same.
 
 
 \begin{table}[!tb]
@@ -267,7 +267,7 @@ Although the Transformer shows a bigger difference than the feature-based models
 It is also possible that the differences are due to similar annotation methods as the two corpora were sourced from the same origin. % Much less difference in number of labels in the glossing step: -12.1 - 7.2, unsurprisingly  
 
 The segmentation strategies were also compared using all available data in the joint system with the Transformer.  When all the available data is used, the comparison of surface and canonical segmentation paints a clearer picture. The difference between the two strategies becomes less noticeable when the data is increased as shown in \autoref{tab:segdiffresults}, but at the same time, canonical segmentation begins to outperform surface segmentation more consistently.  
-Doubling the training data improves F$_1$-scores by about .2 to .4 points. The difference becomes quite small (roughly .1 points or less) with more data, closer to the differences with feature-based models with half the amount of data. 
+Doubling the training data improves F$_1$-scores by about .2 to .4 points. The difference becomes quite small with the doubled data -- roughly .1 points or less. This size of difference is closer to the differences between the strategies when using feature-based models trained on only one half the data. 
 
 
 \subsection{Joint vs Sequential Results}
